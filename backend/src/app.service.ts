@@ -2,7 +2,23 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  async getMain() {
+    return 'getMain';
+  }
+
+  async getSearch(query: string) {
+    return 'getSearch';
+  }
+
+  async getTags() {
+    return 'getTags';
+  }
+
+  async getTagName(tagname: string) {
+    return 'getTagName';
+  }
+
+  async getAdmin() {
+    return 'getAdmin';
   }
 }

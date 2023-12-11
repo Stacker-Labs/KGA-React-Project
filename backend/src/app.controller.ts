@@ -6,19 +6,27 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getMain() {
+    return this.appService.getMain();
   }
 
   @Get('/search')
-  searchBoard(@Query('q') query: string) {}
+  getSearch(@Query('q') query: string) {
+    return this.appService.getSearch(query);
+  }
 
   @Get('/tags')
-  getTags() {}
+  getTags() {
+    return this.appService.getTags();
+  }
 
   @Get('/tags/:tagname')
-  getTagName(@Param('tagname') tagname: string) {}
+  getTagName(@Param('tagname') tagname: string) {
+    return this.appService.getTagName(tagname);
+  }
 
   @Get('/admin')
-  getAdmin() {}
+  getAdmin() {
+    return this.appService.getAdmin();
+  }
 }
