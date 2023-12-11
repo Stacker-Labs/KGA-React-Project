@@ -8,9 +8,13 @@ export class ChatModel extends BaseModel {
   @Column()
   content: string;
 
-  @ManyToOne(() => UserModel, (user) => user.chats)
+  @ManyToOne(() => UserModel, (user) => user.chats, {
+    onDelete: 'CASCADE',
+  })
   user: UserModel;
 
-  @ManyToOne(() => RoomModel, (room) => room.chats)
+  @ManyToOne(() => RoomModel, (room) => room.chats, {
+    onDelete: 'CASCADE',
+  })
   room: RoomModel;
 }

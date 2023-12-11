@@ -12,9 +12,13 @@ export class CommentModel extends BaseModel {
   @JoinColumn()
   comment: CommentModel;
 
-  @ManyToOne(() => BoardModel, (board) => board.comments)
+  @ManyToOne(() => BoardModel, (board) => board.comments, {
+    onDelete: 'CASCADE',
+  })
   board: BoardModel;
 
-  @ManyToOne(() => UserModel, (user) => user.comments)
+  @ManyToOne(() => UserModel, (user) => user.comments, {
+    onDelete: 'CASCADE',
+  })
   user: UserModel;
 }

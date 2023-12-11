@@ -8,6 +8,8 @@ export class RoomModel extends BaseModel {
   @OneToMany(() => ChatModel, (chat) => chat.room)
   chats: ChatModel[];
 
-  @ManyToMany(() => UserModel, (user) => user.rooms)
+  @ManyToMany(() => UserModel, (user) => user.rooms, {
+    onDelete: 'CASCADE',
+  })
   users: UserModel[];
 }

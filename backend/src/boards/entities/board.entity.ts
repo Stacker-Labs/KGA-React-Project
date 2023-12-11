@@ -14,12 +14,18 @@ export class BoardModel extends BaseModel {
   @OneToMany(() => CommentModel, (comment) => comment.board)
   comments: CommentModel[];
 
-  @ManyToMany(() => UserModel, (user) => user.likes)
+  @ManyToMany(() => UserModel, (user) => user.likes, {
+    onDelete: 'CASCADE',
+  })
   likes: UserModel[];
 
-  @OneToMany(() => UserModel, (user) => user.views)
+  @ManyToMany(() => UserModel, (user) => user.views, {
+    onDelete: 'CASCADE',
+  })
   views: UserModel[];
 
-  @ManyToOne(() => UserModel, (user) => user.boards)
+  @ManyToOne(() => UserModel, (user) => user.boards, {
+    onDelete: 'CASCADE',
+  })
   user: UserModel;
 }

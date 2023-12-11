@@ -29,7 +29,9 @@ export class UserModel extends BaseModel {
   })
   follower_users: UserModel[];
 
-  @ManyToMany(() => UserModel, (user) => user.follower_users)
+  @ManyToMany(() => UserModel, (user) => user.follower_users, {
+    onDelete: 'CASCADE',
+  })
   following_users: UserModel[];
 
   @OneToMany(() => BoardModel, (board) => board.user)
