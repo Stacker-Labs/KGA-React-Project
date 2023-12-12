@@ -11,6 +11,7 @@ import { BoardModel } from './boards/entities/board.entity';
 import { CommentModel } from './boards/entities/comment.entity';
 import { RoomModel } from './users/entities/room.entity';
 import { ChatModel } from './users/entities/chat.entity';
+import { TagModel } from './boards/entities/tag.entity';
 
 @Module({
   imports: [
@@ -28,9 +29,17 @@ import { ChatModel } from './users/entities/chat.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      entities: [UserModel, BoardModel, CommentModel, RoomModel, ChatModel],
+      entities: [
+        UserModel,
+        BoardModel,
+        CommentModel,
+        RoomModel,
+        ChatModel,
+        TagModel,
+      ],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([BoardModel, UserModel, TagModel]),
   ],
   controllers: [AppController],
   providers: [AppService],

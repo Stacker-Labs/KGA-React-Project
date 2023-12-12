@@ -1,7 +1,15 @@
 import { BaseModel } from 'src/common/entities/base.entity';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { CommentModel } from './comment.entity';
 import { UserModel } from 'src/users/entities/user.entity';
+import { TagModel } from './tag.entity';
 
 @Entity()
 export class BoardModel extends BaseModel {
@@ -10,6 +18,9 @@ export class BoardModel extends BaseModel {
 
   @Column()
   content: string;
+
+  @Column()
+  tag: string;
 
   @OneToMany(() => CommentModel, (comment) => comment.board)
   comments: CommentModel[];
@@ -23,6 +34,10 @@ export class BoardModel extends BaseModel {
     onDelete: 'CASCADE',
   })
   views: UserModel[];
+
+  @ManyToMany(() => TagModel, (tag) => tag.boards)
+  @JoinTable()
+  tags: TagModel[];
 
   @ManyToOne(() => UserModel, (user) => user.boards, {
     onDelete: 'CASCADE',

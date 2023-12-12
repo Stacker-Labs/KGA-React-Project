@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { LoginDto } from './dto/login.dto';
+import { GithubLoginDto } from './dto/githubLogin.dto';
+import { GoogleLoginDto } from './dto/googleLogin.dto';
+import { KakaoLoginDto } from './dto/kakaoLogin.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  login(loginDto: LoginDto) {
+    return 'login';
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  githubLogin(githubLoginDto: GithubLoginDto) {
+    return 'githubLogin';
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  googleLogin(googleLoginDto: GoogleLoginDto) {
+    return 'googleLogin';
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  kakaoLogin(kakaoLoginDto: KakaoLoginDto) {
+    return 'kakaoLogin';
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  register(registerDto: RegisterDto) {
+    return 'register';
   }
 }

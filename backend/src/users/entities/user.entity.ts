@@ -5,6 +5,7 @@ import { BaseModel } from 'src/common/entities/base.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { RoomModel } from './room.entity';
 import { ChatModel } from './chat.entity';
+import { Provider } from 'src/common/const/provider.enum';
 
 @Entity()
 export class UserModel extends BaseModel {
@@ -22,6 +23,9 @@ export class UserModel extends BaseModel {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @Column({ type: 'enum', enum: Provider, default: Provider.LOCAL })
+  provider: Provider;
 
   @ManyToMany(() => UserModel, (user) => user.following_users)
   @JoinTable({
