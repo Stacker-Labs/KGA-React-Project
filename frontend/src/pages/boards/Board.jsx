@@ -1,11 +1,17 @@
 import React from "react";
 import Write from "./BoardCom/Write";
+import { Box } from "@mui/material";
+import styled from "styled-components";
+
+const BoardPageWrap = styled(Box)``;
 
 const Board = () => {
   return (
-    <div>
-      <Write />
-    </div>
+    <>
+      <BoardPageWrap>
+        <Write />
+      </BoardPageWrap>
+    </>
   );
 };
 
