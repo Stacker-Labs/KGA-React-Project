@@ -41,4 +41,10 @@ export class AuthController {
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
+
+  @Post('logout')
+  @ApiOperation({ summary: 'Logout' })
+  logout() {
+    return this.authService.logout();
+  }
 }

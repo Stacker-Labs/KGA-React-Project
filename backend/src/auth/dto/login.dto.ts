@@ -12,8 +12,4 @@ export class LoginDto {
   @MinLength(8)
   @ApiProperty({ example: 'password' })
   password: string;
-
-  @IsString()
-  @ApiProperty({ example: null })
-  image?: string;
 }
