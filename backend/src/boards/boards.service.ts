@@ -8,10 +8,6 @@ export class BoardsService {
     return 'This action adds a new board';
   }
 
-  findAll() {
-    return `This action returns all boards`;
-  }
-
   findOne(id: number) {
     return `This action returns a #${id} board`;
   }
