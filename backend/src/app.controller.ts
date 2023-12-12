@@ -28,7 +28,7 @@ export class AppController {
   @Get('/tags/:tag')
   @ApiOperation({ summary: 'Get Tag Board List' })
   getTag(@Param('tag') tag: string) {
-    return this.appService.getTag(tag);
+    return this.appService.getTagBoards(tag);
   }
 
   @Get('/admin')

@@ -16,6 +16,7 @@ export class AppService {
     private readonly tagRepository: Repository<TagModel>,
   ) {}
 
+  // CMMT: - Get Board List
   async getMain() {
     const boards = await this.boardRepository.find({
       order: {
@@ -26,6 +27,7 @@ export class AppService {
     return boards;
   }
 
+  // CMMT: - Get Search Board List
   async getSearch(query: string) {
     const boards = await this.boardRepository.find({
       where: {
@@ -39,6 +41,7 @@ export class AppService {
     return boards;
   }
 
+  // CMMT: - Get Tag List
   async getTags() {
     const tags = await this.tagRepository.find({
       order: {
@@ -49,7 +52,8 @@ export class AppService {
     return tags;
   }
 
-  async getTag(tag: string) {
+  // CMMT: - Get Tag Board List
+  async getTagBoards(tag: string) {
     const boards = await this.tagRepository.find({
       where: {
         tag,
@@ -65,6 +69,7 @@ export class AppService {
     return boards;
   }
 
+  // CMMT: - Get User List
   async getAdmin() {
     const users = await this.userRepository.find({
       order: {
