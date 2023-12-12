@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TagModel } from '../entities/tag.entity';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateBoardDto {
@@ -12,6 +11,6 @@ export class CreateBoardDto {
   content: string;
 
   @IsNotEmpty()
-  @ApiProperty({ example: '[tag1, tag2]' })
-  tag: TagModel;
+  @ApiProperty({ example: '#tag1 #tag2' })
+  tag: string;
 }
