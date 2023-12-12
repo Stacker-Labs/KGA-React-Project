@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { GithubLoginDto } from './dto/githubLogin.dto';
 import { GoogleLoginDto } from './dto/googleLogin.dto';
@@ -10,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Provider } from 'src/common/const/provider.enum';
 import { JwtService } from '@nestjs/jwt';
 import { TokenDto } from './dto/token.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -19,10 +24,34 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
   // CMMT: - Login
-  login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto) {
     // TODO
+    const { username, password } = loginDto;
 
-    return 'login';
+    const user = await this.userRepository.findOne({
+      where: {
+        username,
+      },
+    });
+    if (!user) {
+      throw new BadRequestException('존재하지 않는 사용자입니다.');
+    }
+
+    const comparePassword = await bcrypt.compare(password, user.password);
+    if (!comparePassword) {
+      throw new UnauthorizedException('비밀번호가 다릅니다.');
+    }
+
+    const payload = {
+      username,
+    };
+
+    const accessToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: 3600,
+    });
+
+    return { accessToken };
   }
 
   // CMMT: - Github Login
@@ -130,35 +159,63 @@ export class AuthService {
   }
 
   // CMMT: - Register
-  register(registerDto: RegisterDto) {
+  async register(registerDto: RegisterDto) {
     // TODO
+    const { username, password, nickname, image } = registerDto;
 
-    return 'register';
+    const user = await this.userRepository.findOne({
+      where: {
+        username,
+      },
+    });
+
+    if (user) {
+      throw new BadRequestException('이미 존재하는 아이디입니다.');
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+
+    const payload = {
+      username,
+      password: hash,
+      nickname,
+      image,
+      provider: Provider.LOCAL,
+    };
+
+    const accessToken = await this.signToken(payload);
+
+    return { accessToken };
+  }
+
+  // CMNT: - Logout
+  async logout() {
+    return this.jwtService.sign(null, { expiresIn: 0 });
   }
 
   // CMNT: - Generate Token
   async signToken(payload: TokenDto) {
+    const { username, password } = payload;
     const user = await this.userRepository.findOne({
       where: {
-        username: payload.username,
-        provider: payload.provider,
+        username,
       },
     });
 
     if (!user) {
       await this.userRepository.save({
         ...payload,
-        password: payload.username,
+        password: password ?? username,
       });
-    } else {
-      payload.nickname = user.nickname;
-      payload.image = user.image;
     }
 
-    const token = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: 3600,
-    });
+    const token = this.jwtService.sign(
+      { username },
+      {
+        secret: process.env.JWT_SECRET,
+        expiresIn: 3600,
+      },
+    );
 
     return token;
   }

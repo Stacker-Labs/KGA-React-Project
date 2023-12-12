@@ -6,6 +6,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { RoomModel } from './room.entity';
 import { ChatModel } from './chat.entity';
 import { Provider } from 'src/common/const/provider.enum';
+import { IsOptional } from 'class-validator';
 
 @Entity()
 export class UserModel extends BaseModel {
@@ -18,8 +19,8 @@ export class UserModel extends BaseModel {
   @Column()
   nickname: string;
 
-  @Column()
-  image: string;
+  @Column({ nullable: true })
+  image?: string;
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
