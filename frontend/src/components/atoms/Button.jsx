@@ -3,13 +3,28 @@ import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
 
 const StyledButton = styled(Button)`
-  background-color: ${(props) => props.bgColor};
-  width: ${(props) => props.width};
+  ${({ customType }) =>
+    customType === "local" &&
+    `
+    background-color: #1976D2;
+    color: white;
+
+  `}
+  ${({ customType }) =>
+    customType === "social" &&
+    `
+    background-color: white;
+    color: black;
+
+  `}
 `;
 
-const MUIButton = ({ children, bgColor, width }) => {
+// social customType
+// local customType
+
+const MUIButton = ({ children, customType }) => {
   return (
-    <StyledButton width={width} bgColor={bgColor} variant="contained">
+    <StyledButton customType={customType} variant="contained">
       {children}
     </StyledButton>
   );
