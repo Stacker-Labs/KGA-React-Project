@@ -6,7 +6,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { RoomModel } from './room.entity';
 import { ChatModel } from './chat.entity';
 import { Provider } from 'src/common/const/provider.enum';
-import { IsOptional } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class UserModel extends BaseModel {
@@ -14,6 +14,7 @@ export class UserModel extends BaseModel {
   username: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()

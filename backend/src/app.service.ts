@@ -23,6 +23,10 @@ export class AppService {
       order: {
         id: 'DESC',
       },
+      relations: {
+        user: true,
+        comments: true,
+      },
     });
 
     return boards;
