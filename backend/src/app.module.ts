@@ -41,6 +41,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         TagModel,
       ],
       synchronize: true,
+      // ssl: {
+      //   rejectUnauthorized: false,
+      // },
     }),
     TypeOrmModule.forFeature([BoardModel, UserModel, TagModel]),
   ],
