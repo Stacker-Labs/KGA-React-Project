@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         logo: ["LuckiestGuy-Regular"],
       },
+
     },
   },
   plugins: [],

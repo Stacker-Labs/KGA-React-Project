@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -12,6 +12,9 @@ import { CommentModel } from './boards/entities/comment.entity';
 import { RoomModel } from './users/entities/room.entity';
 import { ChatModel } from './users/entities/chat.entity';
 import { TagModel } from './boards/entities/tag.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from './users/users.service';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -42,6 +45,11 @@ import { TagModel } from './boards/entities/tag.entity';
     TypeOrmModule.forFeature([BoardModel, UserModel, TagModel]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    JwtService,
+    UsersService,
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+  ],
 })
 export class AppModule {}
