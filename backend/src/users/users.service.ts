@@ -82,6 +82,8 @@ export class UsersService {
       throw new BadRequestException('존재하지 않는 사용자입니다.');
     }
 
+    // TODO: - UpdateUserDto 내용 확인
+
     if (id === userId || role === Role.ADMIN) {
       const newUser = await this.userRepository.save({ id, ...updateUserDto });
       return newUser;
