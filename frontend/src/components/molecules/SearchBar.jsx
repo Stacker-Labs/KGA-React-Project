@@ -3,7 +3,7 @@ import { Search_icon } from "../../images";
 
 const SearchhBar = () => {
   return (
-    <form className="border border-solid border-gray-300 rounded-lg w-[400px] h-[35px] flex items-center ">
+    <form className="border border-solid border-gray-300 rounded-lg w-[300px] h-[35px] flex items-center ">
       <input
         type="text"
         placeholder={"Search..."}
