@@ -12,6 +12,8 @@ import { CommentModel } from './boards/entities/comment.entity';
 import { RoomModel } from './users/entities/room.entity';
 import { ChatModel } from './users/entities/chat.entity';
 import { TagModel } from './boards/entities/tag.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from './users/users.service';
 
 @Module({
   imports: [
@@ -42,6 +44,6 @@ import { TagModel } from './boards/entities/tag.entity';
     TypeOrmModule.forFeature([BoardModel, UserModel, TagModel]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtService, UsersService],
 })
 export class AppModule {}
