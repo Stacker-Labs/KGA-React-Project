@@ -25,9 +25,7 @@ export class BoardsService {
 
   // CMMT: - Create Board
   async create(createBoardDto: CreateBoardDto, userId: number) {
-    const { tags } = createBoardDto;
-    const tagList = tags ? this.getTags(tags) : [];
-
+    const { title, content, tags } = createBoardDto;
     const user = await this.userRepository.findOne({
       where: {
         id: userId,
@@ -35,10 +33,12 @@ export class BoardsService {
     });
 
     const board = await this.boardRepository.save({
-      ...createBoardDto,
-      tags: tagList,
+      title,
+      content,
       user,
     });
+
+    this.setTags(board, tags);
 
     return board;
   }
@@ -69,6 +69,7 @@ export class BoardsService {
     userId: number,
     role: Role,
   ) {
+    const { title, content, tags } = updateBoardDto;
     const board = await this.boardRepository.findOne({
       where: {
         id,
@@ -84,17 +85,15 @@ export class BoardsService {
 
     // TODO: - UpdateBoardDto 내용 확인
 
-    const { tags } = updateBoardDto;
-    let tagList = [];
-    if (tags) {
-      tagList = this.getTags(tags);
-    }
     if (board.user.id === userId || role === Role.ADMIN) {
       const updatedBoard = await this.boardRepository.save({
         id,
-        ...updateBoardDto,
-        tags: tagList,
+        title,
+        content,
+        tags: [],
       });
+      this.setTags(updatedBoard, tags);
+
       return updatedBoard;
     }
 
@@ -123,14 +122,19 @@ export class BoardsService {
   }
 
   // CMMT: - Make Tag List
-  getTags(tagList: string): TagModel[] {
-    const result = [];
-    tagList
+  setTags(board: BoardModel, tags: string) {
+    tags
       .replace(/#/g, '')
       .split(' ')
-      .forEach(async (tag) =>
-        result.push(await this.tagRepository.save({ tag })),
-      );
-    return result;
+      .forEach(async (tag) => {
+        const tagPick = await this.tagRepository.findOne({
+          where: { tag },
+          relations: { boards: true },
+        });
+        const id = tagPick ? tagPick.id : null;
+        const boards = tagPick ? tagPick.boards : [];
+        boards.push(board);
+        await this.tagRepository.save({ id, boards, tag });
+      });
   }
 }
