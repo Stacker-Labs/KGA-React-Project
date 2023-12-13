@@ -16,7 +16,7 @@ export class UserGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    const accessToken = req.headers['authorization'];
+    const accessToken = req.headers['authorization'].split(' ')[1];
     if (!accessToken) {
       return true;
     }
@@ -24,9 +24,6 @@ export class UserGuard implements CanActivate {
     const payload = await this.jwtService.verify(accessToken, {
       secret: process.env.JWT_SECRET,
     });
-    if (!payload) {
-      throw new UnauthorizedException('잘못된 토큰입니다.');
-    }
 
     const user = await this.userService.getUser(payload.username);
 
