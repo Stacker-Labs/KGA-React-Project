@@ -19,9 +19,6 @@ export class BoardModel extends BaseModel {
   @Column()
   content: string;
 
-  @Column()
-  tag: string;
-
   @OneToMany(() => CommentModel, (comment) => comment.board)
   comments: CommentModel[];
 
