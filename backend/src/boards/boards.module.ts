@@ -5,10 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardModel } from './entities/board.entity';
 import { CommentModel } from './entities/comment.entity';
 import { UserModel } from 'src/users/entities/user.entity';
+import { TagModel } from './entities/tag.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BoardModel, CommentModel, UserModel])],
+  imports: [
+    TypeOrmModule.forFeature([BoardModel, CommentModel, UserModel, TagModel]),
+  ],
   controllers: [BoardsController],
-  providers: [BoardsService],
+  providers: [JwtService, BoardsService, UsersService],
 })
 export class BoardsModule {}

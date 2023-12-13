@@ -1,6 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { GithubLoginDto } from './dto/githubLogin.dto';
 import { GoogleLoginDto } from './dto/googleLogin.dto';
@@ -43,6 +43,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout' })
   logout() {
     return this.authService.logout();

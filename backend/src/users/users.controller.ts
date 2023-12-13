@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
 import { Role } from 'src/common/const/role.enum';
 import { UserGuard } from 'src/common/guards/user.guard';
@@ -40,6 +40,7 @@ export class UsersController {
 
   @Put(':id')
   @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Edit User' })
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -52,6 +53,7 @@ export class UsersController {
 
   @Delete(':id')
   @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete User' })
   remove(
     @Param('id', ParseIntPipe) id: number,
