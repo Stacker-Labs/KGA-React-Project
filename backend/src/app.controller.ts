@@ -1,6 +1,9 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UserGuard } from './common/guards/user.guard';
+import { User } from './common/decorator/user.decorator';
+import { Role } from './common/const/role.enum';
 
 @ApiTags('/')
 @Controller()
@@ -32,8 +35,10 @@ export class AppController {
   }
 
   @Get('/admin')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get User List' })
-  getAdmin() {
-    return this.appService.getAdmin();
+  getAdmin(@User('role') role: Role) {
+    return this.appService.getAdmin(role);
   }
 }

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ILike, Repository } from 'typeorm';
 import { BoardModel } from './boards/entities/board.entity';
 import { UserModel } from './users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagModel } from './boards/entities/tag.entity';
+import { Role } from './common/const/role.enum';
 
 @Injectable()
 export class AppService {
@@ -70,7 +71,11 @@ export class AppService {
   }
 
   // CMMT: - Get User List
-  async getAdmin() {
+  async getAdmin(role: Role) {
+    if (role !== Role.ADMIN) {
+      throw new UnauthorizedException('권한이 없습니다.');
+    }
+
     const users = await this.userRepository.find({
       order: {
         id: 'DESC',
