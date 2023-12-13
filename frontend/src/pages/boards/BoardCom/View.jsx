@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import MUIButton from "../../../components/atoms/Button";
+import Comments from "./ViewAtoms/Comments";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
@@ -51,7 +52,9 @@ const View = () => {
       <ViewPageWrap>
         <ViewPageMain>
           <ViewTitle>{title}</ViewTitle>
+          <h5>유저아이디 | 20xx.xx.xx</h5>
           <ViewContent>{content}</ViewContent>
+          <Comments />
         </ViewPageMain>
       </ViewPageWrap>
       <StyledMUIButton>
