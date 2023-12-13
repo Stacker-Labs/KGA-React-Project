@@ -25,9 +25,8 @@ export class BoardsService {
 
   // CMMT: - Create Board
   async create(createBoardDto: CreateBoardDto, userId: number) {
-    const { tag } = createBoardDto;
-    const tagList = tag.replace(/#/g, '').split(' ');
-    const boardTags = this.getTags(tagList);
+    const { tags } = createBoardDto;
+    const tagList = tags ? this.getTags(tags) : [];
 
     const user = await this.userRepository.findOne({
       where: {
@@ -37,7 +36,7 @@ export class BoardsService {
 
     const board = await this.boardRepository.save({
       ...createBoardDto,
-      tags: boardTags,
+      tags: tagList,
       user,
     });
 
@@ -53,6 +52,7 @@ export class BoardsService {
       relations: {
         comments: true,
         user: true,
+        tags: true,
       },
     });
     if (!board) {
@@ -75,6 +75,7 @@ export class BoardsService {
       },
       relations: {
         user: true,
+        tags: true,
       },
     });
     if (!board) {
@@ -83,8 +84,17 @@ export class BoardsService {
 
     // TODO: - UpdateBoardDto 내용 확인
 
+    const { tags } = updateBoardDto;
+    let tagList = [];
+    if (tags) {
+      tagList = this.getTags(tags);
+    }
     if (board.user.id === userId || role === Role.ADMIN) {
-      const updatedBoard = this.boardRepository.save({ id, ...updateBoardDto });
+      const updatedBoard = await this.boardRepository.save({
+        id,
+        ...updateBoardDto,
+        tags: tagList,
+      });
       return updatedBoard;
     }
 
@@ -113,11 +123,14 @@ export class BoardsService {
   }
 
   // CMMT: - Make Tag List
-  getTags(tagList: string[]): TagModel[] {
+  getTags(tagList: string): TagModel[] {
     const result = [];
-    tagList.forEach(async (tag) =>
-      result.push(await this.tagRepository.save({ tag })),
-    );
+    tagList
+      .replace(/#/g, '')
+      .split(' ')
+      .forEach(async (tag) =>
+        result.push(await this.tagRepository.save({ tag })),
+      );
     return result;
   }
 }
