@@ -4,15 +4,18 @@ import styled from "styled-components";
 import { Box } from "@mui/material";
 import MUIButton from "../../../components/atoms/Button";
 import Comments from "./ViewAtoms/Comments";
+import HandleScroll from "./ViewAtoms/HandleScroll";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
   padding: 0;
   border: 1px solid black;
+
   height: 100%;
 `;
 const ViewPageMain = styled(Box)`
   width: 1200px;
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -41,6 +44,11 @@ const StyledMUIButton = styled(Box)`
 
   padding: 5px;
 `;
+const IconBox = styled(Box)`
+  margin: 0 auto;
+  width: 1400px;
+  height: 100%;
+`;
 
 const View = () => {
   const location = useLocation();
@@ -50,12 +58,15 @@ const View = () => {
   return (
     <>
       <ViewPageWrap>
-        <ViewPageMain>
-          <ViewTitle>{title}</ViewTitle>
-          <h5>유저아이디 | 20xx.xx.xx</h5>
-          <ViewContent>{content}</ViewContent>
-          <Comments />
-        </ViewPageMain>
+        <IconBox>
+          <HandleScroll />
+          <ViewPageMain>
+            <ViewTitle>{title}</ViewTitle>
+            <h5>유저아이디 | 20xx.xx.xx</h5>
+            <ViewContent>{content}</ViewContent>
+            <Comments />
+          </ViewPageMain>
+        </IconBox>
       </ViewPageWrap>
       <StyledMUIButton>
         <MUIButton customType="local">수정</MUIButton>
