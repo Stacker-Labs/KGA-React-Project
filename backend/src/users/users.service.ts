@@ -7,6 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { Role } from 'src/common/const/role.enum';
 
 @Injectable()
 export class UsersService {
@@ -65,7 +66,12 @@ export class UsersService {
   }
 
   // CMMT: - Update User
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    userId: number,
+    role: Role,
+  ) {
     const user = this.userRepository.findOne({
       where: {
         id,
@@ -76,19 +82,23 @@ export class UsersService {
       throw new BadRequestException('존재하지 않는 사용자입니다.');
     }
 
-    // TODO: - 유저 수정 권한 확인
-
     // TODO: - UpdateUserDto 내용 확인
 
-    const newUser = await this.userRepository.save({ id, ...updateUserDto });
-    return newUser;
+    if (id === userId || role === Role.ADMIN) {
+      const newUser = await this.userRepository.save({ id, ...updateUserDto });
+      return newUser;
+    }
+
+    throw new UnauthorizedException('수정 권한이 없습니다.');
   }
 
   // CMMT: - Remove User
-  async remove(id: number) {
-    // TODO: - 유저 삭제 권한 확인
+  async remove(id: number, userId: number, role: Role) {
+    if (id === userId || role === Role.ADMIN) {
+      return this.userRepository.delete(id);
+    }
 
-    return this.userRepository.delete(id);
+    throw new UnauthorizedException('삭제 권한이 없습니다.');
   }
 
   // CMNT: - Get User by username

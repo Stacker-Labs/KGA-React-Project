@@ -6,10 +6,14 @@ import {
   Delete,
   Put,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { User } from 'src/common/decorator/user.decorator';
+import { Role } from 'src/common/const/role.enum';
+import { UserGuard } from 'src/common/guards/user.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -35,17 +39,25 @@ export class UsersController {
   }
 
   @Put(':id')
+  @UseGuards(UserGuard)
   @ApiOperation({ summary: 'Edit User' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
+    @User('id') userId: number,
+    @User('role') role: Role,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, updateUserDto, userId, role);
   }
 
   @Delete(':id')
+  @UseGuards(UserGuard)
   @ApiOperation({ summary: 'Delete User' })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(id);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number,
+    @User('role') role: Role,
+  ) {
+    return this.usersService.remove(id, userId, role);
   }
 }
