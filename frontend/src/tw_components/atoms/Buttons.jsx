@@ -12,8 +12,8 @@ export const ButtonVariants = cva(
       variant: {
         default: " shadow-none active:scale-100 ",
         grey: " bg-slate-buttongrey ",
-        blue: " bg-accent-blue text-white",
-        bright: " border bg-white text-black m-2",
+        blue: " bg-accent-blue",
+        white: "bg-white border border-accent-blue text-accent-blue",
       },
       size: {
         default: "",
@@ -38,7 +38,14 @@ export const ButtonVariants = cva(
 //   children?: React.ReactElement;
 // }
 
-const Button = ({ variant, size, children, label, ...props }) => {
+const Button = ({
+  variant,
+  size,
+
+  children,
+  label,
+  ...props
+}) => {
   return (
     <button className={cn(ButtonVariants({ variant, size }))} {...props}>
       {children && children}

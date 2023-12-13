@@ -6,6 +6,10 @@ module.exports = {
       colors: {
         "accent-blue": "#1976D2",
       },
+      fontFamily: {
+        logo: ["LuckiestGuy-Regular"],
+      },
+
     },
   },
   plugins: [],
