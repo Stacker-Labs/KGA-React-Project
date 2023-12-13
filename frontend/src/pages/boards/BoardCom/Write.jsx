@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import { Input } from "@mui/material";
@@ -27,6 +27,7 @@ const BoardTitle = styled(Box)`
   width: 1000px;
   height: 100px;
 `;
+
 const InputTitle = styled(Input)`
   width: 100%;
   padding: 30px 20px;
@@ -43,7 +44,6 @@ const InputContent = styled(TextareaAutosize)`
   resize: none;
   padding-bottom: 100px;
   width: 100%;
-
   border: none;
   outline: none;
   transition: border 0.3s ease;
@@ -52,6 +52,15 @@ const InputContent = styled(TextareaAutosize)`
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
+
+  const handleSave = () => {
+    const titleData = title;
+    const contentData = content;
+
+    navigate(`/boards/${titleData}/${contentData}`); // navigate로 경로 이동
+  };
+
   return (
     <>
       <WriteWrap>
@@ -71,7 +80,7 @@ const Write = () => {
               onChange={(e) => setContent(e.target.value)}
             ></InputContent>
           </BoardConntent>
-          <WritePageBottom />
+          <WritePageBottom handleSave={handleSave} />
         </WriteForm>
       </WriteWrap>
     </>

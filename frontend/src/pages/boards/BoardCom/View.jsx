@@ -1,7 +1,8 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
-import WritePageBtn from "./WriteAtoms/WriteButton";
+import MUIButton from "../../../components/atoms/Button";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
@@ -33,16 +34,30 @@ const ViewContent = styled(Box)`
   border: 1px solid black;
 `;
 
+const StyledMUIButton = styled(Box)`
+  display: flex;
+  justify-content: end;
+
+  padding: 5px;
+`;
+
 const View = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const title = searchParams.get("title") || "";
+  const content = searchParams.get("content") || "";
   return (
     <>
       <ViewPageWrap>
         <ViewPageMain>
-          <ViewTitle>dd</ViewTitle>
-          <ViewContent>dd</ViewContent>
+          <ViewTitle>{title}</ViewTitle>
+          <ViewContent>{content}</ViewContent>
         </ViewPageMain>
       </ViewPageWrap>
-      <WritePageBtn>수정</WritePageBtn>
+      <StyledMUIButton>
+        <MUIButton customType="local">수정</MUIButton>
+        <MUIButton customType="social">삭제</MUIButton>
+      </StyledMUIButton>
     </>
   );
 };
