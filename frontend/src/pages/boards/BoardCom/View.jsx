@@ -1,10 +1,10 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import MUIButton from "../../../components/atoms/Button";
 import Comments from "./ViewAtoms/Comments";
 import HandleScroll from "./ViewAtoms/HandleScroll";
+import { useParams } from "react-router-dom";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
@@ -49,10 +49,22 @@ const IconBox = styled(Box)`
 `;
 
 const View = () => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const title = searchParams.get("title") || "";
-  const content = searchParams.get("content") || "";
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const params = useParams();
+  useEffect(() => {
+    const getBoard = async () => {
+      const response = await fetch(`https://api.subin.kr/boards/${params.id}`);
+
+      const result = await response.json();
+      console.log("result@@", result);
+      setTitle(result.title);
+      setContent(result.content);
+    };
+
+    getBoard();
+  }, []);
+
   return (
     <>
       <ViewPageWrap>

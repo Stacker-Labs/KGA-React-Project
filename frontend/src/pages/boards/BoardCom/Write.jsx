@@ -5,7 +5,6 @@ import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import { TextareaAutosize } from "@mui/base";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
-import { FormControl } from "@mui/base/FormControl";
 
 const WriteWrap = styled(Box)`
   display: flex;
@@ -13,12 +12,6 @@ const WriteWrap = styled(Box)`
   align-items: center;
   margin: 5px;
   position: relative;
-`;
-
-const WriteForm = styled(FormControl)`
-  width: 100%;
-  height: 90vh;
-  overflow-y: scroll;
 `;
 
 const BoardTitle = styled(Box)`
@@ -54,33 +47,46 @@ const Write = () => {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
-  const handleSave = () => {
-    const titleData = title;
-    const contentData = content;
-
-    navigate(`/boards/${titleData}/${contentData}`); // navigate로 경로 이동
+  const Token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNDYzMjQ0LCJleHAiOjE3MDI0NjY4NDR9.aUpkN9nZ9uK1B-e31Tvh9mq0CGq5QLM28sWOZbTG9Ms";
+  const handleSave = async () => {
+    const response = await fetch("https://api.subin.kr/boards", {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${Token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        content,
+        tags: "#javascript",
+      }),
+    });
+    const result = await response.json();
+    console.log(result);
+    if (response.ok) {
+      navigate(`/boards/${result.id}`);
+    }
   };
   return (
     <>
       <WriteWrap>
-        <WriteForm action="/">
-          <BoardTitle>
-            <InputTitle
-              type="text"
-              className="boardTitle"
-              placeholder="제목을 입력해주세요"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </BoardTitle>
-          <BoardConntent>
-            <InputContent
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            ></InputContent>
-          </BoardConntent>
-          <WritePageBottom handleSave={handleSave} />
-        </WriteForm>
+        <BoardTitle>
+          <InputTitle
+            type="text"
+            className="boardTitle"
+            placeholder="제목을 입력해주세요"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </BoardTitle>
+        <BoardConntent>
+          <InputContent
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          ></InputContent>
+        </BoardConntent>
+        <WritePageBottom handleSave={handleSave} />
       </WriteWrap>
     </>
   );
