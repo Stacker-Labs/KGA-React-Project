@@ -16,6 +16,7 @@
     "react-scripts": "5.0.1",
     "recoil": "^0.7.7",
     "styled-components": "^6.1.1",
+    "tailwind-cra-webpack-plugin": "^1.1.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -49,7 +50,12 @@
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^10.4.16",
+    "css-loader": "^6.8.1",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.6"
+    "postcss-loader": "^7.3.3",
+    "style-loader": "^3.3.3",
+    "tailwindcss": "^3.3.6",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   }
 }
