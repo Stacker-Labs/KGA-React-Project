@@ -6,7 +6,7 @@ import User from "./pages/users/User";
 import Login from "./pages/auth/Login";
 import Admin from "./pages/Admin";
 import CssBaseline from "@mui/material/CssBaseline";
-
+import "../main.css";
 function App() {
   return (
     <>
