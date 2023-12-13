@@ -50,6 +50,10 @@ export class BoardsService {
       where: {
         id,
       },
+      relations: {
+        comments: true,
+        user: true,
+      },
     });
     if (!board) {
       throw new BadRequestException('존재하지 않는 글입니다.');
