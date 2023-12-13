@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 
-import MUIButton from "../../../../components/atoms/Button";
+// import MUIButton from "../../../../components/atoms/Button";
 
 const WritePageFoot = styled(Box)`
   width: 100%;
@@ -17,13 +17,10 @@ const WritePageFoot = styled(Box)`
 `;
 
 const WritePageBottom = ({ handleSave }) => {
-  const handleClick = () => {
-    handleSave();
-  };
   return (
     <>
       <WritePageFoot>
-        <MUIButton onClick={handleClick}>등록</MUIButton>
+        <button onClick={handleSave}>등록</button>
       </WritePageFoot>
     </>
   );
