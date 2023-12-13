@@ -77,6 +77,8 @@ export class BoardsService {
       throw new BadRequestException('존재하지 않는 글입니다.');
     }
 
+    // TODO: - UpdateBoardDto 내용 확인
+
     if (board.user.id === userId || role === Role.ADMIN) {
       const updatedBoard = this.boardRepository.save({ id, ...updateBoardDto });
       return updatedBoard;
