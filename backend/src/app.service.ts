@@ -26,6 +26,7 @@ export class AppService {
       relations: {
         user: true,
         comments: true,
+        tags: true,
       },
     });
 

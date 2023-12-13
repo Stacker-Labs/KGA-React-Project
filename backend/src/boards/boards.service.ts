@@ -25,10 +25,7 @@ export class BoardsService {
 
   // CMMT: - Create Board
   async create(createBoardDto: CreateBoardDto, userId: number) {
-    const { tag } = createBoardDto;
-    const tagList = tag.replace(/#/g, '').split(' ');
-    const boardTags = this.getTags(tagList);
-
+    const { title, content, tags } = createBoardDto;
     const user = await this.userRepository.findOne({
       where: {
         id: userId,
@@ -36,10 +33,12 @@ export class BoardsService {
     });
 
     const board = await this.boardRepository.save({
-      ...createBoardDto,
-      tags: boardTags,
+      title,
+      content,
       user,
     });
+
+    this.setTags(board, tags);
 
     return board;
   }
@@ -53,6 +52,7 @@ export class BoardsService {
       relations: {
         comments: true,
         user: true,
+        tags: true,
       },
     });
     if (!board) {
@@ -69,12 +69,14 @@ export class BoardsService {
     userId: number,
     role: Role,
   ) {
+    const { title, content, tags } = updateBoardDto;
     const board = await this.boardRepository.findOne({
       where: {
         id,
       },
       relations: {
         user: true,
+        tags: true,
       },
     });
     if (!board) {
@@ -84,7 +86,14 @@ export class BoardsService {
     // TODO: - UpdateBoardDto 내용 확인
 
     if (board.user.id === userId || role === Role.ADMIN) {
-      const updatedBoard = this.boardRepository.save({ id, ...updateBoardDto });
+      const updatedBoard = await this.boardRepository.save({
+        id,
+        title,
+        content,
+        tags: [],
+      });
+      this.setTags(updatedBoard, tags);
+
       return updatedBoard;
     }
 
@@ -113,11 +122,19 @@ export class BoardsService {
   }
 
   // CMMT: - Make Tag List
-  getTags(tagList: string[]): TagModel[] {
-    const result = [];
-    tagList.forEach(async (tag) =>
-      result.push(await this.tagRepository.save({ tag })),
-    );
-    return result;
+  setTags(board: BoardModel, tags: string) {
+    tags
+      .replace(/#/g, '')
+      .split(' ')
+      .forEach(async (tag) => {
+        const tagPick = await this.tagRepository.findOne({
+          where: { tag },
+          relations: { boards: true },
+        });
+        const id = tagPick ? tagPick.id : null;
+        const boards = tagPick ? tagPick.boards : [];
+        boards.push(board);
+        await this.tagRepository.save({ id, boards, tag });
+      });
   }
 }

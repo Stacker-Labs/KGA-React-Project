@@ -12,5 +12,5 @@ export class CreateBoardDto {
 
   @IsNotEmpty()
   @ApiProperty({ example: '#tag1 #tag2' })
-  tag: string;
+  tags: string;
 }
