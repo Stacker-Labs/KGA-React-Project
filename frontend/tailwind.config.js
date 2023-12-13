@@ -7,9 +7,8 @@ module.exports = {
         "accent-blue": "#1976D2",
       },
       fontFamily: {
-        logo: ["LuckiestGuy-Regular"],
+        logo: ["logo"],
       },
-
     },
   },
   plugins: [],
