@@ -31,16 +31,6 @@ const WrapComments = (onInsert) => {
     content: "",
   });
 
-  //   const onChangeName = useCallback(
-  //     (e) => {
-  //       setValue({
-  //         name: e.target.value,
-  //         content: value.content,
-  //       });
-  //     },
-  //     [value]
-  //   );
-
   const onChangeContent = useCallback(
     (e) => {
       setValue({

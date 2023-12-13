@@ -12,7 +12,7 @@ const IconStyledWrap = styled(Box)`
   top: 120px;
   border: 1px solid black;
   gap: 5;
-  height: 70px;
+  height: 100%;
   float: right;
 `;
 
@@ -53,15 +53,14 @@ const HandleScroll = () => {
       window.removeEventListener("scroll", handleShowButton);
     };
   }, []);
-
   return (
     <IconStyledWrap>
       {showButton && (
         <TopBtn onClick={handleScroll}>
           <IconCom />
-          <IconHeart />
         </TopBtn>
       )}
+      <IconHeart />
     </IconStyledWrap>
   );
 };

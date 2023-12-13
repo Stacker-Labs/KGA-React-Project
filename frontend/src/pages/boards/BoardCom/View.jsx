@@ -9,7 +9,6 @@ import HandleScroll from "./ViewAtoms/HandleScroll";
 const ViewPageWrap = styled(Box)`
   margin: 0;
   padding: 0;
-  border: 1px solid black;
 
   height: 100%;
 `;
@@ -19,7 +18,7 @@ const ViewPageMain = styled(Box)`
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid black;
+
   padding: 10px;
   margin: 0 auto;
 `;
@@ -27,7 +26,6 @@ const ViewPageMain = styled(Box)`
 const ViewTitle = styled(Box)`
   padding: 20px;
   width: 100%;
-  border: 1px solid black;
 `;
 
 const ViewContent = styled(Box)`
@@ -35,7 +33,7 @@ const ViewContent = styled(Box)`
   padding: 20px;
   width: 100%;
   height: 100vh;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 `;
 
 const StyledMUIButton = styled(Box)`

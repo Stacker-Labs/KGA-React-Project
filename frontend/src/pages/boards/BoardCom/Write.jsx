@@ -60,7 +60,6 @@ const Write = () => {
 
     navigate(`/boards/${titleData}/${contentData}`); // navigate로 경로 이동
   };
-
   return (
     <>
       <WriteWrap>
