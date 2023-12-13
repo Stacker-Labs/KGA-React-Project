@@ -6,7 +6,7 @@ const Signup = () => {
     <div>
       Signup
       <Button variant={"blue"} size={"wlg"}>
-        Button
+        Resign
       </Button>
     </div>
   );

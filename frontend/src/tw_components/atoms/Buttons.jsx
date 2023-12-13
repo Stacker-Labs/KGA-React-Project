@@ -4,22 +4,24 @@ import { cn } from "../../utils/cn";
 
 export const ButtonVariants = cva(
   `
-    flex justify-center items-center active:scale-95 rounded-xl 
-    text-sm font-bold text-slate-100 transition-all shadow-md
-    hover:scale-105 duration-200
-    `,
+    flex justify-around items-center active:scale-95 rounded-xl 
+    text-sm transition-all shadow-md hover:scale-105 duration-200
+    `, //font-bold text-slate-100
   {
     variants: {
       variant: {
-        default: " shadow-none active:scale-100",
+        default: " shadow-none active:scale-100 ",
         grey: " bg-slate-buttongrey ",
-        blue: " bg-accent-blue",
+        blue: " bg-accent-blue text-white",
+        bright: " border bg-white text-black m-2",
       },
       size: {
         default: "",
         md: " w-[6.875rem] h-[2.375rem] text-[1rem] rounded-md",
         lg: "w-[21.875rem] h-[7.5rem] text-[3rem] rounded-3xl",
         wlg: "w-[24rem] h-[5.25rem] text-[2rem]",
+        social: "w-[30rem] h-[3.5rem] text-[1rem]",
+        sign: " m-4 w-[30rem] h-[3rem] text-[1rem] rounded-md",
       },
     },
     defaultVariants: {
