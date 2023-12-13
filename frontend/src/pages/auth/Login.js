@@ -20,7 +20,7 @@ const StyledContainer = styled.div`
 const Login = () => {
   return (
     <StyledContainer>
-      <h1>Logo</h1>
+      <h1 className="font-logo text-5xl text-accent-blue">Stacker Labs</h1>
       <h2>Join Stacker Labs!</h2>
       <p>Stacker Labs is a community of 1,200,000 amazing devs.</p>
       <div>
@@ -47,7 +47,7 @@ const Login = () => {
         <br />
         <Input type="password" placeholder="Password" />
         <Button variant={"blue"} size={"sign"}>
-          Sign In
+          <span className="text-white">Sign In</span>
         </Button>
       </form>
       <p>
