@@ -12,7 +12,7 @@ import {
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from 'src/common/guards/user.guard';
 import { User } from 'src/common/decorator/user.decorator';
 import { Role } from 'src/common/const/role.enum';
@@ -24,6 +24,7 @@ export class BoardsController {
 
   @Post()
   @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Post Board' })
   create(@Body() createBoardDto: CreateBoardDto, @User('id') userId: number) {
     return this.boardsService.create(createBoardDto, userId);
@@ -37,6 +38,7 @@ export class BoardsController {
 
   @Put(':id')
   @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Edit Board' })
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -49,6 +51,7 @@ export class BoardsController {
 
   @Delete(':id')
   @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Board' })
   remove(
     @Param('id', ParseIntPipe) id: number,
