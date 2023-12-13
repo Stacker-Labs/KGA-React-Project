@@ -5,6 +5,7 @@ import View from "./pages/boards/BoardCom/View";
 import User from "./pages/users/User";
 import Login from "./pages/auth/Login";
 import Admin from "./pages/Admin";
+import Signup from "./pages/auth/Signup";
 import CssBaseline from "@mui/material/CssBaseline";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/boards/:id" element={<View />} />
           <Route path="/users" element={<User />} />
           <Route path="/auth" element={<Login />} />
+          <Route path="/auth/register" element={<Signup />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </div>
