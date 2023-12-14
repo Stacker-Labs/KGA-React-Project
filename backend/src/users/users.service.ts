@@ -1,9 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
+import { CreateFollowDto } from './dto/create-follow.dto';
+import { RemoveFollowDto } from './dto/remove-follow.dto';
 
 @Injectable()
 export class UsersService {
@@ -83,6 +89,50 @@ export class UsersService {
     throw new UnauthorizedException('권한이 없습니다.');
   }
 
+  // CMNT: - Create Follow
+  async createFollow(createFollowDto: CreateFollowDto, userId: number) {
+    const { id: targetId } = createFollowDto;
+    const user = await this.verifiedUser(userId, { following_users: true });
+    const targetUser = await this.verifiedUser(targetId);
+
+    const following_users = user.following_users
+      ? [...user.following_users]
+      : [];
+    const index = following_users.findIndex(
+      (following) => following.id === targetId,
+    );
+    if (index === -1) {
+      following_users.push(targetUser);
+    } else {
+      throw new BadRequestException('이미 팔로우 한 사용자입니다.');
+    }
+
+    return await this.userRepository.save({ id: userId, following_users });
+  }
+
+  // CMNT: - Remove Follow
+  async removeFollow(removeFollowDto: RemoveFollowDto, userId: number) {
+    const { id: targetId } = removeFollowDto;
+    const user = await this.verifiedUser(userId, { following_users: true });
+
+    const following_users = user.following_users
+      ? [...user.following_users]
+      : [];
+    const index = following_users.findIndex(
+      (following) => following.id === targetId,
+    );
+    if (index === -1) {
+      throw new BadRequestException('이미 팔로우가 취소되었습니다.');
+    }
+
+    following_users.splice(index, 1);
+
+    return await this.userRepository.save({
+      id: userId,
+      following_users,
+    });
+  }
+
   // CMNT: - Get User by username
   async getUser(username: string) {
     const user = this.userRepository.findOne({
@@ -99,11 +149,12 @@ export class UsersService {
   }
 
   // CMNT: - Verify User
-  async verifiedUser(id: number) {
+  async verifiedUser(id: number, relations?: object) {
     const user = this.userRepository.findOne({
       where: {
         id,
       },
+      relations,
     });
     if (!user) {
       throw new UnauthorizedException('존재하지 않는 사용자입니다.');
