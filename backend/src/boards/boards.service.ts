@@ -136,7 +136,7 @@ export class BoardsService {
       throw new BadRequestException('이미 추천한 글입니다.');
     }
 
-    return this.boardRepository.save({ id, likes });
+    return this.boardRepository.save({ id, likes, like_it: true });
   }
 
   // CMNT: - Delete Likes
@@ -146,12 +146,15 @@ export class BoardsService {
     const likes = board.likes ? [...board.likes] : [];
     const index = likes.findIndex((liker) => liker.id === userId);
 
-    const removedLike = likes.splice(index, 1);
     if (index === -1) {
       throw new BadRequestException('이미 추천이 취소되었습니다.');
     }
 
-    return this.boardRepository.save({ id, likes: likes.splice(index, 1) });
+    return this.boardRepository.save({
+      id,
+      likes: likes.splice(index, 1),
+      like_it: false,
+    });
   }
 
   //CMNT: - Create Comment
