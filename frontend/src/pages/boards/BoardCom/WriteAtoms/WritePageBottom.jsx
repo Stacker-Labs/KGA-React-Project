@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 const WritePageFoot = styled(Box)`
   width: 100%;
-  height: 70px;
+  height: 50px;
   background-color: #d6d6d6;
   padding: 10px;
   position: fixed;
@@ -20,7 +20,7 @@ const WritePageBottom = ({ handleSave }) => {
   return (
     <>
       <WritePageFoot>
-        <button onClick={handleSave}>등록</button>
+        <button onClick={handleSave}>저장</button>
       </WritePageFoot>
     </>
   );
