@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, Children, FC } from "react";
-import { cva, VariantProps } from "class-variance-authority";
+// import { ButtonHTMLAttributes, Children, FC } from "react";
+import { cva } from "class-variance-authority"; // VariantProps
 import { cn } from "../../utils/cn";
 
 export const InputVariants = cva(
