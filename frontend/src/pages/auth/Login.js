@@ -87,7 +87,6 @@ const Login = () => {
       </div>
       <form className="flex flex-col items-center">
         <Input type="text" placeholder="ID" />
-        <br />
         <Input type="password" placeholder="Password" />
         <Button variant={"blue"} size={"sign"}>
           <span className="text-white">Sign In</span>
