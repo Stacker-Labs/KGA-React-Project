@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 const WritePageFoot = styled(Box)`
   width: 100%;
-  height: 50px;
+  height: 40px;
   background-color: #d6d6d6;
   padding: 10px;
   position: fixed;
