@@ -1,101 +1,61 @@
-import React, { Component } from "react";
-import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import ImageResize from "quill-image-resize-module";
-const Font = Quill.import("formats/font");
-const Size = Quill.import("formats/size");
-Font.whitelist = ["dotum", "gullim", "batang", "NanumGothic"];
-Size.whitelist = ["8", "9", "10", "11", "12", "14", "18", "24", "36"];
-Quill.register(Size, true);
-Quill.register(Font, true);
-Quill.register("modules/imageResize", ImageResize);
+import React from "react";
+import { Editor } from "@tinymce/tinymce-react";
 
-export default class Editor extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      editorHtml: "",
-    };
-    this.reactQuillRef = React.createRef();
-  }
-  handleEditorFocus = () => {
-    const editor = this.reactQuillRef.current.getEditor();
-    if (editor && typeof editor.focus === "function") {
-      editor.focus();
+const TinyMCEEditor = ({ value, onChange }) => {
+  const handleEditorChange = (content, editor) => {
+    if (onChange) {
+      onChange(content);
     }
   };
 
-  handleChange(value) {
-    this.content = value;
-  }
-  render() {
-    const modules = {
-      toolbar: {
-        container: [
-          [{ font: Font.whitelist }],
-          [
-            {
-              size: Size.whitelist,
-            },
-          ],
-          [{ header: [1, 2, false] }],
-          ["bold", "italic", "underline", "strike", "blockquote"],
-          [
-            { align: "" },
-            { align: "center" },
-            { align: "right" },
-            { align: "justify" },
-          ],
-          [
-            { list: "ordered" },
-            { list: "bullet" },
-            { indent: "-1" },
-            { indent: "+1" },
-          ],
-          ["image", "video"],
-          [{ color: [] }, { background: [] }],
-          ["clean"],
+  return (
+    <Editor
+      apiKey="gyq4rjyx3dy4hn03snark86ys688p30pj7ztm8r76mqzugeu"
+      initialValue={value}
+      init={{
+        plugins: [
+          "lists",
+          "link",
+          "image",
+          "charmap",
+          "preview",
+          "searchreplace",
+          "fullscreen",
+          "media",
+          "table",
+          "code",
+          "help",
+          "emoticons",
+          "codesample",
+          "quickbars",
         ],
-        handlers: {
-          image: this.imageHandler,
-        },
-      },
-      imageResize: true,
-    };
-    const formats = [
-      "font",
-      "size",
-      "header",
-      "bold",
-      "italic",
-      "underline",
-      "align",
-      "strike",
-      "blockquote",
-      "list",
-      "bullet",
-      "indent",
-      "color",
-      "background",
-      "image",
-      "video",
-    ];
+        toolbar:
+          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+        tinycomments_mode: "embedded",
+        tinycomments_author: "Author name",
+        mergetags_list: [
+          { value: "First.Name", title: "First Name" },
+          { value: "Email", title: "Email" },
+        ],
+        ai_request: (request, respondWith) =>
+          respondWith.string(() =>
+            Promise.reject("See docs to implement AI Assistant")
+          ),
+        forced_root_block: false,
 
-    const editorHeight = `calc(100vh - ${70}px)`;
-    return (
-      <>
-        <ReactQuill
-          modules={modules}
-          formats={formats}
-          style={{ width: "100%", height: editorHeight }}
-          value={this.state.editorHtml}
-          ref={this.reactQuillRef}
-          onFocus={this.handleEditorFocus}
-        >
-          <div id="react-quill" />
-        </ReactQuill>
-      </>
-    );
-  }
-}
+        height: "1000",
+        setup: (editor) => {
+          editor.on("init", () => {
+            editor.setContent(value);
+          });
+
+          editor.on("change", () => {
+            handleEditorChange(editor.getContent());
+          });
+        },
+      }}
+    />
+  );
+};
+
+export default TinyMCEEditor;

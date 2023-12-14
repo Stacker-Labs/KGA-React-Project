@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
-import Editor from "./WriteAtoms/Editor";
+import TinyMCEEditor from "./WriteAtoms/Editor";
 
 const WriteWrap = styled(Box)`
   display: flex;
@@ -31,6 +31,7 @@ const BoardConntent = styled(Box)`
   width: 1100px;
   margin: 0 auto;
   /* border: 1px solid black; */
+  height: 800px;
 `;
 
 const Write = () => {
@@ -42,14 +43,18 @@ const Write = () => {
     setTitle(e.target.value);
   };
 
-  const handleContentChange = (value) => {
+  const handleContentChange = useCallback((value) => {
     setContent(value);
-  };
+  }, []);
 
   const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNDYzMjQ0LCJleHAiOjE3MDI0NjY4NDR9.aUpkN9nZ9uK1B-e31Tvh9mq0CGq5QLM28sWOZbTG9Ms";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNTQ0MDY3LCJleHAiOjE3MDI1NDc2Njd9.j_PJNousIqv45uV4QT8q_EDM0BP4sxTzkfcpTfb1HL4";
 
   const handleSave = async () => {
+    if (!title) {
+      alert("제목을 입력해주세요!");
+      return;
+    }
     const response = await fetch("https://api.subin.kr/boards", {
       method: "post",
       headers: {
@@ -81,9 +86,9 @@ const Write = () => {
           />
         </BoardTitle>
         <BoardConntent>
-          <Editor value={content} onChange={handleContentChange} />
+          <TinyMCEEditor value={content} onChange={handleContentChange} />
         </BoardConntent>
-        <WritePageBottom handleSave={handleSave} />
+        <WritePageBottom handleSave={handleSave} disabled={!title} />
       </WriteWrap>
     </>
   );
