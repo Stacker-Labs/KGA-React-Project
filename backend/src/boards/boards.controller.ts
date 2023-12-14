@@ -33,9 +33,11 @@ export class BoardsController {
   }
 
   @Get('boards/:id')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get Board' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.boardsService.findOne(id);
+  findOne(@Param('id', ParseIntPipe) id: number, @User('id') userId: number) {
+    return this.boardsService.findOne(id, userId);
   }
 
   @Put('boards/:id')
@@ -61,6 +63,28 @@ export class BoardsController {
     @User('role') role: Role,
   ) {
     return this.boardsService.remove(id, userId, role);
+  }
+
+  @Post('boards/:id/likes')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create Likes' })
+  createLikes(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number,
+  ) {
+    return this.boardsService.createLikes(id, userId);
+  }
+
+  @Delete('boards/:id/likes')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete Likes' })
+  removeLikes(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number,
+  ) {
+    return this.boardsService.removeLikes(id, userId);
   }
 
   @Post('comments')
