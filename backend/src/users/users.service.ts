@@ -92,6 +92,10 @@ export class UsersService {
   // CMNT: - Create Follow
   async createFollow(createFollowDto: CreateFollowDto, userId: number) {
     const { id: targetId } = createFollowDto;
+    if (targetId === userId) {
+      throw new BadRequestException('자기 자신은 팔로우 할 수 없습니다.');
+    }
+
     const user = await this.verifiedUser(userId, { following_users: true });
     const targetUser = await this.verifiedUser(targetId);
 
@@ -107,7 +111,7 @@ export class UsersService {
       throw new BadRequestException('이미 팔로우 한 사용자입니다.');
     }
 
-    return await this.userRepository.save({ id: userId, following_users });
+    return this.userRepository.save({ id: userId, following_users });
   }
 
   // CMNT: - Remove Follow
@@ -127,7 +131,7 @@ export class UsersService {
 
     following_users.splice(index, 1);
 
-    return await this.userRepository.save({
+    return this.userRepository.save({
       id: userId,
       following_users,
     });

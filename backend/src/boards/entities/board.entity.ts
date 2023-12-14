@@ -27,11 +27,6 @@ export class BoardModel extends BaseModel {
   })
   likes: UserModel[];
 
-  @Column({
-    default: false,
-  })
-  like_it: boolean;
-
   @ManyToMany(() => UserModel, (user) => user.views, {
     onDelete: 'CASCADE',
   })

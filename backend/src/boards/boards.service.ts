@@ -153,11 +153,8 @@ export class BoardsService {
       throw new BadRequestException('이미 추천이 취소되었습니다.');
     }
 
-    return this.boardRepository.save({
-      id,
-      likes: likes.splice(index, 1),
-      like_it: false,
-    });
+    likes.splice(index, 1);
+    return this.boardRepository.save({ id, likes });
   }
 
   //CMNT: - Create Comment
@@ -214,7 +211,11 @@ export class BoardsService {
   async removeComment(id: number, userId: number) {
     const comment = await this.verifiedComment(id, userId);
 
-    return this.commentRepository.delete(id);
+    return this.commentRepository.save({
+      id,
+      content: '삭제된 글입니다.',
+      deleted: true,
+    });
   }
 
   // CMMT: - Make Tag List
