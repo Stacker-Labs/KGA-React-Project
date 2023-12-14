@@ -1,6 +1,6 @@
 import { BaseModel } from 'src/common/entities/base.entity';
 import { UserModel } from 'src/users/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { BoardModel } from './board.entity';
 
 @Entity()
@@ -8,14 +8,28 @@ export class CommentModel extends BaseModel {
   @Column()
   content: string;
 
-  @OneToOne(() => CommentModel, (comment) => comment.comment)
-  @JoinColumn()
-  comment: CommentModel;
+  @Column({
+    default: false,
+  })
+  deleted: boolean;
+
+  @Column({
+    default: 0,
+  })
+  depth: number;
+
+  @OneToMany(() => CommentModel, (comment) => comment.parentComment)
+  comments?: CommentModel[];
+
+  @ManyToOne(() => CommentModel, (comment) => comment.comments, {
+    onDelete: 'CASCADE',
+  })
+  parentComment?: CommentModel;
 
   @ManyToOne(() => BoardModel, (board) => board.comments, {
     onDelete: 'CASCADE',
   })
-  board: BoardModel;
+  board?: BoardModel;
 
   @ManyToOne(() => UserModel, (user) => user.comments, {
     onDelete: 'CASCADE',
