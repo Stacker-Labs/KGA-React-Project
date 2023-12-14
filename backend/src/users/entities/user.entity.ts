@@ -29,14 +29,14 @@ export class UserModel extends BaseModel {
   @Column({ type: 'enum', enum: Provider, default: Provider.LOCAL })
   provider: Provider;
 
-  @ManyToMany(() => UserModel, (user) => user.following_users)
-  @JoinTable({
-    name: 'follow_model',
+  @ManyToMany(() => UserModel, (user) => user.following_users, {
+    onDelete: 'CASCADE',
   })
   follower_users: UserModel[];
 
-  @ManyToMany(() => UserModel, (user) => user.follower_users, {
-    onDelete: 'CASCADE',
+  @ManyToMany(() => UserModel, (user) => user.follower_users)
+  @JoinTable({
+    name: 'follow_model',
   })
   following_users: UserModel[];
 

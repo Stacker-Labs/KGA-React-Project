@@ -7,6 +7,7 @@ import {
   Put,
   ParseIntPipe,
   UseGuards,
+  Post,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,31 +15,34 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
 import { Role } from 'src/common/const/role.enum';
 import { UserGuard } from 'src/common/guards/user.guard';
+import { UserModel } from './entities/user.entity';
+import { CreateFollowDto } from './dto/create-follow.dto';
+import { RemoveFollowDto } from './dto/remove-follow.dto';
 
 @ApiTags('users')
-@Controller('users')
+@Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get(':id')
+  @Get('users/:id')
   @ApiOperation({ summary: 'Get User' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
-  @Get(':id/follower')
+  @Get('users/:id/follower')
   @ApiOperation({ summary: 'Get User Followers' })
   findFollowers(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findFollowers(id);
   }
 
-  @Get(':id/following')
+  @Get('users/:id/following')
   @ApiOperation({ summary: 'Get User Followings' })
   findFollowings(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findFollowings(id);
   }
 
-  @Put(':id')
+  @Put('users/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Edit User' })
@@ -51,7 +55,7 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto, userId, role);
   }
 
-  @Delete(':id')
+  @Delete('users/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete User' })
@@ -61,5 +65,27 @@ export class UsersController {
     @User('role') role: Role,
   ) {
     return this.usersService.remove(id, userId, role);
+  }
+
+  @Post('following')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create Follow' })
+  createFollow(
+    @Body() createFollowDto: CreateFollowDto,
+    @User('id') userId: number,
+  ) {
+    return this.usersService.createFollow(createFollowDto, userId);
+  }
+
+  @Delete('following')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete Follow' })
+  removeFollow(
+    @Body() removeFollowDto: RemoveFollowDto,
+    @User('id') userId: number,
+  ) {
+    return this.usersService.removeFollow(removeFollowDto, userId);
   }
 }
