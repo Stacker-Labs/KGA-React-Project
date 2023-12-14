@@ -14,6 +14,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentModel } from './entities/comment.entity';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { UsersService } from 'src/users/users.service';
+import { UserModel } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class BoardsService {
@@ -44,7 +45,7 @@ export class BoardsService {
   }
 
   // CMMT: - Find Board
-  async findOne(id: number) {
+  async findOne(id: number, userId: number) {
     const [deepComment] = await this.commentRepository.find({
       order: {
         depth: 'DESC',
@@ -65,7 +66,18 @@ export class BoardsService {
       },
       user: true,
       tags: true,
+      views: true,
+      likes: true,
     });
+
+    const user = await this.userService.verifiedUser(userId);
+    const views = board.views ? [...board.views] : [];
+    const index = views.findIndex((viewer) => viewer.id === user.id);
+    if (index === -1) {
+      views.push(user);
+    }
+
+    await this.boardRepository.save({ id, views });
 
     return board;
   }
@@ -109,6 +121,37 @@ export class BoardsService {
     }
 
     throw new UnauthorizedException('삭제 권한이 없습니다.');
+  }
+
+  // CMNT: - Create Likes
+  async createLikes(id: number, userId: number) {
+    const board = await this.verifiedBoard(id, { user: true, likes: true });
+    const user = await this.userService.verifiedUser(userId);
+
+    const likes = board.likes ? [...board.likes] : [];
+    const index = likes.findIndex((liker) => liker.id === userId);
+    if (index === -1) {
+      likes.push(user);
+    } else {
+      throw new BadRequestException('이미 추천한 글입니다.');
+    }
+
+    return this.boardRepository.save({ id, likes });
+  }
+
+  // CMNT: - Delete Likes
+  async removeLikes(id: number, userId: number) {
+    const board = await this.verifiedBoard(id, { user: true, likes: true });
+
+    const likes = board.likes ? [...board.likes] : [];
+    const index = likes.findIndex((liker) => liker.id === userId);
+
+    const removedLike = likes.splice(index, 1);
+    if (index === -1) {
+      throw new BadRequestException('이미 추천이 취소되었습니다.');
+    }
+
+    return this.boardRepository.save({ id, likes: likes.splice(index, 1) });
   }
 
   //CMNT: - Create Comment

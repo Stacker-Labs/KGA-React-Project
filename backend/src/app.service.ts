@@ -27,6 +27,8 @@ export class AppService {
         user: true,
         comments: true,
         tags: true,
+        likes: true,
+        views: true,
       },
     });
 
