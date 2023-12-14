@@ -5,7 +5,7 @@ import MUIButton from "../../../components/atoms/Button";
 import Comments from "./ViewAtoms/Comments";
 import HandleScroll from "./ViewAtoms/HandleScroll";
 import { useParams } from "react-router-dom";
-
+import Header from "../../../components/organisms/Header";
 const ViewPageWrap = styled(Box)`
   margin: 0;
   padding: 0;
@@ -67,6 +67,7 @@ const View = () => {
 
   return (
     <>
+      <Header />
       <ViewPageWrap>
         <IconBox>
           <HandleScroll />
@@ -79,7 +80,8 @@ const View = () => {
         </IconBox>
       </ViewPageWrap>
       <StyledMUIButton>
-        <MUIButton customType="local">수정</MUIButton>
+        <MUIButton customType="local">페이지 등록</MUIButton>
+        <MUIButton customType="social">수정</MUIButton>
         <MUIButton customType="social">삭제</MUIButton>
       </StyledMUIButton>
     </>
