@@ -21,6 +21,8 @@ const StyledContainer = styled.div`
   flex-flow: column nowrap;
   row-gap: 10px;
   align-items: center;
+  border: 1px solid black;
+  padding: 100px;
 `;
 
 const Register = () => {
@@ -60,43 +62,25 @@ const Register = () => {
 
   return (
     <StyledContainer>
-      <p className="font-logo text-5xl text-accent-blue">Stacker Labs</p>
-      <p className="text-xl font-bold">Join Stacker Labs!</p>
-      <p>Stacker Labs is a community of 1,200,000 amazing devs.</p>
-      <div>
-        <Button onClick={github} variant={"bright"} size={"social"}>
-          <img width="40px" height="40px" src={github_icon}></img>
-          <span>Continue with GitHub</span>
-        </Button>
-        <Button onClick={google} variant={"bright"} size={"social"}>
-          <img width="40px" height="40px" src={google_icon}></img>
-          <span>Continue with Google</span>
-        </Button>
-        <Button onClick={kakao} variant={"bright"} size={"social"}>
-          <img width="40px" height="40px" src={kakao_icon}></img>
-          <span>Continue with Kakao</span>
-        </Button>
-        <Button variant={"bright"} size={"social"}>
-          <span>Continue with ID</span>
-        </Button>
-      </div>
-      <div>
-        <span className="text-black text-lg">
-          <hr /> OR <hr />
-        </span>
-      </div>
-      <form className="flex flex-col items-center">
+      <p className="text-xl font-bold">Create Your Account</p>
+
+      <form
+        encType="multipart/form-data"
+        className="flex flex-col items-center"
+      >
+        <Input type="file" name="image" />
         <Input type="text" placeholder="ID" />
-        <br />
-        <Input type="password" placeholder="Password" />
+        <Input type="text" placeholder="Password" />
+        <Input type="text" placeholder="Confirm your password" />
         <Button variant={"blue"} size={"sign"}>
           <span className="text-white">Register</span>
         </Button>
       </form>
       <span>
-        New to Stacker Labs?{" "}
-        <Link to={"/auth/register"}>
-          <u>Create Account</u>
+        Already have an account?
+        <Link to={"/auth"}>
+          {" "}
+          <u>Log In</u>
         </Link>
       </span>
     </StyledContainer>
