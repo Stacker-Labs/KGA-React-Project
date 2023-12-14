@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../tw_components/atoms/Buttons";
 import Input from "../../tw_components/atoms/Inputs";
@@ -23,7 +23,16 @@ const StyledContainer = styled.div`
   align-items: center;
 `;
 
+const StyledFormContainer = styled.div`
+  transition: opacity 0.5s ease, max-height 0.5s ease;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  max-height: ${(props) => (props.isVisible ? "300px" : "0")};
+  overflow: hidden;
+`;
+
 const Login = () => {
+  // form toggle
+  const [isFormVisible, setIsFormVisible] = useState(false);
   // accessing to global state
   const user = useRecoilValue(userState);
   console.log(user);
@@ -58,9 +67,15 @@ const Login = () => {
     );
   };
 
+  const toggleForm = () => {
+    setIsFormVisible(!isFormVisible);
+  };
+
   return (
     <StyledContainer>
-      <p className="font-logo text-5xl text-accent-blue">Stacker Labs</p>
+      <Link to={"/"}>
+        <p className="font-logo text-5xl text-accent-blue">Stacker Labs</p>
+      </Link>
       <p className="text-xl font-bold">Join Stacker Labs!</p>
       <p>Stacker Labs is a community of 1,200,000 amazing devs.</p>
       <div>
@@ -76,26 +91,26 @@ const Login = () => {
           <img width="40px" height="40px" src={kakao_icon}></img>
           <span>Continue with Kakao</span>
         </Button>
-        <Button variant={"bright"} size={"social"}>
+        <Button onClick={toggleForm} variant={"bright"} size={"social"}>
           <span>Continue with ID</span>
         </Button>
       </div>
-      <div>
-        <span className="text-black text-lg">
-          <hr /> OR <hr />
-        </span>
-      </div>
-      <form className="flex flex-col items-center">
-        <Input type="text" placeholder="ID" />
-        <Input type="password" placeholder="Password" />
-        <Button variant={"blue"} size={"sign"}>
-          <span className="text-white">Sign In</span>
-        </Button>
-      </form>
+      <StyledFormContainer isVisible={isFormVisible}>
+        {isFormVisible && (
+          <form className="flex flex-col items-center">
+            <Input type="text" placeholder="ID" />
+            <Input type="password" placeholder="Password" />
+            <Button variant={"blue"} size={"sign"}>
+              <span className="text-white">Sign In</span>
+            </Button>
+          </form>
+        )}
+      </StyledFormContainer>
+
       <span>
         New to Stacker Labs?{" "}
         <Link to={"/auth/register"}>
-          <u>Create Account</u>
+          <u>Create Account!</u>
         </Link>
       </span>
     </StyledContainer>
