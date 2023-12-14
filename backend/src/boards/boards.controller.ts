@@ -16,13 +16,15 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from 'src/common/guards/user.guard';
 import { User } from 'src/common/decorator/user.decorator';
 import { Role } from 'src/common/const/role.enum';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @ApiTags('boards')
-@Controller('boards')
+@Controller()
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
-  @Post()
+  @Post('boards')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post Board' })
@@ -30,13 +32,13 @@ export class BoardsController {
     return this.boardsService.create(createBoardDto, userId);
   }
 
-  @Get(':id')
+  @Get('boards/:id')
   @ApiOperation({ summary: 'Get Board' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.boardsService.findOne(id);
   }
 
-  @Put(':id')
+  @Put('boards/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Edit Board' })
@@ -49,7 +51,7 @@ export class BoardsController {
     return this.boardsService.update(id, updateBoardDto, userId, role);
   }
 
-  @Delete(':id')
+  @Delete('boards/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Board' })
@@ -59,5 +61,39 @@ export class BoardsController {
     @User('role') role: Role,
   ) {
     return this.boardsService.remove(id, userId, role);
+  }
+
+  @Post('comments')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create Comment' })
+  createComment(
+    @Body() createCommentDto: CreateCommentDto,
+    @User('id') userId: number,
+  ) {
+    return this.boardsService.createComment(createCommentDto, userId);
+  }
+
+  @Put('comments/:id')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update Comment' })
+  updateComment(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCommentDto: UpdateCommentDto,
+    @User('id') userId: number,
+  ) {
+    return this.boardsService.updateComment(id, updateCommentDto, userId);
+  }
+
+  @Delete('comments/:id')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete Comment' })
+  removeComment(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number,
+  ) {
+    return this.boardsService.removeComment(id, userId);
   }
 }

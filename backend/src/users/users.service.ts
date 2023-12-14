@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
@@ -18,15 +14,7 @@ export class UsersService {
 
   // CMMT: - Find User
   async findOne(id: number) {
-    const user = this.userRepository.findOne({
-      where: {
-        id,
-      },
-    });
-
-    if (!user) {
-      throw new BadRequestException('존재하지 않는 사용자입니다.');
-    }
+    const user = await this.verifiedUser(id);
 
     return user;
   }
@@ -72,15 +60,7 @@ export class UsersService {
     userId: number,
     role: Role,
   ) {
-    const user = this.userRepository.findOne({
-      where: {
-        id,
-      },
-    });
-
-    if (!user) {
-      throw new BadRequestException('존재하지 않는 사용자입니다.');
-    }
+    const user = await this.verifiedUser(id);
 
     // TODO: - UpdateUserDto 내용 확인
 
@@ -89,16 +69,18 @@ export class UsersService {
       return newUser;
     }
 
-    throw new UnauthorizedException('수정 권한이 없습니다.');
+    throw new UnauthorizedException('권한이 없습니다.');
   }
 
   // CMMT: - Remove User
   async remove(id: number, userId: number, role: Role) {
+    const user = await this.verifiedUser(id);
+
     if (id === userId || role === Role.ADMIN) {
       return this.userRepository.delete(id);
     }
 
-    throw new UnauthorizedException('삭제 권한이 없습니다.');
+    throw new UnauthorizedException('권한이 없습니다.');
   }
 
   // CMNT: - Get User by username
@@ -109,6 +91,20 @@ export class UsersService {
       },
     });
 
+    if (!user) {
+      throw new UnauthorizedException('존재하지 않는 사용자입니다.');
+    }
+
+    return user;
+  }
+
+  // CMNT: - Verify User
+  async verifiedUser(id: number) {
+    const user = this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
     if (!user) {
       throw new UnauthorizedException('존재하지 않는 사용자입니다.');
     }
