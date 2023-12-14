@@ -10,7 +10,6 @@ import { BoardModel } from './entities/board.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
 import { TagModel } from './entities/tag.entity';
-import { UserModel } from 'src/users/entities/user.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentModel } from './entities/comment.entity';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -19,8 +18,6 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class BoardsService {
   constructor(
-    @InjectRepository(UserModel)
-    private readonly userRepository: Repository<UserModel>,
     @InjectRepository(BoardModel)
     private readonly boardRepository: Repository<BoardModel>,
     @InjectRepository(TagModel)
