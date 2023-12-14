@@ -6,11 +6,11 @@ import Modify from "./pages/boards/BoardCom/Modify";
 import User from "./pages/users/User";
 import Login from "./pages/auth/Login";
 import Admin from "./pages/Admin";
-import Signup from "./pages/auth/Signup";
 import CssBaseline from "@mui/material/CssBaseline";
 import Github from "./pages/auth/Github";
 import Google from "./pages/auth/Google";
 import Kakao from "./pages/auth/Kakao";
+import Register from "./pages/auth/Register";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
             <Route path="github/callback" element={<Github />} />
             <Route path="google/callback" element={<Google />} />
             <Route path="kakao/callback" element={<Kakao />} />
-            <Route path="register" element={<Signup />} />
+            <Route path="register" element={<Register />} />
           </Route>
           <Route path="/admin" element={<Admin />} />
         </Routes>

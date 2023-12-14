@@ -23,7 +23,7 @@ const StyledContainer = styled.div`
   align-items: center;
 `;
 
-const Login = () => {
+const Register = () => {
   // accessing to global state
   const user = useRecoilValue(userState);
   console.log(user);
@@ -90,7 +90,7 @@ const Login = () => {
         <br />
         <Input type="password" placeholder="Password" />
         <Button variant={"blue"} size={"sign"}>
-          <span className="text-white">Sign In</span>
+          <span className="text-white">Register</span>
         </Button>
       </form>
       <span>
@@ -103,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
