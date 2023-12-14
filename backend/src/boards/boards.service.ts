@@ -72,14 +72,17 @@ export class BoardsService {
 
     const user = await this.userService.verifiedUser(userId);
     const views = board.views ? [...board.views] : [];
-    const index = views.findIndex((viewer) => viewer.id === user.id);
-    if (index === -1) {
+    const viewIndex = views.findIndex((viewer) => viewer.id === userId);
+    if (viewIndex === -1) {
       views.push(user);
+      await this.boardRepository.save({ id, views });
     }
 
-    await this.boardRepository.save({ id, views });
+    const likes = board.likes ? [...board.likes] : [];
+    const likeIndex = likes.findIndex((liker) => liker.id === userId);
+    const like_it = likeIndex !== -1;
 
-    return board;
+    return { ...board, like_it };
   }
 
   // CMMT: - Update Board
