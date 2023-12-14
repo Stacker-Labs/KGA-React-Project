@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Board from "./pages/boards/Board";
 import View from "./pages/boards/BoardCom/View";
+import Modify from "./pages/boards/BoardCom/Modify";
 import User from "./pages/users/User";
 import Login from "./pages/auth/Login";
 import Admin from "./pages/Admin";
@@ -20,7 +21,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/boards" element={<Board />} />
           <Route path="/boards/:id" element={<View />} />
-          <Route path="/boards/:id/edit" />
+          <Route path="/boards/:id/edit" element={<Modify />} />
           <Route path="/users" element={<User />} />
           <Route path="/auth">
             <Route index element={<Login />} />
