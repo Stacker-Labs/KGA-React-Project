@@ -34,7 +34,13 @@ const Register = () => {
         encType="multipart/form-data"
         className="flex flex-col gap-y-3 items-center"
       >
-        <Input type="file" name="image" />
+        <label
+          htmlFor="image"
+          className="self-start ml-4 text-lg text-gray-700"
+        >
+          Profile Picture
+        </label>
+        <Input type="file" name="image" id="image" />
         <Input type="text" placeholder="ID" />
         <Input type="text" placeholder="Password" />
         <Input type="text" placeholder="Confirm your password" />
