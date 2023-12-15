@@ -5,6 +5,8 @@ import { UserModel } from './users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagModel } from './boards/entities/tag.entity';
 import { Role } from './common/const/role.enum';
+import AWS from 'aws-sdk';
+import { v4 as UUID } from 'uuid';
 
 @Injectable()
 export class AppService {
@@ -90,5 +92,46 @@ export class AppService {
     });
 
     return users;
+  }
+
+  // CMNT: - Upload Image
+  async uploadImage(file: Express.Multer.File) {
+    AWS.config.update({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
+
+    file.originalname = `${UUID()}.${
+      file.originalname.split('.').slice(-1)[0]
+    }`;
+
+    const bucket = new AWS.S3();
+
+    const params = {
+      ACL: 'public-read',
+      Body: file.buffer,
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: file.originalname,
+    };
+
+    // const data = await new Promise((res, rej) => {
+    //   bucket.putObject(params, (e, d) => {
+    //     res({
+    //       link: `${bucket.endpoint.href}${file.originalname}`,
+    //     });
+    //   });
+    // });
+
+    // return data;
+
+    return bucket
+      .putObject(params)
+      .promise()
+      .then(() => {
+        return { link: `${bucket.endpoint.href}${file.originalname}` };
+      });
   }
 }
