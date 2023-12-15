@@ -20,7 +20,12 @@ export class UsersService {
 
   // CMMT: - Find User
   async findOne(id: number) {
-    const user = await this.verifiedUser(id);
+    const user = await this.verifiedUser(id, {
+      follower_users: true,
+      following_users: true,
+      boards: true,
+      comments: true,
+    });
 
     return user;
   }
