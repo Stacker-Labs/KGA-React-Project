@@ -12,7 +12,7 @@ export const ButtonVariants = cva(
       variant: {
         default: " shadow-none active:scale-100 ",
         grey: " bg-slate-buttongrey ",
-        blue: " bg-accent-blue",
+        blue: " bg-accent-blue text-white",
         white: "bg-white border border-accent-blue text-accent-blue",
       },
       size: {
