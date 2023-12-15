@@ -29,7 +29,6 @@ const Pagination = ({ setCurrentPage, currentPage, totalPage }) => {
   }, [totalPage]);
 
   useEffect(() => {
-    // Adjust showingNum based on the currentPage when it changes
     const lastPage = showingNum.start + PAGES_PER_LIST - 1;
     if (currentPage < showingNum.start || currentPage > lastPage) {
       if (currentPage + PAGES_PER_LIST > totalPage) {

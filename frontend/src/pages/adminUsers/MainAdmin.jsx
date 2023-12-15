@@ -4,31 +4,181 @@ const ITEMS_PER_PAGE = 10;
 
 const MainAdmin = () => {
   const initialData = [
-    { id: 1, name: "Alice", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 2, name: "Bob", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 3, name: "Sang", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 4, name: "Hong", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 6, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 7, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 8, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 9, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 10, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 11, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 12, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 13, name: "Popo", nickname: "holymoly", createdAt: "2000/00/00" },
-    { id: 14, name: "Sam", nickname: "das", createdAt: "2000/00/00" },
-    { id: 15, name: "John", nickname: "qwe", createdAt: "2000/00/00" },
-    { id: 16, name: "John2", nickname: "asd", createdAt: "2000/00/00" },
-    { id: 17, name: "John3", nickname: "qwc", createdAt: "2000/00/00" },
-    { id: 18, name: "John4", nickname: "gr", createdAt: "2000/00/00" },
-    { id: 19, name: "John5", nickname: "tje", createdAt: "2000/00/00" },
-    { id: 20, name: "John6", nickname: "ut", createdAt: "2000/00/00" },
-    { id: 21, name: "John7", nickname: "53y", createdAt: "2000/00/00" },
-    { id: 22, name: "John8", nickname: "hte", createdAt: "2000/00/00" },
-    { id: 23, name: "John9", nickname: "qwe", createdAt: "2000/00/00" },
-    { id: 24, name: "John10", nickname: "qwe", createdAt: "2000/00/00" },
-    { id: 25, name: "John11", nickname: "qwe", createdAt: "2000/00/00" },
-    { id: 26, name: "John12", nickname: "qwe", createdAt: "2000/00/00" },
+    {
+      id: 1,
+      name: "Alice",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 2,
+      name: "Bob",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 3,
+      name: "Sang",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 4,
+      name: "Hong",
+      nickname: "holymoly",
+      provider: "local",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 6,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "local",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 7,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 8,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "github",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 9,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 10,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 11,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 12,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 13,
+      name: "Popo",
+      nickname: "holymoly",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 14,
+      name: "Sam",
+      nickname: "das",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 15,
+      name: "John",
+      nickname: "qwe",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 16,
+      name: "John2",
+      nickname: "asd",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 17,
+      name: "John3",
+      nickname: "qwc",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 18,
+      name: "John4",
+      nickname: "gr",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 19,
+      name: "John5",
+      nickname: "tje",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 20,
+      name: "John6",
+      nickname: "ut",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 21,
+      name: "John7",
+      nickname: "53y",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 22,
+      name: "John8",
+      nickname: "hte",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 23,
+      name: "John9",
+      nickname: "qwe",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 24,
+      name: "John10",
+      nickname: "qwe",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 25,
+      name: "John11",
+      nickname: "qwe",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
+    {
+      id: 26,
+      name: "John12",
+      nickname: "qwe",
+      provider: "kakao",
+      createdAt: "2000/00/00",
+    },
   ];
   const [totalPage, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,11 +206,12 @@ const MainAdmin = () => {
   );
 
   const dataProps = {
-    columns: ["ID", "Name", "Nickname", "Created-at"],
+    columns: ["ID", "Name", "Nickname", "provider", "Created-at"],
     rows: currentPageData.map((row) => [
       row.id,
       row.name,
       row.nickname,
+      row.provider,
       row.createdAt,
     ]),
   };
@@ -76,14 +227,22 @@ const MainAdmin = () => {
   };
 
   const deleteSelectedRows = () => {
-    setTableData((prevData) =>
-      prevData.filter((row) => !selectedRows.includes(row.id))
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete the selected items?"
     );
-    setSelectedRows([]);
+    if (confirmDelete) {
+      alert("Success");
+      setTableData((prevData) =>
+        prevData.filter((row) => !selectedRows.includes(row.id))
+      );
+      setSelectedRows([]);
+    } else {
+      return false;
+    }
   };
 
   return (
-    <div className="border w-[100%] h-[500px] flex flex-col justify-center items-center">
+    <div className="w-[100%] h-[700px] flex flex-col justify-center items-center">
       <table className="border w-[1100px] h-[400px]">
         <thead>
           <tr>
@@ -103,7 +262,6 @@ const MainAdmin = () => {
             {dataProps.columns.map((column, index) => (
               <th key={index}>{column}</th>
             ))}
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -121,18 +279,25 @@ const MainAdmin = () => {
                   {cell}
                 </td>
               ))}
-              <div className="text-center border">
-                <button onClick={deleteSelectedRows}>삭제</button>
-              </div>
             </tr>
           ))}
         </tbody>
       </table>
+
       <Pagination
         totalPage={totalPage}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      <div className="text-center border hover:bg-sky-400 my-8">
+        <button
+          onClick={deleteSelectedRows}
+          disabled={selectedRows.length === 0}
+          className=" p-2"
+        >
+          delete
+        </button>
+      </div>
     </div>
   );
 };
