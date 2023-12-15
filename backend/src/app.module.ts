@@ -27,10 +27,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: process.env.DB_HOSTNAME || 'localhost',
       port: 5432,
-      username: 'postgres',
-      password: 'postgres',
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
       database: 'postgres',
       entities: [
         UserModel,
@@ -41,9 +41,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         TagModel,
       ],
       synchronize: true,
-      // ssl: {
-      //   rejectUnauthorized: false,
-      // },
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     TypeOrmModule.forFeature([BoardModel, UserModel, TagModel]),
   ],
