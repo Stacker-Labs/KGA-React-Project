@@ -14,7 +14,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentModel } from './entities/comment.entity';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { UsersService } from 'src/users/users.service';
-import { UserModel } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class BoardsService {
