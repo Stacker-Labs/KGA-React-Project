@@ -11,10 +11,13 @@ const IconStyledWrap = styled(Box)`
   position: sticky;
   display: grid;
   top: 120px;
-  border: 1px solid black;
+
   gap: 5;
   height: 100%;
   float: right;
+`;
+const HeartBox = styled(Box)`
+  margin-left: 5px;
 `;
 
 const TopBtn = styled(Button)`
@@ -38,6 +41,10 @@ const HandleScroll = () => {
   const [showButton, setShowButton] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [count, setCount] = useState(0);
+
+  const userToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNTQ0MDY3LCJleHAiOjE3MDI1NDc2Njd9.j_PJNousIqv45uV4QT8q_EDM0BP4sxTzkfcpTfb1HL4";
+
   const handleScroll = () => {
     if (!window.scrollY) return;
 
@@ -47,10 +54,13 @@ const HandleScroll = () => {
     });
   };
   const handleHeartClick = () => {
-    setClicked((prevClicked) => !prevClicked);
-    setCount((prevCount) => (clicked ? prevCount - 1 : prevCount + 1));
+    if (userToken) {
+      setClicked((prevClicked) => !prevClicked);
+      setCount((prevCount) => (clicked ? prevCount - 1 : prevCount + 1));
+    } else {
+      alert("로그인이 필요합니다.");
+    }
   };
-
   useEffect(() => {
     const handleShowButton = () => {
       if ((window.scrollY = window.innerHeight)) {
@@ -72,12 +82,14 @@ const HandleScroll = () => {
           <IconCom />
         </TopBtn>
       )}
-      {clicked ? (
-        <IconFullHeart onClick={handleHeartClick} />
-      ) : (
-        <IconHeart onClick={handleHeartClick} />
-      )}
-      <span>{count}</span>
+      <HeartBox>
+        {clicked ? (
+          <IconFullHeart onClick={handleHeartClick} />
+        ) : (
+          <IconHeart onClick={handleHeartClick} />
+        )}
+        <span>{count}</span>
+      </HeartBox>
     </IconStyledWrap>
   );
 };

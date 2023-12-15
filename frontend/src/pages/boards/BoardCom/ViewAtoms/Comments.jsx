@@ -3,6 +3,11 @@ import styled from "styled-components";
 import WrapComments from "./WrapComments";
 import { Box } from "@mui/material";
 import CommentsList from "./CommentsList";
+
+const CommentBox = styled(Box)`
+  margin-bottom: 4rem;
+`;
+
 const Comments = () => {
   const [comments, setComments] = useState([
     { id: 1, name: "sangheun Park", content: "I like it!" },
@@ -20,16 +25,15 @@ const Comments = () => {
       console.log(name);
       console.log(content);
       setComments((comments) => comments.concat(comment));
-      nextId.current += 1; //nextId 1씩 더하기
+      nextId.current += 1;
     },
     [comments]
   );
 
   return (
-    <div>
+    <>
       <WrapComments onInsert={onInsert} />
-
-      <div style={{ marginBottom: "4rem" }}>
+      <CommentBox>
         {comments.map((comment) => {
           return (
             <CommentsList
@@ -40,8 +44,8 @@ const Comments = () => {
             />
           );
         })}
-      </div>
-    </div>
+      </CommentBox>
+    </>
   );
 };
 
