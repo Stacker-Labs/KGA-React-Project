@@ -11,6 +11,7 @@ import Github from "./pages/auth/Github";
 import Google from "./pages/auth/Google";
 import Kakao from "./pages/auth/Kakao";
 import Register from "./pages/auth/Register";
+import Tags from "./pages/Tags";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/tags" element={<Tags />} />
           <Route path="/boards" element={<Board />} />
           <Route path="/boards/:id" element={<View />} />
           <Route path="/boards/:id/edit" element={<Modify />} />

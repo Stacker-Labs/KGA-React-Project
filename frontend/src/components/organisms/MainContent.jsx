@@ -9,7 +9,7 @@ const MainContent = ({ board }) => {
       <WelcomBox />
       {board.map((item, index) => {
         return (
-          <div className="border rounded-md w-[800px] p-8">
+          <div key={index} className="border rounded-md w-[800px] p-8">
             <div className="flex flex-row">
               <Link to={`/user/${item.user.id}`}>
                 <img
@@ -19,7 +19,9 @@ const MainContent = ({ board }) => {
                 />
               </Link>
               <div className="pl-4">
-                <p className="text-xl">{item.user.username}</p>
+                <p className="text-xl">
+                  <Link to={`/user/${item.user.id}`}>{item.user.username}</Link>
+                </p>
                 <p>{item.createdAt}</p>
               </div>
             </div>
@@ -39,10 +41,12 @@ const MainContent = ({ board }) => {
             </div>
             <div className="flex flex-row py-5 gap-12">
               <div>
-                <Link to={`/user/${item.user.id}`}>❤️ {50} Reactions</Link>
+                <Link to={`/board/${item.id}`}>
+                  ❤️ {item.likes.length} Reactions
+                </Link>
               </div>
               <div>
-                <Link to={`/user/${item.user.id}`}>
+                <Link to={`/board/${item.id}`}>
                   💬 {item.comments.length} Comment
                 </Link>
               </div>

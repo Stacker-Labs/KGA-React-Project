@@ -6,6 +6,7 @@ import TempUserImg from "./1.jpg";
 import Home_icon from "./home_icon.png";
 import Github_icon from "./github.png";
 import Notion_icon from "./notion.png";
+import Js_icon from "./js_icon.png";
 
 export {
   Search_icon,
@@ -16,4 +17,5 @@ export {
   Home_icon,
   Github_icon,
   Notion_icon,
+  Js_icon,
 };
