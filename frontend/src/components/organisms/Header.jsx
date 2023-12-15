@@ -60,21 +60,23 @@ const Header = () => {
           <button>
             <img className="w-[70%]" src={Bell_icon} alt="dark mode icon" />
           </button>
-          <Link to={"/users"}>
-            <img
-              onClick={toggleUserMenu}
-              className="w-[40px] h-[40px] rounded-3xl"
-              src={TempUserImg}
-              alt=""
-            />
-          </Link>
+          {/* <Link to={"/users"}> */}
+          <img
+            onClick={toggleUserMenu}
+            className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
+            src={TempUserImg}
+            alt=""
+          />
+          {/* </Link> */}
         </div>
       </div>
 
       {isUserMenuVisible && (
-        <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg">
-          <li className="border-b py-4">
-            <Link to={"/users"}>UserName</Link>
+        <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg z-40">
+          <li className="border-b py-4 cursor-pointer">
+            <Link className="cursor-pointer" to={"/users"}>
+              UserName
+            </Link>
           </li>
           <li className="py-2">
             <Link to={"/"}>Dashboard</Link>
