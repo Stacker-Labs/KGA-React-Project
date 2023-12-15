@@ -30,40 +30,6 @@ export class UsersService {
     return user;
   }
 
-  // CMMT: - Get Followers
-  async findFollowers(id: number) {
-    const followers = this.userRepository.findOne({
-      select: {
-        follower_users: true,
-      },
-      where: {
-        id,
-      },
-      relations: {
-        follower_users: true,
-      },
-    });
-
-    return followers;
-  }
-
-  // CMMT: - Get Followings
-  async findFollowings(id: number) {
-    const followings = this.userRepository.findOne({
-      select: {
-        following_users: true,
-      },
-      where: {
-        id,
-      },
-      relations: {
-        following_users: true,
-      },
-    });
-
-    return followings;
-  }
-
   // CMMT: - Update User
   async update(
     id: number,
@@ -71,7 +37,7 @@ export class UsersService {
     userId: number,
     role: Role,
   ) {
-    const user = await this.verifiedUser(id);
+    await this.verifiedUser(id);
 
     // TODO: - UpdateUserDto 내용 확인
 
@@ -85,7 +51,7 @@ export class UsersService {
 
   // CMMT: - Remove User
   async remove(id: number, userId: number, role: Role) {
-    const user = await this.verifiedUser(id);
+    await this.verifiedUser(id);
 
     if (id === userId || role === Role.ADMIN) {
       return this.userRepository.delete(id);

@@ -15,7 +15,6 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
 import { Role } from 'src/common/const/role.enum';
 import { UserGuard } from 'src/common/guards/user.guard';
-import { UserModel } from './entities/user.entity';
 import { CreateFollowDto } from './dto/create-follow.dto';
 import { RemoveFollowDto } from './dto/remove-follow.dto';
 
@@ -28,18 +27,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Get User' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
-  }
-
-  @Get('users/:id/follower')
-  @ApiOperation({ summary: 'Get User Followers' })
-  findFollowers(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findFollowers(id);
-  }
-
-  @Get('users/:id/following')
-  @ApiOperation({ summary: 'Get User Followings' })
-  findFollowings(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findFollowings(id);
   }
 
   @Put('users/:id')
