@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import SearchhBar from "../molecules/SearchBar";
@@ -11,6 +11,12 @@ import {
 } from "../../images";
 
 const Header = () => {
+  const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
+
+  const toggleUserMenu = () => {
+    setIsUserMenuVisible(!isUserMenuVisible);
+  };
+
   return (
     <>
       <div className="sticky top-0 w-[100%] h-[80px] border-b flex flex-row items-center justify-center z-30 bg-white">
@@ -56,6 +62,7 @@ const Header = () => {
           </button>
           <Link to={"/users"}>
             <img
+              onClick={toggleUserMenu}
               className="w-[40px] h-[40px] rounded-3xl"
               src={TempUserImg}
               alt=""
@@ -63,26 +70,29 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg">
-        <li className="border-b py-4">
-          <Link to={"/users"}>User name</Link>
-        </li>
-        <li className="py-2">
-          <Link to={"/"}>Dashborard</Link>
-        </li>
-        <li className="py-2">
-          <Link to={"/boards"}>Create Post</Link>
-        </li>
-        <li className="py-2">
-          <Link to={"/"}>Reading List</Link>
-        </li>
-        <li className="border-b py-2">
-          <Link to={"/users"}>Settings</Link>
-        </li>
-        <li className="py-5">
-          <Link to={"/auth/logout"}>Log Out</Link>
-        </li>
-      </ul>
+
+      {isUserMenuVisible && (
+        <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg">
+          <li className="border-b py-4">
+            <Link to={"/users"}>UserName</Link>
+          </li>
+          <li className="py-2">
+            <Link to={"/"}>Dashboard</Link>
+          </li>
+          <li className="py-2">
+            <Link to={"/boards"}>Create Post</Link>
+          </li>
+          <li className="py-2">
+            <Link to={"/"}>Reading List</Link>
+          </li>
+          <li className="border-b py-2">
+            <Link to={"/users"}>Settings</Link>
+          </li>
+          <li className="py-5">
+            <Link to={"/auth/logout"}>Log out</Link>
+          </li>
+        </ul>
+      )}
     </>
   );
 };
