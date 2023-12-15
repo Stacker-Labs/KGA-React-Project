@@ -1,6 +1,5 @@
 import React from "react";
 import NavigationItem from "../molecules/NavigationItem";
-import { Link } from "react-router-dom";
 import { Github_icon, Notion_icon } from "../../images";
 
 const Sidebar = () => {
@@ -12,16 +11,18 @@ const Sidebar = () => {
         <NavigationItem to={"/"} text="❔ FAQ" />
       </ul>
       <div className="flex flex-row gap-10 justify-center">
-        <Link to={"https://github.com/Stacker-Labs/KGA-React-Project"}>
+        <a
+          href="https://github.com/Stacker-Labs/KGA-React-Project"
+          target="_blank"
+        >
           <img className="w-8" src={Github_icon} alt="" />
-        </Link>
-        <Link
-          to={
-            "https://www.notion.so/dd5787af1d7b41f196646bfa607814cb?v=931c9b67412e48fea67b7f2a41d8a9cd&pvs=4"
-          }
+        </a>
+        <a
+          href="https://www.notion.so/Overview-18c6b82164074d70833bc36ea85ed007"
+          target="_blank"
         >
           <img className="w-8" src={Notion_icon} alt="" />
-        </Link>
+        </a>
       </div>
       <div className="p-7">
         <p className="text-sm">
