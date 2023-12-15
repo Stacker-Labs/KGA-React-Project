@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
 import { FormControl } from "@mui/base/FormControl";
 import { TextareaAutosize } from "@mui/base";
-import MUIButton from "../../../../components/atoms/Button";
+// import MUIButton from "../../../../components/atoms/Button";
 
 const CommentInsert = styled(FormControl)`
   padding: 10px;
@@ -23,6 +24,11 @@ const BtnBox = styled(Box)`
   width: 100%;
   display: flex;
   justify-content: end;
+`;
+
+const BtnClick = styled(Button)`
+  background-color: #1976d2;
+  color: white;
 `;
 
 const WrapComments = (onInsert) => {
@@ -65,7 +71,7 @@ const WrapComments = (onInsert) => {
         />
       </CommentInsert>
       <BtnBox>
-        <MUIButton customType="social">등록</MUIButton>
+        <BtnClick onClick={onSubmit}>등록</BtnClick>
       </BtnBox>
     </>
   );

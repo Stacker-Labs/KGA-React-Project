@@ -24,7 +24,7 @@ const ViewPageMain = styled(Box)`
 `;
 
 const ViewTitle = styled(Box)`
-  padding: 20px;
+  padding: 50px;
   width: 100%;
 `;
 
