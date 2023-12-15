@@ -1,31 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/organisms/Header";
-import { Link } from "react-router-dom";
-import { Js_icon } from "../images";
-import Button from "../tw_components/atoms/Buttons";
+import TagBox from "../components/molecules/TagBox";
 
 const Tags = () => {
+  const [tags, setTags] = useState([
+    {
+      id: 1,
+      tagName: "#javascript",
+      tagContent:
+        "I have no special talent. I am only passionately curious. - Albert Einstein",
+    },
+    {
+      id: 2,
+      tagName: "#database",
+      tagContent: "Posts on building, using, and learning about databases.",
+    },
+    {
+      id: 3,
+      tagName: "#programming",
+      tagContent: "The magic behind computers. 💻 🪄",
+    },
+    {
+      id: 4,
+      tagName: "#webdev",
+      tagContent: "Because the internet...",
+    },
+    {
+      id: 5,
+      tagName: "#webdev",
+      tagContent: "Because the internet...",
+    },
+  ]);
+
   return (
     <>
       <Header />
-      <div className="font-logo w-10/12 text-4xl pl-32 py-6">Tags</div>
-      <div className="flex flex-row w-10/12 mx-auto gap-4">
-        <ul className="border w-1/4">
-          <li className="p-5 text-lg font-bold">#webdev</li>
-          <li className="px-5 py-1">
-            “I have no special talent. I am only passionately curious.” - Albert
-            Einstein
-          </li>
-          <li className="flex flex-row p-5 justify-between items-center">
-            <Link to={"/"} className="">
-              <Button variant={"blue"} size={"md"}>
-                <span className="text-white">SHOW</span>
-              </Button>
-            </Link>
-            <img className="w-[38px] h-[38px]" src={Js_icon} alt="" />
-          </li>
-        </ul>
-      </div>
+      <div className="font-logo w-10/12 text-4xl mx-auto py-5">Tags</div>
+      <TagBox tags={tags} setTags={setTags} />
     </>
   );
 };
