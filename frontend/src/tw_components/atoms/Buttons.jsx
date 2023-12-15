@@ -20,7 +20,7 @@ export const ButtonVariants = cva(
         md: " w-[6.875rem] h-[2.375rem] text-[1rem] rounded-md",
         lg: "w-[21.875rem] h-[7.5rem] text-[3rem] rounded-3xl",
         wlg: "w-[24rem] h-[5.25rem] text-[2rem]",
-        social: "w-[30rem] h-[3.5rem] text-[1rem]",
+        social: "w-[30rem] h-[3.5rem] text-[1rem] justify-around border m-2",
         sign: " m-4 w-[30rem] h-[3rem] text-[1rem] rounded-md",
       },
     },

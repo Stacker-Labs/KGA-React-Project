@@ -19,7 +19,7 @@ const StyledContainer = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   flex-flow: column nowrap;
-  row-gap: 10px;
+  row-gap: 15px;
   align-items: center;
 `;
 
@@ -77,19 +77,23 @@ const Login = () => {
         <p className="font-logo text-5xl text-accent-blue">Stacker Labs</p>
       </Link>
       <p className="text-xl font-bold">Join Stacker Labs!</p>
-      <p>Stacker Labs is a community of 1,200,000 amazing devs.</p>
+      <p>Stacker Labs is an amazing community for web developers.</p>
+      <hr />
       <div>
         <Button onClick={github} variant={"bright"} size={"social"}>
           <img width="40px" height="40px" src={github_icon}></img>
           <span>Continue with GitHub</span>
+          <div></div>
         </Button>
         <Button onClick={google} variant={"bright"} size={"social"}>
           <img width="40px" height="40px" src={google_icon}></img>
           <span>Continue with Google</span>
+          <div></div>
         </Button>
         <Button onClick={kakao} variant={"bright"} size={"social"}>
           <img width="40px" height="40px" src={kakao_icon}></img>
           <span>Continue with Kakao</span>
+          <div></div>
         </Button>
         <Button onClick={toggleForm} variant={"bright"} size={"social"}>
           <span>Continue with ID</span>
