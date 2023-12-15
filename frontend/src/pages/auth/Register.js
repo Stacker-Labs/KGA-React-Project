@@ -28,6 +28,9 @@ const StyledContainer = styled.div`
 const Register = () => {
   return (
     <StyledContainer>
+      <Link to={"/"} className="font-logo text-5xl text-accent-blue ">
+        Stacker-Labs
+      </Link>
       <p className="text-xl font-bold">Create Your Account</p>
 
       <form
