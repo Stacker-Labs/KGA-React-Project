@@ -15,7 +15,6 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from 'src/common/guards/user.guard';
 import { User } from 'src/common/decorator/user.decorator';
-import { Role } from 'src/common/const/role.enum';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
@@ -76,7 +75,7 @@ export class BoardsController {
     return this.boardsService.removeLikes(id, username);
   }
 
-  @Get('boards/:id/comments/:page')
+  @Get('boards/:id/:page')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get Board Comments' })
@@ -87,15 +86,16 @@ export class BoardsController {
     return this.boardsService.getComments(id, page);
   }
 
-  @Post('comments')
+  @Post('boards/:id/comments')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create Comment' })
   createComment(
+    @Param('id', ParseIntPipe) id: number,
     @Body() createCommentDto: CreateCommentDto,
     @User() username: string,
   ) {
-    return this.boardsService.createComment(createCommentDto, username);
+    return this.boardsService.createComment(id, createCommentDto, username);
   }
 
   @Put('comments/:id')

@@ -27,7 +27,7 @@ export class BoardsService {
     private readonly userService: UsersService,
   ) {}
 
-  // CMMT: - Create Board
+  // POSTCMMT: - Create Board
   async create(createBoardDto: CreateBoardDto, username: string) {
     const { title, content, tags } = createBoardDto;
     const user = await this.userService.getUser(username);
@@ -43,7 +43,7 @@ export class BoardsService {
     return board;
   }
 
-  // CMMT: - Find Board
+  // GETCMMT: - Find Board
   async findOne(id: number, username: string) {
     const board = await this.verifiedBoard(id, {
       user: true,
@@ -64,7 +64,7 @@ export class BoardsService {
     return board;
   }
 
-  // CMMT: - Update Board
+  // PUTCMMT: - Update Board
   async update(id: number, updateBoardDto: UpdateBoardDto, username: string) {
     const { title, content, tags } = updateBoardDto;
     const board = await this.verifiedBoard(id, {
@@ -91,7 +91,7 @@ export class BoardsService {
     throw new UnauthorizedException('수정 권한이 없습니다.');
   }
 
-  // CMMT: - Delete Board
+  // DELETECMMT: - Delete Board
   async remove(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true });
     const user = await this.userService.getUser(username);
@@ -103,7 +103,7 @@ export class BoardsService {
     throw new UnauthorizedException('삭제 권한이 없습니다.');
   }
 
-  // CMNT: - Create Likes
+  // POSTCMMT: - Create Likes
   async createLikes(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true, likes: true });
     const user = await this.userService.getUser(username);
@@ -119,7 +119,7 @@ export class BoardsService {
     return this.boardRepository.save({ id, likes, like_it: true });
   }
 
-  // CMNT: - Delete Likes
+  // DELETECMMT: - Delete Likes
   async removeLikes(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true, likes: true });
     const user = await this.userService.getUser(username);
@@ -135,7 +135,7 @@ export class BoardsService {
     return this.boardRepository.save({ id, likes });
   }
 
-  //CMNT: - Get Board Comments
+  // GETCMMT: - Get Board Comments
   async getComments(id: number, page: number) {
     const [deepComment] = await this.commentRepository.find({
       order: { depth: 'DESC' },
@@ -172,9 +172,13 @@ export class BoardsService {
     return { board_comments, next_page };
   }
 
-  //CMNT: - Create Comment
-  async createComment(createCommentDto: CreateCommentDto, username: string) {
-    const { boardId, content, parentCommentId } = createCommentDto;
+  // POSTCMMT: - Create Comment
+  async createComment(
+    id: number,
+    createCommentDto: CreateCommentDto,
+    username: string,
+  ) {
+    const { content, parentCommentId } = createCommentDto;
     const user = await this.userService.getUser(username);
 
     const parentComment = await this.commentRepository.findOne({
@@ -195,7 +199,7 @@ export class BoardsService {
       return comment;
     }
 
-    const board = await this.verifiedBoard(boardId, { user: true });
+    const board = await this.verifiedBoard(id, { user: true });
 
     const comment = await this.commentRepository.save({
       board,
@@ -206,7 +210,7 @@ export class BoardsService {
     return comment;
   }
 
-  // CMNT: - Update Comment
+  // PUTCMMT: - Update Comment
   async updateComment(
     id: number,
     updateCommentDto: UpdateCommentDto,
@@ -223,7 +227,7 @@ export class BoardsService {
     return updatedComment;
   }
 
-  // CMNT: - Delete Comment
+  // DELETECMMT: - Delete Comment
   async removeComment(id: number, username: string) {
     const user = await this.userService.getUser(username);
     const comment = await this.verifiedComment(id, user.id);
@@ -235,7 +239,7 @@ export class BoardsService {
     });
   }
 
-  // CMMT: - Make Tag List
+  // FUNCCMMT: - Make Tag List
   setTags(board: BoardModel, tags: string) {
     tags
       .replace(/#/g, '')
@@ -252,7 +256,7 @@ export class BoardsService {
       });
   }
 
-  // CMNT: - Verify Board
+  // FUNCCMMT: - Verify Board
   async verifiedBoard(id: number, relations?: object) {
     const board = await this.boardRepository.findOne({
       where: { id },
@@ -265,7 +269,7 @@ export class BoardsService {
     return board;
   }
 
-  // CMNT: - Verify Comment
+  // FUNCCMMT: - Verify Comment
   async verifiedComment(id: number, userId: number) {
     const comment = await this.commentRepository.findOne({
       where: { id },
