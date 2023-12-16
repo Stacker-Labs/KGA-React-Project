@@ -1,13 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ILike, Repository } from 'typeorm';
 import { BoardModel } from './boards/entities/board.entity';
 import { UserModel } from './users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagModel } from './boards/entities/tag.entity';
-import { Role } from './common/const/role.enum';
 import AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
-import { UsersService } from './users/users.service';
 
 @Injectable()
 export class AppService {
@@ -18,14 +16,13 @@ export class AppService {
     private readonly userRepository: Repository<UserModel>,
     @InjectRepository(TagModel)
     private readonly tagRepository: Repository<TagModel>,
-    private readonly usersService: UsersService,
   ) {}
 
   // CMMT: - Get Board List
   async getMain(page: number) {
     const take = 10;
     const skip = take * (page - 1);
-    const boards = await this.boardRepository.findAndCount({
+    const boardList = await this.boardRepository.findAndCount({
       order: { id: 'DESC' },
       relations: {
         user: true,
@@ -37,10 +34,16 @@ export class AppService {
       skip,
       take,
     });
-    const boardsLength = boards[1];
-    const next_page = boardsLength > skip + take && page + 1;
 
-    return { boards, next_page };
+    const boards = boardList[0].map((board) => ({
+      ...board,
+      comments: board.comments.length,
+    }));
+
+    const boards_length = boardList[1];
+    const next_page = boards_length > skip + take && page + 1;
+
+    return { boards, boards_length, next_page };
   }
 
   // CMMT: - Get Search Board List
