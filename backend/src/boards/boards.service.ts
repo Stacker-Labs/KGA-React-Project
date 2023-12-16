@@ -45,22 +45,7 @@ export class BoardsService {
 
   // CMMT: - Find Board
   async findOne(id: number, username: string) {
-    const [deepComment] = await this.commentRepository.find({
-      order: { depth: 'DESC' },
-      take: 1,
-    });
-
-    const depth = deepComment && deepComment.depth - 1;
-
-    let comments: object = { comments: true };
-    for (let i = 0; i < depth; i++) {
-      comments = { comments };
-    }
-
     const board = await this.verifiedBoard(id, {
-      comments: {
-        comments,
-      },
       user: true,
       tags: true,
       views: true,
@@ -76,11 +61,7 @@ export class BoardsService {
       await this.boardRepository.save({ id, views });
     }
 
-    const likes = board.likes ? [...board.likes] : [];
-    const likeIndex = likes.findIndex((liker) => liker.id === user.id);
-    const like_it = likeIndex !== -1;
-
-    return { ...board, like_it };
+    return board;
   }
 
   // CMMT: - Update Board
@@ -152,6 +133,43 @@ export class BoardsService {
 
     likes.splice(index, 1);
     return this.boardRepository.save({ id, likes });
+  }
+
+  //CMNT: - Get Board Comments
+  async getComments(id: number, page: number) {
+    const [deepComment] = await this.commentRepository.find({
+      order: { depth: 'DESC' },
+      take: 1,
+    });
+
+    const depth = deepComment && deepComment.depth - 1;
+
+    let comments: object = { comments: true };
+    for (let i = 0; i < depth; i++) {
+      comments = { comments };
+    }
+
+    const take = 10;
+    const skip = take * (page - 1);
+
+    const board = await this.verifiedBoard(id);
+
+    const board_comments = await this.commentRepository.findAndCount({
+      where: {
+        board: {
+          id: board.id,
+        },
+      },
+      relations: { comments },
+      order: { id: 'DESC' },
+      skip,
+      take,
+    });
+
+    const boardCommentsLength = board_comments[1];
+    const next_page = boardCommentsLength > skip + take && page + 1;
+
+    return { board_comments, next_page };
   }
 
   //CMNT: - Create Comment
@@ -235,11 +253,9 @@ export class BoardsService {
   }
 
   // CMNT: - Verify Board
-  async verifiedBoard(id: number, relations: object) {
+  async verifiedBoard(id: number, relations?: object) {
     const board = await this.boardRepository.findOne({
-      where: {
-        id,
-      },
+      where: { id },
       relations,
     });
     if (!board) {
