@@ -26,7 +26,7 @@ import { AdminGuard } from './common/guards/admin.guard';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get(':page')
+  @Get('page/:page')
   @ApiOperation({ summary: 'Get Board List' })
   getMain(@Param('page', ParseIntPipe) page: number) {
     return this.appService.getMain(page);
