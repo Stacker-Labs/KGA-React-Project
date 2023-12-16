@@ -22,11 +22,11 @@ export class AppService {
   ) {}
 
   // CMMT: - Get Board List
-  async getMain() {
-    const boards = await this.boardRepository.find({
-      order: {
-        id: 'DESC',
-      },
+  async getMain(page: number) {
+    const take = 10;
+    const skip = take * (page - 1);
+    const boards = await this.boardRepository.findAndCount({
+      order: { id: 'DESC' },
       relations: {
         user: true,
         comments: true,
@@ -34,9 +34,13 @@ export class AppService {
         likes: true,
         views: true,
       },
+      skip,
+      take,
     });
+    const boardsLength = boards[1];
+    const next_page = boardsLength > skip + take && page + 1;
 
-    return boards;
+    return { boards, next_page };
   }
 
   // CMMT: - Get Search Board List

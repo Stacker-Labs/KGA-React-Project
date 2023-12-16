@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   UploadedFile,
@@ -14,6 +15,7 @@ import {
   ApiBody,
   ApiConsumes,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { UserGuard } from './common/guards/user.guard';
@@ -25,10 +27,10 @@ import { AdminGuard } from './common/guards/admin.guard';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get(':page')
   @ApiOperation({ summary: 'Get Board List' })
-  getMain() {
-    return this.appService.getMain();
+  getMain(@Param('page', ParseIntPipe) page: number) {
+    return this.appService.getMain(page);
   }
 
   @Get('search')
