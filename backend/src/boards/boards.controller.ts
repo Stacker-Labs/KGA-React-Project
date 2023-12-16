@@ -76,6 +76,17 @@ export class BoardsController {
     return this.boardsService.removeLikes(id, username);
   }
 
+  @Get('boards/:id/comments/:page')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get Board Comments' })
+  getComments(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('page', ParseIntPipe) page: number,
+  ) {
+    return this.boardsService.getComments(id, page);
+  }
+
   @Post('comments')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
