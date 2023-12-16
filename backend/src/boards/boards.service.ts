@@ -28,9 +28,9 @@ export class BoardsService {
   ) {}
 
   // CMMT: - Create Board
-  async create(createBoardDto: CreateBoardDto, userId: number) {
+  async create(createBoardDto: CreateBoardDto, username: string) {
     const { title, content, tags } = createBoardDto;
-    const user = await this.userService.verifiedUser(userId);
+    const user = await this.userService.getUser(username);
 
     const board = await this.boardRepository.save({
       title,
@@ -44,11 +44,9 @@ export class BoardsService {
   }
 
   // CMMT: - Find Board
-  async findOne(id: number, userId: number) {
+  async findOne(id: number, username: string) {
     const [deepComment] = await this.commentRepository.find({
-      order: {
-        depth: 'DESC',
-      },
+      order: { depth: 'DESC' },
       take: 1,
     });
 
@@ -69,28 +67,24 @@ export class BoardsService {
       likes: true,
     });
 
-    const user = await this.userService.verifiedUser(userId);
+    const user = await this.userService.getUser(username);
+
     const views = board.views ? [...board.views] : [];
-    const viewIndex = views.findIndex((viewer) => viewer.id === userId);
+    const viewIndex = views.findIndex((viewer) => viewer.id === user.id);
     if (viewIndex === -1) {
       views.push(user);
       await this.boardRepository.save({ id, views });
     }
 
     const likes = board.likes ? [...board.likes] : [];
-    const likeIndex = likes.findIndex((liker) => liker.id === userId);
+    const likeIndex = likes.findIndex((liker) => liker.id === user.id);
     const like_it = likeIndex !== -1;
 
     return { ...board, like_it };
   }
 
   // CMMT: - Update Board
-  async update(
-    id: number,
-    updateBoardDto: UpdateBoardDto,
-    userId: number,
-    role: Role,
-  ) {
+  async update(id: number, updateBoardDto: UpdateBoardDto, username: string) {
     const { title, content, tags } = updateBoardDto;
     const board = await this.verifiedBoard(id, {
       user: true,
@@ -99,7 +93,9 @@ export class BoardsService {
 
     // TODO: - UpdateBoardDto 내용 확인
 
-    if (board.user.id === userId || role === Role.ADMIN) {
+    const user = await this.userService.getUser(username);
+
+    if (board.user.id === user.id || user.role === Role.ADMIN) {
       const updatedBoard = await this.boardRepository.save({
         id,
         title,
@@ -115,10 +111,11 @@ export class BoardsService {
   }
 
   // CMMT: - Delete Board
-  async remove(id: number, userId: number, role: Role) {
+  async remove(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true });
+    const user = await this.userService.getUser(username);
 
-    if (board.user.id === userId || role === Role.ADMIN) {
+    if (board.user.id === user.id || user.role === Role.ADMIN) {
       return this.boardRepository.delete(id);
     }
 
@@ -126,12 +123,12 @@ export class BoardsService {
   }
 
   // CMNT: - Create Likes
-  async createLikes(id: number, userId: number) {
+  async createLikes(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true, likes: true });
-    const user = await this.userService.verifiedUser(userId);
+    const user = await this.userService.getUser(username);
 
     const likes = board.likes ? [...board.likes] : [];
-    const index = likes.findIndex((liker) => liker.id === userId);
+    const index = likes.findIndex((liker) => liker.id === user.id);
     if (index === -1) {
       likes.push(user);
     } else {
@@ -142,11 +139,12 @@ export class BoardsService {
   }
 
   // CMNT: - Delete Likes
-  async removeLikes(id: number, userId: number) {
+  async removeLikes(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true, likes: true });
+    const user = await this.userService.getUser(username);
 
     const likes = board.likes ? [...board.likes] : [];
-    const index = likes.findIndex((liker) => liker.id === userId);
+    const index = likes.findIndex((liker) => liker.id === user.id);
 
     if (index === -1) {
       throw new BadRequestException('이미 추천이 취소되었습니다.');
@@ -157,9 +155,9 @@ export class BoardsService {
   }
 
   //CMNT: - Create Comment
-  async createComment(createCommentDto: CreateCommentDto, userId: number) {
+  async createComment(createCommentDto: CreateCommentDto, username: string) {
     const { boardId, content, parentCommentId } = createCommentDto;
-    const user = await this.userService.verifiedUser(userId);
+    const user = await this.userService.getUser(username);
 
     const parentComment = await this.commentRepository.findOne({
       where: { id: parentCommentId },
@@ -194,9 +192,10 @@ export class BoardsService {
   async updateComment(
     id: number,
     updateCommentDto: UpdateCommentDto,
-    userId: number,
+    username: string,
   ) {
-    const comment = await this.verifiedComment(id, userId);
+    const user = await this.userService.getUser(username);
+    const comment = await this.verifiedComment(id, user.id);
 
     const updatedComment = await this.commentRepository.save({
       id: comment.id,
@@ -207,8 +206,9 @@ export class BoardsService {
   }
 
   // CMNT: - Delete Comment
-  async removeComment(id: number, userId: number) {
-    const comment = await this.verifiedComment(id, userId);
+  async removeComment(id: number, username: string) {
+    const user = await this.userService.getUser(username);
+    const comment = await this.verifiedComment(id, user.id);
 
     return this.commentRepository.save({
       id,
@@ -252,12 +252,8 @@ export class BoardsService {
   // CMNT: - Verify Comment
   async verifiedComment(id: number, userId: number) {
     const comment = await this.commentRepository.findOne({
-      where: {
-        id,
-      },
-      relations: {
-        user: true,
-      },
+      where: { id },
+      relations: { user: true },
     });
     if (!comment) {
       throw new BadRequestException('존재하지 않는 댓글입니다.');

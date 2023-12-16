@@ -7,6 +7,7 @@ import { TagModel } from './boards/entities/tag.entity';
 import { Role } from './common/const/role.enum';
 import AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
+import { UsersService } from './users/users.service';
 
 @Injectable()
 export class AppService {
@@ -17,6 +18,7 @@ export class AppService {
     private readonly userRepository: Repository<UserModel>,
     @InjectRepository(TagModel)
     private readonly tagRepository: Repository<TagModel>,
+    private readonly usersService: UsersService,
   ) {}
 
   // CMMT: - Get Board List
@@ -80,11 +82,7 @@ export class AppService {
   }
 
   // CMMT: - Get User List
-  async getAdmin(role: Role) {
-    if (role !== Role.ADMIN) {
-      throw new UnauthorizedException('권한이 없습니다.');
-    }
-
+  async getUsers() {
     const users = await this.userRepository.find({
       order: {
         id: 'DESC',

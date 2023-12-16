@@ -28,16 +28,16 @@ export class BoardsController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post Board' })
-  create(@Body() createBoardDto: CreateBoardDto, @User('id') userId: number) {
-    return this.boardsService.create(createBoardDto, userId);
+  create(@Body() createBoardDto: CreateBoardDto, @User() username: string) {
+    return this.boardsService.create(createBoardDto, username);
   }
 
   @Get('boards/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get Board' })
-  findOne(@Param('id', ParseIntPipe) id: number, @User('id') userId: number) {
-    return this.boardsService.findOne(id, userId);
+  findOne(@Param('id', ParseIntPipe) id: number, @User() username: string) {
+    return this.boardsService.findOne(id, username);
   }
 
   @Put('boards/:id')
@@ -47,44 +47,33 @@ export class BoardsController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateBoardDto: UpdateBoardDto,
-    @User('id') userId: number,
-    @User('role') role: Role,
+    @User() username: string,
   ) {
-    return this.boardsService.update(id, updateBoardDto, userId, role);
+    return this.boardsService.update(id, updateBoardDto, username);
   }
 
   @Delete('boards/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Board' })
-  remove(
-    @Param('id', ParseIntPipe) id: number,
-    @User('id') userId: number,
-    @User('role') role: Role,
-  ) {
-    return this.boardsService.remove(id, userId, role);
+  remove(@Param('id', ParseIntPipe) id: number, @User() username: string) {
+    return this.boardsService.remove(id, username);
   }
 
   @Post('boards/:id/likes')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create Likes' })
-  createLikes(
-    @Param('id', ParseIntPipe) id: number,
-    @User('id') userId: number,
-  ) {
-    return this.boardsService.createLikes(id, userId);
+  createLikes(@Param('id', ParseIntPipe) id: number, @User() username: string) {
+    return this.boardsService.createLikes(id, username);
   }
 
   @Delete('boards/:id/likes')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Likes' })
-  removeLikes(
-    @Param('id', ParseIntPipe) id: number,
-    @User('id') userId: number,
-  ) {
-    return this.boardsService.removeLikes(id, userId);
+  removeLikes(@Param('id', ParseIntPipe) id: number, @User() username: string) {
+    return this.boardsService.removeLikes(id, username);
   }
 
   @Post('comments')
@@ -93,9 +82,9 @@ export class BoardsController {
   @ApiOperation({ summary: 'Create Comment' })
   createComment(
     @Body() createCommentDto: CreateCommentDto,
-    @User('id') userId: number,
+    @User() username: string,
   ) {
-    return this.boardsService.createComment(createCommentDto, userId);
+    return this.boardsService.createComment(createCommentDto, username);
   }
 
   @Put('comments/:id')
@@ -105,9 +94,9 @@ export class BoardsController {
   updateComment(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCommentDto: UpdateCommentDto,
-    @User('id') userId: number,
+    @User() username: string,
   ) {
-    return this.boardsService.updateComment(id, updateCommentDto, userId);
+    return this.boardsService.updateComment(id, updateCommentDto, username);
   }
 
   @Delete('comments/:id')
@@ -116,8 +105,8 @@ export class BoardsController {
   @ApiOperation({ summary: 'Delete Comment' })
   removeComment(
     @Param('id', ParseIntPipe) id: number,
-    @User('id') userId: number,
+    @User() username: string,
   ) {
-    return this.boardsService.removeComment(id, userId);
+    return this.boardsService.removeComment(id, username);
   }
 }
