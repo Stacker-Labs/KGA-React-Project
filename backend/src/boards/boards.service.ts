@@ -46,6 +46,7 @@ export class BoardsService {
   // GETCMMT: - Find Board
   async findOne(id: number, username: string) {
     const board = await this.verifiedBoard(id, {
+      comments: true,
       user: true,
       tags: true,
       views: true,
@@ -61,7 +62,9 @@ export class BoardsService {
       await this.boardRepository.save({ id, views });
     }
 
-    return board;
+    const comments = board.comments.length;
+
+    return { ...board, comments };
   }
 
   // PUTCMMT: - Update Board
