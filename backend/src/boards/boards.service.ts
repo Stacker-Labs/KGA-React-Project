@@ -32,11 +32,7 @@ export class BoardsService {
     const { title, content, tags } = createBoardDto;
     const user = await this.userService.getUser(username);
 
-    const board = await this.boardRepository.save({
-      title,
-      content,
-      user,
-    });
+    const board = await this.boardRepository.save({ title, content, user });
 
     this.setTags(board, tags);
 
@@ -62,18 +58,15 @@ export class BoardsService {
       await this.boardRepository.save({ id, views });
     }
 
-    const comments = board.comments.length;
+    const comments_length = board.comments.length;
 
-    return { ...board, comments };
+    return { ...board, comments_length };
   }
 
   // PUTCMMT: - Update Board
   async update(id: number, updateBoardDto: UpdateBoardDto, username: string) {
     const { title, content, tags } = updateBoardDto;
-    const board = await this.verifiedBoard(id, {
-      user: true,
-      tags: true,
-    });
+    const board = await this.verifiedBoard(id, { user: true, tags: true });
 
     // TODO: - UpdateBoardDto 내용 확인
 
@@ -252,6 +245,7 @@ export class BoardsService {
           where: { tag },
           relations: { boards: true },
         });
+
         const id = tagPick ? tagPick.id : null;
         const boards = tagPick ? tagPick.boards : [];
         boards.push(board);

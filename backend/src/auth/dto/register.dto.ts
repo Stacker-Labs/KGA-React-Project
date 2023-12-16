@@ -20,6 +20,6 @@ export class RegisterDto {
 
   @IsString()
   @IsOptional()
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, required: false })
   image?: string;
 }

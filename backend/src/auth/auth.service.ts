@@ -28,11 +28,7 @@ export class AuthService {
     // TODO
     const { username, password } = loginDto;
 
-    const user = await this.userRepository.findOne({
-      where: {
-        username,
-      },
-    });
+    const user = await this.userRepository.findOne({ where: { username } });
     if (!user) {
       throw new BadRequestException('존재하지 않는 사용자입니다.');
     }
@@ -42,9 +38,7 @@ export class AuthService {
       throw new UnauthorizedException('비밀번호가 다릅니다.');
     }
 
-    const payload = {
-      username,
-    };
+    const payload = { username };
 
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
@@ -74,9 +68,7 @@ export class AuthService {
     const githubAccessToken = githubTokenResult.access_token;
     const response = await fetch('https://api.github.com/user', {
       method: 'get',
-      headers: {
-        Authorization: `Bearer ${githubAccessToken}`,
-      },
+      headers: { Authorization: `Bearer ${githubAccessToken}` },
     });
     const result = await response.json();
     const { id, login: nickname, avatar_url: image } = result;
@@ -100,9 +92,7 @@ export class AuthService {
       'https://www.googleapis.com/oauth2/v2/userinfo',
       {
         method: 'get',
-        headers: {
-          Authorization: `Bearer ${googleAccessToken}`,
-        },
+        headers: { Authorization: `Bearer ${googleAccessToken}` },
       },
     );
     const result = await response.json();
@@ -127,9 +117,7 @@ export class AuthService {
       'https://kauth.kakao.com/oauth/token',
       {
         method: 'post',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `grant_type=authorization_code&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${process.env.KAKAO_REDIRECT}&code=${code}`,
       },
     );
@@ -163,11 +151,7 @@ export class AuthService {
     // TODO
     const { username, password, nickname, image } = registerDto;
 
-    const user = await this.userRepository.findOne({
-      where: {
-        username,
-      },
-    });
+    const user = await this.userRepository.findOne({ where: { username } });
 
     if (user) {
       throw new BadRequestException('이미 존재하는 아이디입니다.');
@@ -196,11 +180,7 @@ export class AuthService {
   // CMNT: - Generate Token
   async signToken(payload: TokenDto) {
     const { username, password } = payload;
-    const user = await this.userRepository.findOne({
-      where: {
-        username,
-      },
-    });
+    const user = await this.userRepository.findOne({ where: { username } });
 
     if (!user) {
       await this.userRepository.save({
@@ -211,10 +191,7 @@ export class AuthService {
 
     const token = this.jwtService.sign(
       { username },
-      {
-        secret: process.env.JWT_SECRET,
-        expiresIn: 3600,
-      },
+      { secret: process.env.JWT_SECRET, expiresIn: 3600 },
     );
 
     return token;

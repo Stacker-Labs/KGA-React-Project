@@ -9,18 +9,18 @@ export class TokenDto {
   username: string;
 
   @IsString()
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, required: false })
   password?: string;
 
   @IsString()
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, required: false })
   nickname?: string;
 
   @IsEnum(Provider)
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, required: false })
   provider?: Provider;
 
   @IsString()
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: null, required: false })
   image?: string;
 }
