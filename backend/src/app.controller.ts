@@ -50,8 +50,8 @@ export class AppController {
   }
 
   @Get('admin')
-  @UseGuards(UserGuard)
   @UseGuards(AdminGuard)
+  @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get User List' })
   getAdmin() {
