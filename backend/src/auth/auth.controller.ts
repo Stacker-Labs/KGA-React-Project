@@ -18,19 +18,19 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Post('github/callback')
+  @Post('github')
   @ApiOperation({ summary: 'Github Login' })
   githubLogin(@Body() githubLoginDto: GithubLoginDto) {
     return this.authService.githubLogin(githubLoginDto);
   }
 
-  @Post('google/callback')
+  @Post('google')
   @ApiOperation({ summary: 'Google Login' })
   googleLogin(@Body() googleLoginDto: GoogleLoginDto) {
     return this.authService.googleLogin(googleLoginDto);
   }
 
-  @Post('kakao/callback')
+  @Post('kakao')
   @ApiOperation({ summary: 'Kakao Login' })
   kakaoLogin(@Body() kakaoLoginDto: KakaoLoginDto) {
     return this.authService.kakaoLogin(kakaoLoginDto);

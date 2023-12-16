@@ -17,9 +17,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserGuard } from './common/guards/user.guard';
-import { User } from './common/decorator/user.decorator';
-import { Role } from './common/const/role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AdminGuard } from './common/guards/admin.guard';
 
 @ApiTags('/')
 @Controller()
@@ -51,11 +50,12 @@ export class AppController {
   }
 
   @Get('admin')
+  @UseGuards(AdminGuard)
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get User List' })
-  getAdmin(@User('role') role: Role) {
-    return this.appService.getAdmin(role);
+  getAdmin() {
+    return this.appService.getUsers();
   }
 
   @Post('image')

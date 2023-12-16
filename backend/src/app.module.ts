@@ -41,7 +41,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         TagModel,
       ],
       synchronize: true,
-      ssl: {
+      ssl: process.env.DB_HOSTNAME && {
         rejectUnauthorized: false,
       },
     }),
