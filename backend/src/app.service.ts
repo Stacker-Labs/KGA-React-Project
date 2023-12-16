@@ -49,12 +49,8 @@ export class AppService {
   // CMMT: - Get Search Board List
   async getSearch(query: string) {
     const boards = await this.boardRepository.find({
-      where: {
-        title: ILike(`%${query}%`),
-      },
-      order: {
-        id: 'DESC',
-      },
+      where: { title: ILike(`%${query}%`) },
+      order: { id: 'DESC' },
     });
 
     return boards;
@@ -62,11 +58,7 @@ export class AppService {
 
   // CMMT: - Get Tag List
   async getTags() {
-    const tags = await this.tagRepository.find({
-      order: {
-        id: 'DESC',
-      },
-    });
+    const tags = await this.tagRepository.find({ order: { id: 'DESC' } });
 
     return tags;
   }
@@ -74,15 +66,9 @@ export class AppService {
   // CMMT: - Get Tag Board List
   async getTagBoards(tag: string) {
     const boards = await this.tagRepository.find({
-      where: {
-        tag,
-      },
-      relations: {
-        boards: true,
-      },
-      order: {
-        id: 'DESC',
-      },
+      where: { tag },
+      relations: { boards: true },
+      order: { id: 'DESC' },
     });
 
     return boards;
@@ -90,11 +76,7 @@ export class AppService {
 
   // CMMT: - Get User List
   async getUsers() {
-    const users = await this.userRepository.find({
-      order: {
-        id: 'DESC',
-      },
-    });
+    const users = await this.userRepository.find({ order: { id: 'DESC' } });
 
     return users;
   }
