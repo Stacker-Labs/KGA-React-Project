@@ -107,7 +107,7 @@ export class AppService {
     // const data = await new Promise((res, rej) => {
     //   bucket.putObject(params, (e, d) => {
     //     res({
-    //       link: `${bucket.endpoint.href}${file.originalname}`,
+    //       link: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
     //     });
     //   });
     // });
@@ -118,7 +118,9 @@ export class AppService {
       .putObject(params)
       .promise()
       .then(() => {
-        return { link: `${bucket.endpoint.href}${file.originalname}` };
+        return {
+          link: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
+        };
       });
   }
 }
