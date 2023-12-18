@@ -22,7 +22,7 @@ const LoginForm = () => {
       });
       const result = await response.json();
       console.log(result);
-      if (result.accessToken) navigate("/");
+      if (result) navigate("/");
     } catch (e) {
       console.log(e);
     }
