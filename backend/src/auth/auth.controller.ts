@@ -49,6 +49,7 @@ export class AuthController {
 
   @Post('logout')
   @ApiBearerAuth()
+  @UseInterceptors(CookieInterceptor)
   @ApiOperation({ summary: 'Logout' })
   logout() {
     return this.authService.logout();
