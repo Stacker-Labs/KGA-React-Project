@@ -1,15 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../../tw_components/atoms/Buttons";
-import Input from "../../tw_components/atoms/Inputs";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../recoil/User";
 import { Link } from "react-router-dom";
-import {
-  github_icon,
-  kakao_icon,
-  google_icon,
-} from "../../images/login_assets";
 import RegisterForm from "../../tw_components/molecules/RegisterForm";
 
 const StyledContainer = styled.div`

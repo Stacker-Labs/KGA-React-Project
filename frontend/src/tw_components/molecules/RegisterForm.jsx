@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -26,26 +26,17 @@ const RegisterForm = () => {
 
     const uploadImageToS3 = async (file) => {
       try {
-        const response = await fetch("https://api.subin.kr/image");
-        const data = await response.json();
-        const presignedUrl = data.url;
-
-        const uploadResponse = await fetch(presignedUrl, {
+        const response = await fetch("https://api.subin.kr/image", {
           method: "POST",
           headers: {
             "Content-Type": "multipart/form-data", // or appropriate content type
           },
           body: file,
         });
+        const data = await response.json();
+        console.log(data.url);
 
-        if (uploadResponse.status === 200) {
-          // The file was successfully uploaded
-          // Extract the S3 file URL from the presigned URL
-          const imageUrl = presignedUrl.split("?")[0];
-          return imageUrl;
-        } else {
-          throw new Error("Failed to upload image to S3");
-        }
+        return data.url;
       } catch (error) {
         console.error("Error uploading image:", error);
         throw error;
@@ -67,7 +58,8 @@ const RegisterForm = () => {
       const result = await response.json();
       console.log(result);
       // reset form?
-      if (result.accessToken) navigate("/");
+      if (result) navigate("/");
+      // toastify
     } catch (e) {
       console.log(e);
     }
