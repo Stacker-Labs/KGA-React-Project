@@ -10,6 +10,7 @@ import {
   kakao_icon,
   google_icon,
 } from "../../images/login_assets";
+import RegisterForm from "../../tw_components/molecules/RegisterForm";
 
 const StyledContainer = styled.div`
   width: 40%;
@@ -32,25 +33,7 @@ const Register = () => {
         Stacker-Labs
       </Link>
       <p className="text-xl font-bold">Create Your Account</p>
-
-      <form
-        encType="multipart/form-data"
-        className="flex flex-col gap-y-3 items-center"
-      >
-        <label
-          htmlFor="image"
-          className="self-start ml-4 text-lg text-gray-700"
-        >
-          Profile Picture
-        </label>
-        <Input type="file" name="image" id="image" />
-        <Input type="text" placeholder="ID" />
-        <Input type="text" placeholder="Password" />
-        <Input type="text" placeholder="Confirm your password" />
-        <Button variant={"blue"} size={"sign"}>
-          <span className="text-white">Register</span>
-        </Button>
-      </form>
+      <RegisterForm />
       <span>
         Already have an account?
         <Link to={"/auth"}>

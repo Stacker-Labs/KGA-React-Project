@@ -12,12 +12,13 @@ export default () => {
     const getAccessToken = async () => {
       if (code) {
         const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/auth/google/callback`,
+          `${process.env.REACT_APP_API_SERVER}/auth/google`,
           {
             method: "post",
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify({
               code,
             }),

@@ -10,6 +10,7 @@ import {
   kakao_icon,
   google_icon,
 } from "../../images/login_assets";
+import LoginForm from "../../tw_components/molecules/LoginForm";
 
 const StyledContainer = styled.div`
   width: 40%;
@@ -100,15 +101,7 @@ const Login = () => {
         </Button>
       </div>
       <StyledFormContainer isVisible={isFormVisible}>
-        {isFormVisible && (
-          <form className="flex flex-col items-center">
-            <Input type="text" placeholder="ID" />
-            <Input type="password" placeholder="Password" />
-            <Button variant={"blue"} size={"sign"}>
-              <span className="text-white">Sign In</span>
-            </Button>
-          </form>
-        )}
+        {isFormVisible && <LoginForm />}
       </StyledFormContainer>
 
       <span>
