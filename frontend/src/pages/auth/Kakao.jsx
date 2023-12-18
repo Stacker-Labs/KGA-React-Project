@@ -13,12 +13,13 @@ export default () => {
     const getAccessToken = async () => {
       if (code) {
         const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/auth/kakao/callback`,
+          `${process.env.REACT_APP_API_SERVER}/auth/kakao`,
           {
             method: "post",
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify({
               code,
             }),
