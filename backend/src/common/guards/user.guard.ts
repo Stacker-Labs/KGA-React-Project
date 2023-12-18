@@ -12,7 +12,8 @@ export class UserGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    const accessToken = req.headers['authorization'];
+    const accessToken =
+      req.headers['authorization'] || `Bearer ${req.cookies['access-token']}`;
     if (!accessToken) {
       throw new UnauthorizedException('로그인이 필요합니다.');
     }
