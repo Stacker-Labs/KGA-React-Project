@@ -17,7 +17,10 @@ export class CookieInterceptor implements NestInterceptor {
       .pipe(
         tap((data) => {
           const res = context.switchToHttp().getResponse();
-          res.cookie(`access-token`, data.accessToken);
+          res.cookie(`access-token`, data.accessToken, {
+            maxAge: data.expiresIn ?? 3600 * 1000,
+            // httpOnly: true,
+          });
         }),
       )
       .pipe(

@@ -174,7 +174,9 @@ export class AuthService {
 
   // CMNT: - Logout
   async logout() {
-    return this.jwtService.sign(null, { expiresIn: 0 });
+    const expiresIn = 0;
+    const accessToken = this.jwtService.sign(null, { expiresIn });
+    return { accessToken, expiresIn };
   }
 
   // CMNT: - Generate Token

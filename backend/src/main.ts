@@ -4,7 +4,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      credentials: true,
+      origin: ['http://localhost:3000'],
+    },
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Stacker Labs')
