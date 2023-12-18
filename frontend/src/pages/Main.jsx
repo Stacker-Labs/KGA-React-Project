@@ -11,7 +11,9 @@ const Main = () => {
   useEffect(() => {
     const boardData = async () => {
       try {
-        const response = await axios.get("http://api.subin.kr/page/1");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_SERVER}/page/1`
+        );
         setBoard(response.data.boards);
         console.log(response.data.boards);
       } catch (error) {
