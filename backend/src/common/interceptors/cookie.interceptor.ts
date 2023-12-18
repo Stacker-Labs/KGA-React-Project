@@ -22,9 +22,7 @@ export class CookieInterceptor implements NestInterceptor {
       )
       .pipe(
         map((data) => ({
-          message:
-            'Set access token in cookie. accessToken for authorization swagger',
-          ...data,
+          message: 'Access token is in cookie now.',
         })),
       );
   }
