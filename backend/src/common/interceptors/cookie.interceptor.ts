@@ -19,7 +19,10 @@ export class CookieInterceptor implements NestInterceptor {
           const res = context.switchToHttp().getResponse();
           res.cookie(`access-token`, data.accessToken, {
             maxAge: data.expiresIn ?? 3600 * 1000,
-            // httpOnly: true,
+            domain: '.subin.kr',
+            sameSite: 'None',
+            secure: true,
+            httpOnly: true,
           });
         }),
       )
