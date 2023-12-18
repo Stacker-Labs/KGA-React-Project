@@ -15,7 +15,6 @@ import { TagModel } from './boards/entities/tag.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users/users.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { CookieInterceptor } from './common/interceptors/cookie.interceptor';
 
 @Module({
   imports: [
@@ -53,10 +52,7 @@ import { CookieInterceptor } from './common/interceptors/cookie.interceptor';
     AppService,
     JwtService,
     UsersService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
-    },
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })
 export class AppModule {}
