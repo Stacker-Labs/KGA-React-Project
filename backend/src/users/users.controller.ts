@@ -8,12 +8,14 @@ import {
   ParseIntPipe,
   UseGuards,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
 import { UserGuard } from 'src/common/guards/user.guard';
+import { CookieInterceptor } from 'src/common/interceptors/cookie.interceptor';
 
 @ApiTags('users')
 @Controller('users')
@@ -23,8 +25,9 @@ export class UsersController {
   @Get()
   @ApiOperation({ summary: 'Get Login User' })
   @UseGuards(UserGuard)
+  @UseInterceptors(CookieInterceptor)
   getLoginUser(@User() username: string) {
-    return this.usersService.getUser(username);
+    return this.usersService.getLoginUser(username);
   }
 
   @Get(':id')
