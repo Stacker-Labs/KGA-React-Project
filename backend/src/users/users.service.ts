@@ -8,13 +8,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserModel)
     private readonly userRepository: Repository<UserModel>,
+    private readonly jwtService: JwtService,
   ) {}
+
+  // CMNT: - Get Login User
+  async getLoginUser(username: string) {
+    const user = await this.getUser(username);
+    const accessToken = this.jwtService.sign(
+      { username },
+      { secret: process.env.JWT_SECRET, expiresIn: 3600 },
+    );
+
+    return { accessToken, user };
+  }
 
   // CMMT: - Find User
   async findOne(id: number) {

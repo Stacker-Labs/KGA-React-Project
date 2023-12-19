@@ -29,6 +29,7 @@ export class CookieInterceptor implements NestInterceptor {
       .pipe(
         map((data) => ({
           message: 'Access token is in cookie now.',
+          user: data.user,
         })),
       );
   }
