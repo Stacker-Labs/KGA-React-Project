@@ -67,14 +67,28 @@ export class AppService {
   }
 
   // CMMT: - Get Tag Board List
-  async getTagBoards(tag: string) {
-    const boards = await this.tagRepository.find({
-      where: { tag },
-      relations: { boards: true },
+  async getTagBoards(tag: string, page: number) {
+    const take = 10;
+    const skip = take * (page - 1);
+    const boards = await this.boardRepository.findAndCount({
+      where: {
+        tags: {
+          tag,
+        },
+      },
+      relations: {
+        user: true,
+        comments: true,
+        tags: true,
+        likes: true,
+        views: true,
+      },
       order: { id: 'DESC' },
+      skip,
+      take,
     });
 
-    return boards;
+    return this.pagination(boards, take, skip, page);
   }
 
   // CMMT: - Get User List
