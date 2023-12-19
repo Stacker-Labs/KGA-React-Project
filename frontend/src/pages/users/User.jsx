@@ -52,6 +52,7 @@ const User = () => {
               and skills in something you are absolutely fascina absolutely
               fascina Tags Tags Tags Tags Like Comments
             </div>
+            {/* <img src=""></img> */}
           </div>
         </div>
       </div>
@@ -60,5 +61,3 @@ const User = () => {
 };
 
 export default User;
-
-//test
