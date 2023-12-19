@@ -32,8 +32,8 @@ export class UsersService {
   // CMMT: - Find User
   async findOne(id: number) {
     const user = await this.verifiedUser(id, {
-      follower_users: true,
-      following_users: true,
+      followerUsers: true,
+      followingUsers: true,
       boards: true,
       comments: true,
     });
@@ -72,43 +72,39 @@ export class UsersService {
 
   // CMNT: - Create Follow
   async createFollow(id: number, username: string) {
-    const user = await this.getUser(username, { following_users: true });
+    const user = await this.getUser(username, { followingUsers: true });
     if (id === user.id) {
       throw new BadRequestException('자기 자신은 팔로우 할 수 없습니다.');
     }
 
     const targetUser = await this.verifiedUser(id);
 
-    const following_users = user.following_users
-      ? [...user.following_users]
-      : [];
-    const index = following_users.findIndex((following) => following.id === id);
+    const followingUsers = user.followingUsers ? [...user.followingUsers] : [];
+    const index = followingUsers.findIndex((following) => following.id === id);
     if (index === -1) {
-      following_users.push(targetUser);
+      followingUsers.push(targetUser);
     } else {
       throw new BadRequestException('이미 팔로우 한 사용자입니다.');
     }
 
-    return this.userRepository.save({ id: user.id, following_users });
+    return this.userRepository.save({ id: user.id, followingUsers });
   }
 
   // CMNT: - Remove Follow
   async removeFollow(id: number, username: string) {
-    const user = await this.getUser(username, { following_users: true });
+    const user = await this.getUser(username, { followingUsers: true });
 
-    const following_users = user.following_users
-      ? [...user.following_users]
-      : [];
-    const index = following_users.findIndex((following) => following.id === id);
+    const followingUsers = user.followingUsers ? [...user.followingUsers] : [];
+    const index = followingUsers.findIndex((following) => following.id === id);
     if (index === -1) {
       throw new BadRequestException('이미 팔로우가 취소되었습니다.');
     }
 
-    following_users.splice(index, 1);
+    followingUsers.splice(index, 1);
 
     return this.userRepository.save({
       id: user.id,
-      following_users,
+      followingUsers,
     });
   }
 
