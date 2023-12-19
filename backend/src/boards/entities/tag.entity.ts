@@ -7,8 +7,6 @@ export class TagModel extends BaseModel {
   @Column()
   tag: string;
 
-  @ManyToMany(() => BoardModel, (board) => board.tags, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToMany(() => BoardModel, (board) => board.tags)
   boards: BoardModel[];
 }

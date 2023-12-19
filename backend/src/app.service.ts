@@ -61,9 +61,17 @@ export class AppService {
 
   // CMMT: - Get Tag List
   async getTags() {
-    const tags = await this.tagRepository.find({ order: { id: 'DESC' } });
+    const tags = await this.tagRepository.find({
+      relations: { boards: true },
+      order: { id: 'DESC' },
+    });
 
-    return tags;
+    const result = [];
+    tags.forEach((tag) =>
+      result.push({ tag: tag.tag, boardsLength: tag.boards.length }),
+    );
+
+    return result;
   }
 
   // CMMT: - Get Tag Board List
