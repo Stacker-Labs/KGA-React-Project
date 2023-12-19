@@ -20,6 +20,13 @@ import { UserGuard } from 'src/common/guards/user.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Get Login User' })
+  @UseGuards(UserGuard)
+  getLoginUser(@User() username: string) {
+    return this.usersService.getUser(username);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get User' })
   findOne(@Param('id', ParseIntPipe) id: number) {
