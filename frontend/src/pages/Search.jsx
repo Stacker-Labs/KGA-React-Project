@@ -1,28 +1,60 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/organisms/Header";
-import PostBox from "../components/molecules/PostBox";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+import SearchBox from "../components/molecules/SearchBox";
 
 const Search = () => {
-  const [board, setBoard] = useState([]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("q");
+  console.log(searchQuery);
+  const [searchBoard, setSearchBoard] = useState([]);
+  const [page, setPage] = useState(false);
 
   useEffect(() => {
-    const boardData = async () => {
+    const result = async () => {
       try {
-        const response = await axios.get("https://api.subin.kr/");
-        setBoard(response.data);
-        console.log(response.data);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_SERVER}/search/1?q=${searchQuery}`
+        );
+        setSearchBoard(response.data);
+        setPage(response.data.nextPage);
       } catch (error) {
         console.log(`error :`, error);
       }
     };
-    boardData();
-  }, []);
+    if (searchQuery) {
+      result();
+    }
+    if (page) {
+      window.removeEventListener("scroll", () => {});
+      const scroll = async () => {
+        try {
+          const height =
+            document.documentElement.scrollTop + window.innerHeight;
+          const scrollPosition = document.documentElement.scrollHeight;
+          if (height >= scrollPosition * 0.8) {
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_SERVER}/search/${page}?q=${searchQuery}`
+            );
+            setSearchBoard([...searchBoard, ...response.data]);
+            setPage(response.data.nextPage);
+          }
+        } catch (error) {
+          console.log(`error :`, error);
+        }
+      };
+      window.addEventListener("scroll", scroll);
+    } else {
+      window.removeEventListener("scroll", () => {});
+    }
+  }, [searchQuery, page]);
+  console.log(searchBoard);
+
   return (
     <>
-      <Header />
       <div className=" w-7/12 mx-auto py-5 font-serif flex justify-between items-center">
-        <div className="text-3xl">Search results for 'react'</div>
+        <div className="text-3xl">Search results for {searchQuery} </div>
         <ul className="flex flex-row gap-5">
           <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg ">
             Most Relevant
@@ -51,7 +83,7 @@ const Search = () => {
           </li>
         </ul>
         <div className=" w-[80%] flex flex-col gap-5 ">
-          <PostBox board={board} />
+          <SearchBox searchBoard={searchBoard} />
         </div>
       </div>
     </>
