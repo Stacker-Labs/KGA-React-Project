@@ -14,6 +14,7 @@ import Register from "./pages/auth/Register";
 import Tags from "./pages/Tags";
 import Search from "./pages/Search";
 import Header from "./components/organisms/Header";
+import TagItem from "./pages/TagItem";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/search/:id" element={<Search />} />
           <Route path="/tags" element={<Tags />} />
-          <Route path="/tags/:id" element={<Tags />} />
+          <Route path="/tags/:id" element={<TagItem />} />
           <Route path="/boards" element={<Board />} />
           <Route path="/boards/:id" element={<View />} />
           <Route path="/boards/:id/edit" element={<Modify />} />
