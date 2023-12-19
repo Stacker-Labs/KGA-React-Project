@@ -22,6 +22,7 @@ export class CookieInterceptor implements NestInterceptor {
           res.cookie(`access-token`, data.accessToken, {
             maxAge: data.expiresIn ?? 3600 * 1000,
             domain: process.env.DOMAIN || 'localhost',
+            sameSite: httpsProtocol && 'None',
             secure: httpsProtocol,
             httpOnly: true,
           });
