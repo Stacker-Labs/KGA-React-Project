@@ -47,10 +47,10 @@ export class AppController {
     return this.appService.getTags();
   }
 
-  @Get('tags/:tag')
+  @Get('tags/:tag/:page')
   @ApiOperation({ summary: 'Get Tag Board List' })
-  getTag(@Param('tag') tag: string) {
-    return this.appService.getTagBoards(tag);
+  getTag(@Param('tag') tag: string, @Param('page', ParseIntPipe) page: number) {
+    return this.appService.getTagBoards(tag, page);
   }
 
   @Get('admin')
