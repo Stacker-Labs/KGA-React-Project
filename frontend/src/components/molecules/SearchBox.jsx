@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import { TempUserImg } from "../../images";
 
 const SearchBox = ({ searchBoard }) => {
-  const { boards, boardLength, nextPage } = searchBoard;
   return (
     <>
-      {boards && boards.length > 0 ? (
-        boards.map((item, index) => {
+      {searchBoard && searchBoard.length > 0 ? (
+        searchBoard.map((item, index) => {
           return (
             <div key={index} className="border rounded-md w-[800px] p-8">
               <div className="flex flex-row">

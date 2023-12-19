@@ -6,50 +6,48 @@ import SearchBox from "../components/molecules/SearchBox";
 const Search = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const searchQuery = queryParams.get("q");
-  console.log(searchQuery);
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchBoard, setSearchBoard] = useState([]);
   const [page, setPage] = useState(false);
 
   useEffect(() => {
-    const result = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_SERVER}/search/1?q=${searchQuery}`
-        );
-        setSearchBoard(response.data);
-        setPage(response.data.nextPage);
-      } catch (error) {
-        console.log(`error :`, error);
-      }
-    };
-    if (searchQuery) {
-      result();
-    }
-    if (page) {
-      window.removeEventListener("scroll", () => {});
-      const scroll = async () => {
+    if (!searchQuery) {
+      const result = async () => {
         try {
-          const height =
-            document.documentElement.scrollTop + window.innerHeight;
-          const scrollPosition = document.documentElement.scrollHeight;
-          if (height >= scrollPosition * 0.8) {
-            const response = await axios.get(
-              `${process.env.REACT_APP_API_SERVER}/search/${page}?q=${searchQuery}`
-            );
-            setSearchBoard([...searchBoard, ...response.data]);
-            setPage(response.data.nextPage);
-          }
+          const response = await axios.get(
+            `${process.env.REACT_APP_API_SERVER}/search/1?q=${searchQuery}`
+          );
+          setSearchBoard(response.data.boards);
+          setPage(response.data.nextPage);
+          setSearchQuery(queryParams.get("q"));
         } catch (error) {
           console.log(`error :`, error);
         }
       };
-      window.addEventListener("scroll", scroll);
-    } else {
-      window.removeEventListener("scroll", () => {});
+      result();
     }
-  }, [searchQuery, page]);
-  console.log(searchBoard);
+
+    const scroll = async () => {
+      try {
+        const height = document.documentElement.scrollTop + window.innerHeight;
+        const scrollPosition = document.documentElement.scrollHeight;
+        if (height >= scrollPosition * 0.8) {
+          const response = await axios.get(
+            `${process.env.REACT_APP_API_SERVER}/search/${page}?q=${searchQuery}`
+          );
+          setSearchBoard([...searchBoard, ...response.data.boards]);
+          setPage(response.data.nextPage);
+        }
+      } catch (error) {
+        console.log(`error :`, error);
+      }
+    };
+    if (page) document.onscroll = scroll;
+    return () => {
+      document.onscroll = null;
+    };
+  }, [page]);
 
   return (
     <>
