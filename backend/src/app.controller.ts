@@ -32,10 +32,13 @@ export class AppController {
     return this.appService.getMain(page);
   }
 
-  @Get('search')
+  @Get('search/:page')
   @ApiOperation({ summary: 'Get Search Board List' })
-  getSearch(@Query('q') query: string) {
-    return this.appService.getSearch(query);
+  getSearch(
+    @Param('page', ParseIntPipe) page: number,
+    @Query('q') query: string,
+  ) {
+    return this.appService.getSearch(page, query);
   }
 
   @Get('tags')
