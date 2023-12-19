@@ -23,7 +23,7 @@ const Register = () => {
       <Link to={"/"} className="font-logo text-5xl text-accent-blue ">
         Stacker-Labs
       </Link>
-      <p className="text-xl font-bold">Create Your Account</p>
+      <p className="text-xl font-bold py-5">Create Your Account</p>
       <RegisterForm />
       <span>
         Already have an account?

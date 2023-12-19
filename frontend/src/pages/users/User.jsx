@@ -26,26 +26,26 @@ const User = () => {
         <UserInfo />
         <div className="border flex flex-row w-7/12 mt-5" id="other-info">
           <div className="border w-7/12" id="count">
-            <ul className="border">
+            <ul className="border text-xl  m-5 p-5">
               <li>1 Post</li>
               <li>2 Comments</li>
               <li>0 Followed</li>
             </ul>
           </div>
           <div id="post-comment">
-            <div className="border" id="recent-post">
+            <div className="border m-5 p-5" id="recent-post">
               User Profile Post Date Content Few things are as exciting as
               getting new knowledge and skills in something you are absolutely
               fascinated by! Few things are as exciting as getting new knowledge
               and skills in something you are absolutely fascina absolutely
               fascina Tags Tags Tags Tags Like Comments
             </div>
-            <div id="recent-comments">
+            <div id="recent-comments" className="border m-5 p-5">
               <div id="comment-1">sample sample sample sample sample</div>
               <div id="comment-2">sample sample sample sample sample</div>
               <div id="comment-3">sample sample sample sample sample</div>
             </div>
-            <div className="border" id="old-post-1">
+            <div className="border m-5 p-5" id="old-post-1">
               User Profile Post Date Content Few things are as exciting as
               getting new knowledge and skills in something you are absolutely
               fascinated by! Few things are as exciting as getting new knowledge

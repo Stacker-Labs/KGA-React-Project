@@ -71,15 +71,20 @@ const RegisterForm = () => {
       encType="multipart/form-data"
       className="flex flex-col gap-y-3 items-center"
     >
-      <label htmlFor="image" className="self-start ml-4 text-lg text-gray-700">
-        Profile Picture
-      </label>
-      <Input
-        onChange={(e) => setImage(e.target.files[0])}
-        type="file"
-        name="image"
-        id="image"
-      />
+      <div className="relative self-start flex flex-col items-center px-3 mx-1">
+        <label
+          htmlFor="image"
+          className="-top-6 left-4 absolute self-start text-lg text-gray-700"
+        >
+          Profile Picture
+        </label>
+        <Input
+          onChange={(e) => setImage(e.target.files[0])}
+          type="file"
+          name="image"
+          id="image"
+        />
+      </div>
       <Input
         onChange={(e) => setId(e.target.value)}
         required
