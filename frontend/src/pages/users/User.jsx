@@ -1,14 +1,11 @@
 import React from "react";
 import { TempUserImg } from "../../images";
-import Header from "../../components/organisms/Header";
 import Button from "../../tw_components/atoms/Buttons";
 import UserInfo from "./UserCom/UserInfo";
 
 const User = () => {
   return (
     <div>
-      <Header />
-
       <div
         className="m-auto w-12/12 flex flex-col border items-center"
         id="container"
