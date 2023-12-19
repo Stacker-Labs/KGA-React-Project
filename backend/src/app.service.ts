@@ -22,7 +22,7 @@ export class AppService {
   async getMain(page: number) {
     const take = 10;
     const skip = take * (page - 1);
-    const boardList = await this.boardRepository.findAndCount({
+    const boards = await this.boardRepository.findAndCount({
       order: { id: 'DESC' },
       relations: {
         user: true,
@@ -35,25 +35,28 @@ export class AppService {
       take,
     });
 
-    const boards = boardList[0].map((board) => ({
-      ...board,
-      comments: board.comments.length,
-    }));
-
-    const boards_length = boardList[1];
-    const next_page = boards_length > skip + take && page + 1;
-
-    return { boards, boards_length, next_page };
+    return this.pagination(boards, take, skip, page);
   }
 
   // CMMT: - Get Search Board List
-  async getSearch(query: string) {
-    const boards = await this.boardRepository.find({
+  async getSearch(page: number, query: string) {
+    const take = 10;
+    const skip = take * (page - 1);
+    const boards = await this.boardRepository.findAndCount({
       where: { title: ILike(`%${query}%`) },
       order: { id: 'DESC' },
+      relations: {
+        user: true,
+        comments: true,
+        tags: true,
+        likes: true,
+        views: true,
+      },
+      skip,
+      take,
     });
 
-    return boards;
+    return this.pagination(boards, take, skip, page);
   }
 
   // CMMT: - Get Tag List
@@ -122,5 +125,23 @@ export class AppService {
           link: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
         };
       });
+  }
+
+  // CMNT: - Pagination
+  pagination(
+    boardList: [BoardModel[], number],
+    take: number,
+    skip: number,
+    page: number,
+  ) {
+    const boards = boardList[0].map((board) => ({
+      ...board,
+      comments: board.comments.length,
+    }));
+
+    const boards_length = boardList[1];
+    const next_page = boards_length > skip + take && page + 1;
+
+    return { boards, boards_length, next_page };
   }
 }
