@@ -24,6 +24,7 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Get Login User' })
+  @ApiBearerAuth()
   @UseGuards(UserGuard)
   @UseInterceptors(CookieInterceptor)
   getLoginUser(@User() username: string) {
