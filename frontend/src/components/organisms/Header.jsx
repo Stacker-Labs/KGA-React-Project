@@ -87,7 +87,7 @@ const Header = () => {
       {isUserMenuVisible && (
         <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg z-40 bg-white">
           <li className="border-b py-4 cursor-pointer">
-            <Link className="cursor-pointer" to={"/users"}>
+            <Link className="cursor-pointer" to={"/users/1"}>
               UserName
             </Link>
           </li>
@@ -101,7 +101,7 @@ const Header = () => {
             <Link to={"/"}>Reading List</Link>
           </li>
           <li className="border-b py-2">
-            <Link to={"/users"}>Settings</Link>
+            <Link to={"/users/1/edit"}>Settings</Link>
           </li>
           <li className="py-5">
             <Link to={"/auth/logout"}>Log out</Link>

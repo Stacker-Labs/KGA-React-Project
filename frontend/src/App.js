@@ -14,6 +14,7 @@ import Register from "./pages/auth/Register";
 import Tags from "./pages/Tags";
 import Search from "./pages/Search";
 import Header from "./components/organisms/Header";
+import UserEdit from "./pages/users/UserEdit";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
           <Route path="/boards" element={<Board />} />
           <Route path="/boards/:id" element={<View />} />
           <Route path="/boards/:id/edit" element={<Modify />} />
-          <Route path="/users" element={<User />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/users/:id/edit" element={<UserEdit />} />
           <Route path="/auth">
             <Route index element={<Login />} />
             <Route path="github/callback" element={<Github />} />
