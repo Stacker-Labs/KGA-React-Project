@@ -12,6 +12,8 @@ export class CookieInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> {
+    const req = context.switchToHttp().getRequest();
+    const httpsProtocol = req.headers['origin'].split(':')[0] === 'https';
     return next
       .handle()
       .pipe(
@@ -21,7 +23,7 @@ export class CookieInterceptor implements NestInterceptor {
             maxAge: data.expiresIn ?? 3600 * 1000,
             domain: process.env.DOMAIN || 'localhost',
             sameSite: 'None',
-            secure: true,
+            secure: httpsProtocol,
             httpOnly: true,
           });
         }),
