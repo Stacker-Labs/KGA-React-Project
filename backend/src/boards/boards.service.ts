@@ -58,9 +58,9 @@ export class BoardsService {
       await this.boardRepository.save({ id, views });
     }
 
-    const comments_length = board.comments.length;
+    const commentLength = board.comments.length;
 
-    return { ...board, comments_length };
+    return { ...board, commentLength };
   }
 
   // PUTCMMT: - Update Board
@@ -112,7 +112,7 @@ export class BoardsService {
       throw new BadRequestException('이미 추천한 글입니다.');
     }
 
-    return this.boardRepository.save({ id, likes, like_it: true });
+    return this.boardRepository.save({ id, likes });
   }
 
   // DELETECMMT: - Delete Likes
@@ -150,7 +150,7 @@ export class BoardsService {
 
     const board = await this.verifiedBoard(id);
 
-    const board_comments = await this.commentRepository.findAndCount({
+    const boardComments = await this.commentRepository.findAndCount({
       where: {
         board: {
           id: board.id,
@@ -162,10 +162,10 @@ export class BoardsService {
       take,
     });
 
-    const boardCommentsLength = board_comments[1];
-    const next_page = boardCommentsLength > skip + take && page + 1;
+    const boardCommentsLength = boardComments[1];
+    const nextPage = boardCommentsLength > skip + take && page + 1;
 
-    return { board_comments, next_page };
+    return { boardComments, nextPage };
   }
 
   // POSTCMMT: - Create Comment

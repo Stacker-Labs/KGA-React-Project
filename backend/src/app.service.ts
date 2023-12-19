@@ -139,9 +139,9 @@ export class AppService {
       comments: board.comments.length,
     }));
 
-    const boards_length = boardList[1];
-    const next_page = boards_length > skip + take && page + 1;
+    const boardLength = boardList[1];
+    const nextPage = boardLength > skip + take && page + 1;
 
-    return { boards, boards_length, next_page };
+    return { boards, boardLength, nextPage };
   }
 }
