@@ -11,7 +11,7 @@ const TagBox = ({ tags, linkTo }) => {
           return (
             <ul key={index} className="border rounded-lg w-[24%]">
               <li className="p-5 text-lg font-bold ">{item.tag}</li>
-              <li className="px-5 py-1 h-[100px]">{item.boardsLength}</li>
+              <li className="px-5 py-1">Total Post : {item.boardsLength}</li>
               <li className="flex flex-row p-5 justify-between items-center">
                 <Link to={linkTo(item.tag)}>
                   <Button variant={"blue"} size={"md"}>
