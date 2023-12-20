@@ -5,7 +5,8 @@ import MUIButton from "../../../components/atoms/Button";
 import Comments from "./ViewAtoms/Comments";
 import HandleScroll from "./ViewAtoms/HandleScroll";
 import { useParams, Link } from "react-router-dom";
-import Header from "../../../components/organisms/Header";
+import CommentList from "./ViewAtoms/CommentsList";
+
 const ViewPageWrap = styled(Box)`
   margin: 0;
   padding: 0;
@@ -75,7 +76,6 @@ const View = () => {
 
   return (
     <>
-      <Header />
       <ViewPageWrap>
         <IconBox>
           <HandleScroll />
@@ -83,7 +83,7 @@ const View = () => {
             <ViewTitle>{title}</ViewTitle>
             <h5>유저아이디 | 20xx.xx.xx</h5>
             <ViewContent className="ViewCont"></ViewContent>
-            <Comments />
+            <CommentList />
           </ViewPageMain>
         </IconBox>
       </ViewPageWrap>
