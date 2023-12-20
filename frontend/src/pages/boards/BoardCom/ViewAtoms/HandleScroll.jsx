@@ -49,7 +49,7 @@ const HandleScroll = () => {
     if (!window.scrollY) return;
 
     window.scrollTo({
-      top: 500,
+      top: document.body.scrollHeight,
       behavior: "smooth",
     });
   };

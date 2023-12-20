@@ -25,6 +25,7 @@ const ViewPageMain = styled(Box)`
 `;
 
 const ViewTitle = styled(Box)`
+  font-size: 50px;
   padding: 50px;
   width: 100%;
 `;
@@ -33,14 +34,14 @@ const ViewContent = styled(Box)`
   margin-top: 5px;
   padding: 20px;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   /* border: 1px solid black; */
 `;
 
 const StyledMUIButton = styled(Box)`
   display: flex;
   justify-content: end;
-
+  margin-top: 20px;
   padding: 5px;
 `;
 const IconBox = styled(Box)`
@@ -86,30 +87,32 @@ const View = () => {
 
   return (
     <>
-      <ViewPageWrap>
-        <IconBox>
-          <HandleScroll />
-          <ViewPageMain>
-            <ViewTitle>{title}</ViewTitle>
-            <h6>
-              {nickname} | {userBoardDate}
-            </h6>
-            <ViewContent className="ViewCont"></ViewContent>
-            <CommentList id={params.id} />
-          </ViewPageMain>
-        </IconBox>
-      </ViewPageWrap>
-      <StyledMUIButton>
-        <MUIButton customType="local">페이지 등록</MUIButton>
-        <Link
-          to={`/boards/${params.id}/edit?title=${encodeURIComponent(
-            title
-          )}&content=${encodeURIComponent(content)}`}
-        >
-          <MUIButton customType="social">수정</MUIButton>
-        </Link>
-        <MUIButton customType="social">삭제</MUIButton>
-      </StyledMUIButton>
+      <div className="w-[100%] flex flex-col">
+        <ViewPageWrap>
+          <IconBox>
+            <HandleScroll />
+            <ViewPageMain>
+              <ViewTitle>{title}</ViewTitle>
+              <h6>
+                {nickname} | {userBoardDate}
+              </h6>
+              <ViewContent className="ViewCont"></ViewContent>
+              <CommentList id={params.id} />
+            </ViewPageMain>
+          </IconBox>
+        </ViewPageWrap>
+        <StyledMUIButton>
+          <MUIButton customType="local">페이지 등록</MUIButton>
+          <Link
+            to={`/boards/${params.id}/edit?title=${encodeURIComponent(
+              title
+            )}&content=${encodeURIComponent(content)}`}
+          >
+            <MUIButton customType="social">수정</MUIButton>
+          </Link>
+          <MUIButton customType="social">삭제</MUIButton>
+        </StyledMUIButton>
+      </div>
     </>
   );
 };
