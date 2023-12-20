@@ -25,8 +25,29 @@ export default () => {
             }),
           }
         );
-        // fetch user info here
-        // setUser(result);
+
+        // const result = await response.json();
+
+        // if (result.message) {
+        //   const response = await fetch(
+        //     `${process.env.REACT_APP_API_SERVER}/auth/users`,
+        //     {
+        //       method: "get",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //       credentials: "include",
+        //     }
+        //   );
+        // }
+
+        // const userResult = await response.json();
+
+        // if (userResult.message) {
+        //   console.log(userResult);
+        // }
+        // // fetch user info here
+        // // setUser(result);
       }
     };
     getAccessToken();

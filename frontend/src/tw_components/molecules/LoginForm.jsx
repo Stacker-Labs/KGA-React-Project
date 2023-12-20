@@ -11,18 +11,36 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await fetch("https://api.subin.kr/auth/login", {
+      const loginHost = `${process.env.REACT_APP_API_SERVER}/auth/login`;
+      const loginOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify(new LoginRequest({ id, password })),
-      });
-      const result = await response.json();
-      console.log(result);
-      if (result) navigate("/");
+      };
+
+      const loginResponse = await fetch(loginHost, loginOptions);
+      const loginData = await loginResponse.json();
+
+      if (loginData.message) {
+        const usersHost = `${process.env.REACT_APP_API_SERVER}/users`;
+        const usersOptions = {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        };
+
+        const usersReponse = await fetch(usersHost, usersOptions);
+        const usersData = await usersReponse.json();
+
+        if (usersData.message) console.log(usersData);
+      }
     } catch (e) {
       console.log(e);
     }
