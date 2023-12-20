@@ -11,7 +11,6 @@ const Tags = () => {
         const response = await axios.get(
           `${process.env.REACT_APP_API_SERVER}/tags`
         );
-        console.log(response.data);
         setTags(response.data);
       } catch (error) {
         console.log(`error :`, error);

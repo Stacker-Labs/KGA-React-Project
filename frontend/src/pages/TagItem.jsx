@@ -15,7 +15,6 @@ const TagItem = () => {
           const response = await axios.get(
             `${process.env.REACT_APP_API_SERVER}/tags/${param.id}/1`
           );
-          console.log(response.data.boards);
           setSearchBoard(response.data.boards);
           setPage(response.data.nextPage);
         } catch (error) {
@@ -47,9 +46,6 @@ const TagItem = () => {
       document.onscroll = null;
     };
   }, [page, searchBoard]);
-
-  console.log(searchBoard);
-  console.log(page);
 
   return (
     <>

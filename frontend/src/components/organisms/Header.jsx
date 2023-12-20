@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import SearchBar from "../molecules/SearchBar";
 import Button from "../../tw_components/atoms/Buttons";
 import {
@@ -24,10 +23,6 @@ const Header = () => {
 
   const handleSearch = async (query) => {
     try {
-      const response = await axios(
-        `${process.env.REACT_APP_API_SERVER}/search/1?q=${query}`
-      );
-      console.log(response.data);
       navigate(`/search/1?q=${encodeURIComponent(query)}`);
     } catch (error) {
       console.log(`error :`, error);
