@@ -13,7 +13,9 @@ export class CookieInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> {
     const req = context.switchToHttp().getRequest();
-    const httpsProtocol = req.headers['referer'].split(':')[0] === 'https';
+    const httpsProtocol = req.headers['referer']
+      ? req.headers['referer'].split(':')[0] === 'https'
+      : false;
     return next
       .handle()
       .pipe(
@@ -30,9 +32,10 @@ export class CookieInterceptor implements NestInterceptor {
       )
       .pipe(
         map((data) => ({
-          message: data.expiresIn
-            ? 'Access token is in cookie now.'
-            : 'User is logged out',
+          message:
+            data.expiresIn === 0
+              ? 'User is logged out'
+              : 'Access token is in cookie now.',
           user: data.user,
         })),
       );
