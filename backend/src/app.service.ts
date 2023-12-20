@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ILike, Repository } from 'typeorm';
 import { BoardModel } from './boards/entities/board.entity';
 import { UserModel } from './users/entities/user.entity';
@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TagModel } from './boards/entities/tag.entity';
 import AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
+import { RoomModel } from './users/entities/room.entity';
+import { ChatModel } from './users/entities/chat.entity';
 
 @Injectable()
 export class AppService {
@@ -16,6 +18,10 @@ export class AppService {
     private readonly userRepository: Repository<UserModel>,
     @InjectRepository(TagModel)
     private readonly tagRepository: Repository<TagModel>,
+    @InjectRepository(RoomModel)
+    private readonly roomRepository: Repository<RoomModel>,
+    @InjectRepository(ChatModel)
+    private readonly chatRepository: Repository<ChatModel>,
   ) {}
 
   // CMMT: - Get Board List
@@ -104,6 +110,23 @@ export class AppService {
     const users = await this.userRepository.find({ order: { id: 'DESC' } });
 
     return users;
+  }
+
+  // CMNT: - Get Room Chats
+  async getRoom(id: number) {
+    const room = await this.roomRepository.findOne({
+      where: { id },
+    });
+    if (!room) {
+      throw new BadRequestException('해당 방이 존재하지 않습니다.');
+    }
+
+    const chats = await this.chatRepository.find({
+      where: { room: { id } },
+      relations: { room: true },
+    });
+
+    return chats;
   }
 
   // CMNT: - Upload Image
