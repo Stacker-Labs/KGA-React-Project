@@ -16,6 +16,7 @@ const SearchBar = ({ handleSearch }) => {
       className="border border-solid border-gray-300 rounded-lg w-[300px] h-[35px] flex items-center "
     >
       <input
+        required
         onChange={(e) => setSearchQuery(e.target.value)}
         type="text"
         placeholder={"Search..."}

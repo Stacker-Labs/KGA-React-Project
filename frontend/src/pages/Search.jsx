@@ -12,19 +12,25 @@ const Search = () => {
   const [page, setPage] = useState(false);
 
   useEffect(() => {
-    if (!searchQuery) {
-      const result = async () => {
-        try {
-          const response = await axios.get(
-            `${process.env.REACT_APP_API_SERVER}/search/1?q=${searchQuery}`
-          );
-          setSearchBoard(response.data.boards);
-          setPage(response.data.nextPage);
-          setSearchQuery(queryParams.get("q"));
-        } catch (error) {
-          console.log(`error :`, error);
-        }
-      };
+    const result = async () => {
+      try {
+        const queryValue = queryParams.get("q");
+        setSearchQuery(queryValue);
+        console.log(queryParams.get("q"));
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_SERVER}/search/1?q=${queryValue}`
+        );
+        console.log(
+          `${process.env.REACT_APP_API_SERVER}/search/1?q=${queryValue}`
+        );
+        setSearchBoard(response.data.boards);
+        setPage(response.data.nextPage);
+      } catch (error) {
+        console.log(`error :`, error);
+      }
+    };
+
+    if (queryParams.get("q") !== searchQuery) {
       result();
     }
 
@@ -38,6 +44,7 @@ const Search = () => {
           );
           setSearchBoard([...searchBoard, ...response.data.boards]);
           setPage(response.data.nextPage);
+          document.onscroll = null;
         }
       } catch (error) {
         console.log(`error :`, error);
@@ -47,7 +54,7 @@ const Search = () => {
     return () => {
       document.onscroll = null;
     };
-  }, [page]);
+  }, [page, searchQuery, queryParams]);
 
   return (
     <>

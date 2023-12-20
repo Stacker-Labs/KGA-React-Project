@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/organisms/Sidebar";
 import MainContent from "../components/organisms/MainContent";
 import ChatContent from "../components/organisms/ChatContent";
@@ -36,6 +36,7 @@ const Main = () => {
           );
           setBoard([...board, ...response.data.boards]);
           setPage(response.data.nextPage);
+          document.onscroll = null;
         }
       } catch (error) {
         console.log(`error :`, error);
