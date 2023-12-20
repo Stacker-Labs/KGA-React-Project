@@ -13,7 +13,7 @@ export class CookieInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> {
     const req = context.switchToHttp().getRequest();
-    const httpsProtocol = req.headers['origin'].split(':')[0] === 'https';
+    const httpsProtocol = req.headers['referer'].split(':')[0] === 'https';
     return next
       .handle()
       .pipe(
