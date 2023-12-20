@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../../recoil/User";
+import { userState } from "../../recoil/userState";
 
 export default () => {
   const setUser = useSetRecoilState(userState);
@@ -25,9 +25,8 @@ export default () => {
             }),
           }
         );
-        const result = await response.json();
-        setUser(result);
-        console.log(result);
+        // fetch user info here
+        // setUser(result);
       }
     };
     getAccessToken();

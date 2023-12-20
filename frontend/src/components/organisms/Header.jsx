@@ -9,13 +9,17 @@ import {
   Lightmode_icon,
   TempUserImg,
 } from "../../images";
+import { useRecoilState } from "recoil";
+import UserMenu from "../molecules/UserMenu";
+import { userMenuState } from "../../recoil/userMenuState";
 
 const Header = () => {
-  const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
+  const [menuOpen, setMenuOpen] = useRecoilState(userMenuState);
+
   const navigate = useNavigate();
 
   const toggleUserMenu = () => {
-    setIsUserMenuVisible(!isUserMenuVisible);
+    setMenuOpen(!menuOpen);
   };
 
   const handleSearch = async (query) => {
@@ -73,41 +77,16 @@ const Header = () => {
           <button>
             <img className="w-[70%]" src={Bell_icon} alt="dark mode icon" />
           </button>
-          {/* <Link to={"/users"}> */}
           <img
             onClick={toggleUserMenu}
             className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
             src={TempUserImg}
             alt=""
           />
-          {/* </Link> */}
         </div>
       </div>
 
-      {isUserMenuVisible && (
-        <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg z-40 bg-white">
-          <li className="border-b py-4 cursor-pointer">
-            <Link className="cursor-pointer" to={"/users/1"}>
-              UserName
-            </Link>
-          </li>
-          <li className="py-2">
-            <Link to={"/"}>Dashboard</Link>
-          </li>
-          <li className="py-2">
-            <Link to={"/boards"}>Create Post</Link>
-          </li>
-          <li className="py-2">
-            <Link to={"/"}>Reading List</Link>
-          </li>
-          <li className="border-b py-2">
-            <Link to={"/users/1/edit"}>Settings</Link>
-          </li>
-          <li className="py-5">
-            <Link to={"/auth/logout"}>Log out</Link>
-          </li>
-        </ul>
-      )}
+      {menuOpen && <UserMenu />}
     </>
   );
 };
