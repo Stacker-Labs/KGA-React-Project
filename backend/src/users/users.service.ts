@@ -9,18 +9,27 @@ import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
+import { RoomModel } from './entities/room.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserModel)
     private readonly userRepository: Repository<UserModel>,
+    @InjectRepository(RoomModel)
+    private readonly roomRepository: Repository<RoomModel>,
     private readonly jwtService: JwtService,
   ) {}
 
   // CMNT: - Get Login User
   async getLoginUser(username: string) {
-    const user = await this.getUser(username);
+    const user = await this.getUser(username, {
+      followingUsers: true,
+      followerUsers: true,
+      boards: true,
+      comments: true,
+      rooms: true,
+    });
     const accessToken = this.jwtService.sign(
       { username },
       { secret: process.env.JWT_SECRET, expiresIn: 3600 },
@@ -36,6 +45,7 @@ export class UsersService {
       followingUsers: true,
       boards: true,
       comments: true,
+      rooms: true,
     });
 
     return user;
@@ -87,6 +97,7 @@ export class UsersService {
       throw new BadRequestException('이미 팔로우 한 사용자입니다.');
     }
 
+    this.roomRepository.save({ users: [user, targetUser] });
     return this.userRepository.save({ id: user.id, followingUsers });
   }
 
