@@ -141,7 +141,10 @@ export class UsersService {
 
   // CMNT: - Verify User
   async verifiedUser(id: number, relations?: object) {
-    const user = this.userRepository.findOne({ where: { id }, relations });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations,
+    });
     if (!user) {
       throw new UnauthorizedException('존재하지 않는 사용자입니다.');
     }
