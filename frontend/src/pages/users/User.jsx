@@ -1,16 +1,14 @@
 import React from "react";
 import { TempUserImg } from "../../images";
-import Header from "../../components/organisms/Header";
 import Button from "../../tw_components/atoms/Buttons";
-import UserInfo from "./UserCom/UserInfo";
+import { Link } from "react-router-dom";
+import InfoBox from "../../tw_components/atoms/InfoBox";
 
 const User = () => {
   return (
     <div>
-      <Header />
-
       <div
-        className="m-auto w-12/12 flex flex-col border items-center"
+        className="m-auto w-12/12 flex flex-col gap-y-5 border items-center"
         id="container"
       >
         <img
@@ -18,40 +16,66 @@ const User = () => {
           className="w-[150px] h-[150px] rounded-full mt-10"
           alt=""
         />
-        <div id="edit-button-wrapper" className="m-5 translate-x-96">
-          <Button size={"md"} variant={"blue"}>
-            Edit Profile
-          </Button>
+
+        <div id="edit-button-wrapper">
+          <Link to={"/users/1/edit"}>
+            <Button size={"md"} variant={"blue"}>
+              Edit Profile
+            </Button>
+          </Link>
         </div>
-        <UserInfo />
-        <div className="border flex flex-row w-7/12 mt-5" id="other-info">
-          <div className="border w-7/12" id="count">
-            <ul className="border">
-              <li>1 Post</li>
-              <li>2 Comments</li>
-              <li>0 Followed</li>
-            </ul>
+
+        <InfoBox variant={"userinfo"}>
+          <h2 className="text-bold text-3xl">Eunjae Lee</h2>
+          <p className="text-bold text-xl">
+            Few things are as exciting as getting new knowledge and skills in
+            something you are absolutely fascinated by! Few things are as
+            exciting as getting new knowledge and skills in something you are
+            absolutely fascina absolutely fascina
+          </p>
+          <p className="text-bold text-xl">Joined on Dec 11, 2013</p>
+        </InfoBox>
+
+        <div className="flex flex-row w-[60.5%]" id="other-info">
+          <div id="count">
+            <InfoBox variant={"count"}>
+              <p>1 Post</p>
+              <p>2 Comments</p>
+              <p>0 Followed</p>
+            </InfoBox>
+            {/* recent-post */}
           </div>
+
           <div id="post-comment">
-            <div className="border" id="recent-post">
+            <InfoBox id="recent-post">
               User Profile Post Date Content Few things are as exciting as
               getting new knowledge and skills in something you are absolutely
               fascinated by! Few things are as exciting as getting new knowledge
+              and skills in something you are absolutely fascina absolutely User
+              Profile Post Date Content Few things are as exciting as getting
+              new knowledge and skills in something you are absolutely
+              fascinated by! Few things are as exciting as getting new knowledge
               and skills in something you are absolutely fascina absolutely
-              fascina Tags Tags Tags Tags Like Comments
-            </div>
-            <div id="recent-comments">
+              fascina Tags Tags Tags Tags Like Comments fascina Tags Tags Tags
+              Tags Like Comments fascina Tags Tags Tags Tags Like Comments
+              fascina Tags Tags Tags Tags Like Comments fascina Tags Tags Tags
+              Tags Like Comments fascina Tags Tags Tags Tags Like Comments
+            </InfoBox>
+            {/* recent-post */}
+            <InfoBox id="comments">
               <div id="comment-1">sample sample sample sample sample</div>
               <div id="comment-2">sample sample sample sample sample</div>
               <div id="comment-3">sample sample sample sample sample</div>
-            </div>
-            <div className="border" id="old-post-1">
+            </InfoBox>
+            {/* recent-comments */}
+            <InfoBox id="posts">
               User Profile Post Date Content Few things are as exciting as
               getting new knowledge and skills in something you are absolutely
               fascinated by! Few things are as exciting as getting new knowledge
               and skills in something you are absolutely fascina absolutely
               fascina Tags Tags Tags Tags Like Comments
-            </div>
+            </InfoBox>
+            {/* old-post */}
           </div>
         </div>
       </div>
@@ -60,5 +84,3 @@ const User = () => {
 };
 
 export default User;
-
-//test

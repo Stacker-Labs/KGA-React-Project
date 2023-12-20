@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-import SearchhBar from "../molecules/SearchBar";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import SearchBar from "../molecules/SearchBar";
 import Button from "../../tw_components/atoms/Buttons";
 import {
   Bell_icon,
@@ -12,9 +12,22 @@ import {
 
 const Header = () => {
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
+  const navigate = useNavigate();
 
   const toggleUserMenu = () => {
     setIsUserMenuVisible(!isUserMenuVisible);
+  };
+
+  const handleSearch = async (query) => {
+    try {
+      const response = await axios(
+        `${process.env.REACT_APP_API_SERVER}/search/1?q=${query}`
+      );
+      console.log(response.data);
+      navigate(`/search/1?q=${encodeURIComponent(query)}`);
+    } catch (error) {
+      console.log(`error :`, error);
+    }
   };
 
   return (
@@ -24,7 +37,7 @@ const Header = () => {
           <Link to={"/"} className="font-logo text-4xl text-accent-blue ">
             Stacker-Labs
           </Link>
-          <SearchhBar />
+          <SearchBar handleSearch={handleSearch} />
         </div>
         <div className="w-[60%] flex flex-row justify-evenly items-center">
           <Link to={"/admin"}>
@@ -72,9 +85,9 @@ const Header = () => {
       </div>
 
       {isUserMenuVisible && (
-        <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg z-40">
+        <ul className="fixed top-80px right-10 w-[200px] border px-5 rounded-lg z-40 bg-white">
           <li className="border-b py-4 cursor-pointer">
-            <Link className="cursor-pointer" to={"/users"}>
+            <Link className="cursor-pointer" to={"/users/1"}>
               UserName
             </Link>
           </li>
@@ -88,7 +101,7 @@ const Header = () => {
             <Link to={"/"}>Reading List</Link>
           </li>
           <li className="border-b py-2">
-            <Link to={"/users"}>Settings</Link>
+            <Link to={"/users/1/edit"}>Settings</Link>
           </li>
           <li className="py-5">
             <Link to={"/auth/logout"}>Log out</Link>

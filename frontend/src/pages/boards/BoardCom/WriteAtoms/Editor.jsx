@@ -10,7 +10,7 @@ const TinyMCEEditor = ({ value, onChange }) => {
 
   return (
     <Editor
-      apiKey="gyq4rjyx3dy4hn03snark86ys688p30pj7ztm8r76mqzugeu"
+      apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
       initialValue={value}
       init={{
         plugins: [

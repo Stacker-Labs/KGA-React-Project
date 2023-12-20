@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
 import SearchBox from "../components/molecules/SearchBox";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const Search = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  const [searchQuery, setSearchQuery] = useState("");
+const TagItem = () => {
+  const param = useParams();
   const [searchBoard, setSearchBoard] = useState([]);
   const [page, setPage] = useState(false);
 
   useEffect(() => {
-    if (!searchQuery) {
-      const result = async () => {
+    if (!searchBoard.length) {
+      const tagsData = async () => {
         try {
           const response = await axios.get(
-            `${process.env.REACT_APP_API_SERVER}/search/1?q=${searchQuery}`
+            `${process.env.REACT_APP_API_SERVER}/tags/${param.id}/1`
           );
+          console.log(response.data.boards);
           setSearchBoard(response.data.boards);
           setPage(response.data.nextPage);
-          setSearchQuery(queryParams.get("q"));
         } catch (error) {
           console.log(`error :`, error);
         }
       };
-      result();
+      tagsData();
     }
 
     const scroll = async () => {
@@ -34,10 +31,12 @@ const Search = () => {
         const scrollPosition = document.documentElement.scrollHeight;
         if (height >= scrollPosition * 0.8) {
           const response = await axios.get(
-            `${process.env.REACT_APP_API_SERVER}/search/${page}?q=${searchQuery}`
+            `${process.env.REACT_APP_API_SERVER}/tags/${param.id}/${page}`
           );
+
           setSearchBoard([...searchBoard, ...response.data.boards]);
           setPage(response.data.nextPage);
+          document.onscroll = null;
         }
       } catch (error) {
         console.log(`error :`, error);
@@ -47,12 +46,15 @@ const Search = () => {
     return () => {
       document.onscroll = null;
     };
-  }, [page]);
+  }, [page, searchBoard]);
+
+  console.log(searchBoard);
+  console.log(page);
 
   return (
     <>
       <div className=" w-7/12 mx-auto py-5 font-serif flex justify-between items-center">
-        <div className="text-3xl">Search results for {searchQuery} </div>
+        <div className="text-3xl">Show tags results for {param.id} </div>
         <ul className="flex flex-row gap-5">
           <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg ">
             Most Relevant
@@ -88,4 +90,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default TagItem;

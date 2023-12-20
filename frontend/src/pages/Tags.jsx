@@ -1,42 +1,29 @@
-import React, { useState } from "react";
-import Header from "../components/organisms/Header";
+import React, { useEffect, useState } from "react";
 import TagBox from "../components/molecules/TagBox";
+import axios from "axios";
 
 const Tags = () => {
-  const [tags, setTags] = useState([
-    {
-      id: 1,
-      tagName: "#javascript",
-      tagContent:
-        "I have no special talent. I am only passionately curious. - Albert Einstein",
-    },
-    {
-      id: 2,
-      tagName: "#database",
-      tagContent: "Posts on building, using, and learning about databases.",
-    },
-    {
-      id: 3,
-      tagName: "#programming",
-      tagContent: "The magic behind computers. 💻 🪄",
-    },
-    {
-      id: 4,
-      tagName: "#webdev",
-      tagContent: "Because the internet...",
-    },
-    {
-      id: 5,
-      tagName: "#webdev",
-      tagContent: "Because the internet...",
-    },
-  ]);
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const tagsData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_SERVER}/tags`
+        );
+        console.log(response.data);
+        setTags(response.data);
+      } catch (error) {
+        console.log(`error :`, error);
+      }
+    };
+    tagsData();
+  }, []);
 
   return (
     <>
-      <Header />
       <div className="font-logo w-10/12 text-4xl mx-auto py-5">Tags</div>
-      <TagBox tags={tags} setTags={setTags} />
+      <TagBox tags={tags} linkTo={(tag) => `/tags/${tag}`} />
     </>
   );
 };
