@@ -82,7 +82,10 @@ export class UsersService {
 
   // CMNT: - Create Follow
   async createFollow(id: number, username: string) {
-    const user = await this.getUser(username, { followingUsers: true });
+    const user = await this.getUser(username, {
+      followingUsers: true,
+      followerUsers: true,
+    });
     if (id === user.id) {
       throw new BadRequestException('자기 자신은 팔로우 할 수 없습니다.');
     }
@@ -90,35 +93,55 @@ export class UsersService {
     const targetUser = await this.verifiedUser(id);
 
     const followingUsers = user.followingUsers ? [...user.followingUsers] : [];
-    const index = followingUsers.findIndex((following) => following.id === id);
-    if (index === -1) {
+    const isFollowingUser = followingUsers.findIndex(
+      (following) => following.id === id,
+    );
+    if (isFollowingUser === -1) {
       followingUsers.push(targetUser);
     } else {
       throw new BadRequestException('이미 팔로우 한 사용자입니다.');
     }
 
-    await this.roomRepository.save({ users: [user, targetUser] });
+    const followerUsers = user.followerUsers ? [...user.followerUsers] : [];
+    const isFollowerUser = followerUsers.findIndex(
+      (follower) => follower.id === id,
+    );
+    if (isFollowerUser === -1) {
+      await this.roomRepository.save({ users: [user, targetUser] });
+    }
+
     return this.userRepository.save({ id: user.id, followingUsers });
   }
 
   // CMNT: - Remove Follow
   async removeFollow(id: number, username: string) {
-    const user = await this.getUser(username, { followingUsers: true });
+    const user = await this.getUser(username, {
+      followingUsers: true,
+      followerUsers: true,
+    });
 
     const followingUsers = user.followingUsers ? [...user.followingUsers] : [];
-    const index = followingUsers.findIndex((following) => following.id === id);
-    if (index === -1) {
+    const isFollowingUser = followingUsers.findIndex(
+      (following) => following.id === id,
+    );
+    if (isFollowingUser === -1) {
       throw new BadRequestException('이미 팔로우가 취소되었습니다.');
     }
 
-    followingUsers.splice(index, 1);
+    followingUsers.splice(isFollowingUser, 1);
 
-    const room = await this.roomRepository.findOne({
-      where: { users: { id } },
-      relations: { users: true },
-    });
+    const followerUsers = user.followerUsers ? [...user.followerUsers] : [];
+    const isFollowerUser = followerUsers.findIndex(
+      (follower) => follower.id === id,
+    );
+    if (isFollowerUser === -1) {
+      const room = await this.roomRepository.findOne({
+        where: { users: { id } },
+        relations: { users: true },
+      });
 
-    await this.roomRepository.delete(room.id);
+      await this.roomRepository.delete(room.id);
+    }
 
     return this.userRepository.save({
       id: user.id,
