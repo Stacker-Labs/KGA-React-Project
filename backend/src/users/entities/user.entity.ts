@@ -3,8 +3,8 @@ import { CommentModel } from 'src/boards/entities/comment.entity';
 import { Role } from 'src/common/const/role.enum';
 import { BaseModel } from 'src/common/entities/base.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
-import { RoomModel } from './room.entity';
-import { ChatModel } from './chat.entity';
+import { RoomModel } from '../../room/entities/room.entity';
+import { ChatModel } from '../../room/entities/chat.entity';
 import { Provider } from 'src/common/const/provider.enum';
 import { Exclude } from 'class-transformer';
 

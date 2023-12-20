@@ -9,7 +9,7 @@ import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
-import { RoomModel } from './entities/room.entity';
+import { RoomModel } from '../room/entities/room.entity';
 
 @Injectable()
 export class UsersService {
@@ -97,7 +97,7 @@ export class UsersService {
       throw new BadRequestException('이미 팔로우 한 사용자입니다.');
     }
 
-    this.roomRepository.save({ users: [user, targetUser] });
+    await this.roomRepository.save({ users: [user, targetUser] });
     return this.userRepository.save({ id: user.id, followingUsers });
   }
 
@@ -112,6 +112,13 @@ export class UsersService {
     }
 
     followingUsers.splice(index, 1);
+
+    const room = await this.roomRepository.findOne({
+      where: { users: { id } },
+      relations: { users: true },
+    });
+
+    await this.roomRepository.delete(room.id);
 
     return this.userRepository.save({
       id: user.id,

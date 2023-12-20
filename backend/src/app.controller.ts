@@ -62,6 +62,14 @@ export class AppController {
     return this.appService.getUsers();
   }
 
+  @Get('room/:id')
+  @UseGuards(UserGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get Room Chats' })
+  getRoom(@Param('id', ParseIntPipe) id: number) {
+    return this.appService.getRoom(id);
+  }
+
   @Post('image')
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Upload Image' })

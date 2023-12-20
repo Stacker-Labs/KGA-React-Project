@@ -1,7 +1,7 @@
 import { BaseModel } from 'src/common/entities/base.entity';
 import { Entity, ManyToMany, OneToMany } from 'typeorm';
 import { ChatModel } from './chat.entity';
-import { UserModel } from './user.entity';
+import { UserModel } from '../../users/entities/user.entity';
 
 @Entity()
 export class RoomModel extends BaseModel {

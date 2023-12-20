@@ -6,7 +6,7 @@ import { UserModel } from './entities/user.entity';
 import { BoardModel } from 'src/boards/entities/board.entity';
 import { CommentModel } from 'src/boards/entities/comment.entity';
 import { JwtService } from '@nestjs/jwt';
-import { RoomModel } from './entities/room.entity';
+import { RoomModel } from '../room/entities/room.entity';
 
 @Module({
   imports: [
