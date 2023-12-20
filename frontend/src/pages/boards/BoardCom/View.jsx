@@ -52,23 +52,33 @@ const IconBox = styled(Box)`
 const View = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [userBoardDate, setUserBoardDate] = useState("");
   const params = useParams();
+
+  const Token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
 
   useEffect(() => {
     const getBoard = async () => {
-      const response = await fetch(`https://api.subin.kr/boards/${params.id}`, {
+      const response = await fetch(`http://api.subin.kr/boards/${params.id}`, {
         method: "Get",
         headers: {
-          Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNTQ0MDY3LCJleHAiOjE3MDI1NDc2Njd9.j_PJNousIqv45uV4QT8q_EDM0BP4sxTzkfcpTfb1HL4"}`,
+          Authorization: `Bearer ${Token}`,
+          "Content-Type": "application/json",
         },
       });
       const viewCont = document.querySelector(".ViewCont");
       const result = await response.json();
       viewCont.innerHTML = result.content;
+      const nickname = result.user.nickname;
+      const commentDate = result.createdAt;
 
       console.log("result@@", result);
+      setNickname(nickname);
       setTitle(result.title);
       setContent(result.content);
+      setUserBoardDate(commentDate);
     };
 
     getBoard();
@@ -81,15 +91,21 @@ const View = () => {
           <HandleScroll />
           <ViewPageMain>
             <ViewTitle>{title}</ViewTitle>
-            <h5>유저아이디 | 20xx.xx.xx</h5>
+            <h6>
+              {nickname} | {userBoardDate}
+            </h6>
             <ViewContent className="ViewCont"></ViewContent>
-            <CommentList />
+            <CommentList id={params.id} />
           </ViewPageMain>
         </IconBox>
       </ViewPageWrap>
       <StyledMUIButton>
         <MUIButton customType="local">페이지 등록</MUIButton>
-        <Link to={`/boards/${params.id}/edit`}>
+        <Link
+          to={`/boards/${params.id}/edit?title=${encodeURIComponent(
+            title
+          )}&content=${encodeURIComponent(content)}`}
+        >
           <MUIButton customType="social">수정</MUIButton>
         </Link>
         <MUIButton customType="social">삭제</MUIButton>

@@ -2,11 +2,10 @@ import React from "react";
 import CommentForm from "./CommentForm";
 import Comments from "./Comments";
 
-const CommentList = () => {
+const CommentList = ({ id }) => {
   return (
     <div>
-      <CommentForm />
-      <Comments />
+      <Comments id={id} />
     </div>
   );
 };
