@@ -123,7 +123,10 @@ export class AppService {
 
     const chats = await this.chatRepository.find({
       where: { room: { id } },
-      relations: { room: true },
+      relations: { room: true, user: true },
+      order: {
+        id: 'ASC',
+      },
     });
 
     return chats;
