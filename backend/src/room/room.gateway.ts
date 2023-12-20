@@ -32,18 +32,21 @@ export class RoomGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('send-massage')
+  @SubscribeMessage('send-message')
   async sendMessage(
     @MessageBody() data: any,
     @ConnectedSocket() socket: Socket,
   ) {
-    const { user: userData, content } = data;
+    const {
+      user: { id },
+      content,
+    } = data;
     if (!content) {
       throw new BadRequestException('글을 작성해주세요.');
     }
 
     const user = await this.usersRepository.findOne({
-      where: { id: userData },
+      where: { id: parseInt(id) },
     });
     if (!user) {
       throw new BadRequestException('존재하지 않는 유저입니다.');

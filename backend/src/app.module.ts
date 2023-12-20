@@ -22,6 +22,7 @@ import { RoomModule } from './room/room.module';
     UsersModule,
     BoardsModule,
     AuthModule,
+    RoomModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
