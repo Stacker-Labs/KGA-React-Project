@@ -30,7 +30,9 @@ export class CookieInterceptor implements NestInterceptor {
       )
       .pipe(
         map((data) => ({
-          message: 'Access token is in cookie now.',
+          message: data.expiresIn
+            ? 'Access token is in cookie now.'
+            : 'User is logged out',
           user: data.user,
         })),
       );
