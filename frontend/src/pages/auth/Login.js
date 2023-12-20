@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../tw_components/atoms/Buttons";
 import Input from "../../tw_components/atoms/Inputs";
@@ -32,11 +32,12 @@ const StyledFormContainer = styled.div`
 `;
 
 const Login = () => {
-  // form toggle
   const [isFormVisible, setIsFormVisible] = useState(false);
-  // accessing to global state
   const user = useRecoilValue(userState);
-  console.log(user);
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
   // onclick handler for GitHub
   const github = () => {
     window.open(

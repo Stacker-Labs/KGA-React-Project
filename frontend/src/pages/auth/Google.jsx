@@ -1,36 +1,16 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { userState } from "../../recoil/userState";
+import useLogin from "../../hooks/useLogin";
 
 export default () => {
-  const setUser = useSetRecoilState(userState);
-  const navigate = useNavigate();
+  const { login } = useLogin();
+  const code = window.location.hash.substring(1).split("&")[0].split("=")[1];
 
   useEffect(() => {
-    const code = window.location.hash.substring(1).split("&")[0].split("=")[1];
-    const getAccessToken = async () => {
-      if (code) {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/auth/google`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              code,
-            }),
-          }
-        );
-        const result = await response.json();
-        setUser(result);
-        console.log(result);
-      }
+    const googleLogin = async () => {
+      await login("google", { code });
     };
-    getAccessToken();
-    navigate("/");
+
+    googleLogin();
   }, []);
 
   return <div>Login to Google...</div>;

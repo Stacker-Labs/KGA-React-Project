@@ -43,7 +43,7 @@ const User = () => {
               <p>2 Comments</p>
               <p>0 Followed</p>
             </InfoBox>
-            {/* recent-post */}
+            {/* count */}
           </div>
 
           <div id="post-comment">

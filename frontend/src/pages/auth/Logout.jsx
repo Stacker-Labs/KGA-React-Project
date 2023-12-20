@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userState } from "../../recoil/userState";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState } from "recoil";
 
 const Logout = () => {
-  const setUser = useSetRecoilState(userState);
+  const resetUserState = useResetRecoilState(userState);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -20,7 +20,9 @@ const Logout = () => {
       const result = await response.json();
       console.log(result);
     };
+
     logout();
+    resetUserState();
     navigate("/");
   });
 
