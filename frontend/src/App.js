@@ -16,9 +16,12 @@ import Search from "./pages/Search";
 import Header from "./components/organisms/Header";
 import UserEdit from "./pages/users/UserEdit";
 import TagItem from "./pages/TagItem";
-
+import { useResetMenu } from "./hooks/useResetMenu";
+import Logout from "./pages/auth/Logout";
 
 function App() {
+  useResetMenu();
+
   return (
     <>
       <CssBaseline />
@@ -40,6 +43,7 @@ function App() {
             <Route path="google/callback" element={<Google />} />
             <Route path="kakao/callback" element={<Kakao />} />
             <Route path="register" element={<Register />} />
+            <Route path="logout" element={<Logout />} />
           </Route>
           <Route path="/admin" element={<Admin />} />
         </Routes>
