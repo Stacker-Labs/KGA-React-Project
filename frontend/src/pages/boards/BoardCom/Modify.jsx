@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import { Input } from "@mui/material";
@@ -33,10 +33,13 @@ const BoardContent = styled(Box)`
 `;
 
 const Modify = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const viewTitle = searchParams.get("title");
+  const viewContent = searchParams.get("content");
+  const [title, setTitle] = useState(viewTitle || "");
+  const [content, setContent] = useState(viewContent || "");
 
+  const navigate = useNavigate();
   const postId = "";
 
   const fetchPost = async () => {
@@ -46,7 +49,6 @@ const Modify = () => {
         const data = await response.json();
         setTitle(data.title);
         setContent(data.content);
-      } else {
       }
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -55,7 +57,8 @@ const Modify = () => {
 
   useEffect(() => {
     fetchPost();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 빈 배열로 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 설정합니다.
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -66,7 +69,7 @@ const Modify = () => {
   }, []);
 
   const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNTQ0MDY3LCJleHAiOjE3MDI1NDc2Njd9.j_PJNousIqv45uV4QT8q_EDM0BP4sxTzkfcpTfb1HL4";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
 
   const handleUpdate = async () => {
     if (!title) {

@@ -1,55 +1,91 @@
-import React, { useState, useEffect } from "react";
-import { useAddComment } from "./utils/commentUtils";
-import { useRecoilValue } from "recoil";
-import { commentState } from "./utils/commentsState";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-const CommentForm = () => {
+const CommentForm = ({ id, addComment, comments }) => {
   const style = {
     fontFamily: "'Noto Sans KR', sans-serif",
   };
-  const addComment = useAddComment();
+
   const [newComment, setNewComment] = useState("");
-  const [userId, setUserId] = useState("User123");
-  const comments = useRecoilValue(commentState);
-  const [totalComments, setTotalComments] = useState(0);
+  const [nickname, setNickname] = useState("");
 
   const handleInputChange = (e) => {
-    setNewComment(e.target.value);
+    const value = e.target.value;
+    setNewComment(value);
+  };
+  const Token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
+
+  const fetchUserInformation = async () => {
+    try {
+      const response = await fetch(
+        `https://api.subin.kr/boards/${id}/comments`,
+        {
+          method: "post",
+          headers: {
+            Authorization: `Bearer ${Token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: newComment,
+            parentCommentId: null,
+          }),
+        }
+      );
+      const userData = await response.json();
+      console.log(userData);
+      const nickname = userData.user.nickname;
+
+      addComment(newComment);
+      setNickname(nickname);
+    } catch (error) {
+      console.error("Error fetching user information:", error);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newComment.trim() === "") return;
-    addComment(newComment);
+    if (!Token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    fetchUserInformation();
     setNewComment("");
-    setTotalComments((prevTotal) => prevTotal + 1);
   };
 
-  useEffect(() => {
-    setTotalComments(comments.length);
-  }, [comments]);
+  const totalComments = comments.reduce((total, comment) => {
+    return total + 1 + comment.replies.length;
+  }, 0);
 
   return (
     <div className="border p-5">
       <div className="flex flex-row justify-between" style={style}>
-        <div>{userId}</div>
+        <div>{nickname}</div>
         <div>총 댓글수 {totalComments}</div>
       </div>
-      <form onSubmit={handleSubmit} className="flex justify-center m-5">
-        <textarea
-          type="text"
-          value={newComment}
-          onChange={handleInputChange}
-          placeholder="댓글을 입력하세요..."
-          className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
-        />
-        <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
-          <p className="text-white  mx-auto" style={style}>
-            {" "}
-            등록
-          </p>
-        </button>
-      </form>
+      {Token ? (
+        <form onSubmit={handleSubmit} className="flex justify-center m-5">
+          <textarea
+            type="text"
+            value={newComment}
+            onChange={handleInputChange}
+            placeholder="댓글을 입력하세요..."
+            className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
+          />
+          <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
+            <p className="text-white  mx-auto" style={style}>
+              등록
+            </p>
+          </button>
+        </form>
+      ) : (
+        <div className="p-5 border">
+          로그인이 필요합니다.
+          <Link to="http://localhost:3000/auth" className="text-blue-600">
+            여기를 클릭하여 로그인하세요.
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

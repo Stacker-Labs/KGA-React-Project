@@ -47,15 +47,14 @@ const Write = () => {
     setContent(value);
   }, []);
 
-  const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAyNTQ0MDY3LCJleHAiOjE3MDI1NDc2Njd9.j_PJNousIqv45uV4QT8q_EDM0BP4sxTzkfcpTfb1HL4";
-
   const handleSave = async () => {
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
     }
-    const response = await fetch("https://api.subin.kr/boards", {
+    const Token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
+    const response = await fetch("http://api.subin.kr/boards", {
       method: "post",
       headers: {
         Authorization: `Bearer ${Token}`,
