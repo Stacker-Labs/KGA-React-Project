@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
+  const setUser = useSetRecoilState(userState);
+
   const navigate = useNavigate();
   useEffect(() => {
     const logout = async () => {
