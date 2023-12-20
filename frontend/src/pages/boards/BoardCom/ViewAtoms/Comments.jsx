@@ -73,7 +73,7 @@ const Comments = ({ id }) => {
   };
 
   return (
-    <div>
+    <div className="mt-[100px]">
       <h2>댓글 목록</h2>
       <CommentForm addComment={addComment} id={id} comments={comments} />
       <ul>
