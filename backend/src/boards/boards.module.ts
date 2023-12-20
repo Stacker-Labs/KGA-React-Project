@@ -7,13 +7,14 @@ import { CommentModel } from './entities/comment.entity';
 import { UserModel } from 'src/users/entities/user.entity';
 import { TagModel } from './entities/tag.entity';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([BoardModel, CommentModel, UserModel, TagModel]),
+    UsersModule,
   ],
   controllers: [BoardsController],
-  providers: [JwtService, BoardsService, UsersService],
+  providers: [JwtService, BoardsService],
 })
 export class BoardsModule {}

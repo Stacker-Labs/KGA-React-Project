@@ -13,7 +13,6 @@ import { RoomModel } from './users/entities/room.entity';
 import { ChatModel } from './users/entities/chat.entity';
 import { TagModel } from './boards/entities/tag.entity';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from './users/users.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
@@ -46,12 +45,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       },
     }),
     TypeOrmModule.forFeature([BoardModel, UserModel, TagModel]),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
     JwtService,
-    UsersService,
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })
