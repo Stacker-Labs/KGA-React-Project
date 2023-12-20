@@ -1,6 +1,6 @@
 import { BaseModel } from 'src/common/entities/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { UserModel } from './user.entity';
+import { UserModel } from '../../users/entities/user.entity';
 import { RoomModel } from './room.entity';
 
 @Entity()

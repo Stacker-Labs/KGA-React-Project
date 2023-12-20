@@ -9,11 +9,13 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModel } from './users/entities/user.entity';
 import { BoardModel } from './boards/entities/board.entity';
 import { CommentModel } from './boards/entities/comment.entity';
-import { RoomModel } from './users/entities/room.entity';
-import { ChatModel } from './users/entities/chat.entity';
+import { RoomModel } from './room/entities/room.entity';
+import { ChatModel } from './room/entities/chat.entity';
 import { TagModel } from './boards/entities/tag.entity';
 import { JwtService } from '@nestjs/jwt';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RoomGateway } from './room/room.gateway';
+import { RoomModule } from './room/room.module';
 
 @Module({
   imports: [
@@ -52,12 +54,14 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       ChatModel,
     ]),
     UsersModule,
+    RoomModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
     JwtService,
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+    RoomGateway,
   ],
 })
 export class AppModule {}

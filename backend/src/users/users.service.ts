@@ -9,7 +9,7 @@ import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
-import { RoomModel } from './entities/room.entity';
+import { RoomModel } from '../room/entities/room.entity';
 
 @Injectable()
 export class UsersService {

@@ -6,8 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TagModel } from './boards/entities/tag.entity';
 import AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
-import { RoomModel } from './users/entities/room.entity';
-import { ChatModel } from './users/entities/chat.entity';
+import { RoomModel } from './room/entities/room.entity';
+import { ChatModel } from './room/entities/chat.entity';
 
 @Injectable()
 export class AppService {
