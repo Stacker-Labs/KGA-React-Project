@@ -5,7 +5,6 @@ import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
-import Header from "../../../components/organisms/Header";
 
 const ModifyWrap = styled(Box)`
   display: flex;
@@ -99,7 +98,6 @@ const Modify = () => {
   return (
     <>
       <ModifyWrap>
-        <Header />
         <BoardTitle>
           <InputTitle
             type="text"

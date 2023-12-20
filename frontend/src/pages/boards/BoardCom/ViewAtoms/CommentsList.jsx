@@ -1,13 +1,14 @@
 import React from "react";
+import CommentForm from "./CommentForm";
+import Comments from "./Comments";
 
-const CommentsList = ({ id, name, content }) => {
+const CommentList = () => {
   return (
     <div>
-      <p>ID: {id}</p>
-      <p>Name: {name}</p>
-      <p>Content: {content}</p>
+      <CommentForm />
+      <Comments />
     </div>
   );
 };
 
-export default CommentsList;
+export default CommentList;
