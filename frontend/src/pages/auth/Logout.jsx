@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { userState } from "../../recoil/userState";
+import { useSetRecoilState } from "recoil";
 
 const Logout = () => {
   const setUser = useSetRecoilState(userState);
