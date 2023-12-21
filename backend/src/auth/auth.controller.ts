@@ -6,7 +6,7 @@ import { GithubLoginDto } from './dto/githubLogin.dto';
 import { GoogleLoginDto } from './dto/googleLogin.dto';
 import { KakaoLoginDto } from './dto/kakaoLogin.dto';
 import { RegisterDto } from './dto/register.dto';
-import { CookieInterceptor } from 'src/common/interceptors/cookie.interceptor';
+import { CookieInterceptor } from '../common/interceptors/cookie.interceptor';
 
 @ApiTags('auth')
 @Controller('auth')
