@@ -8,3 +8,28 @@
   font-weight: normal;
   font-style: normal;
 }
+/* Custom Scrollbar for Chrome, Safari, and other WebKit Browsers */
+
+/* Scrollbar track styles */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the scrollbar track */
+  border-radius: 10px; /* Optional: Roundness of the track */
+}
+
+/* Scrollbar thumb styles */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Roundness of the thumb */
+  border: 3px solid #f1f1f1; /* Optional: Border around the thumb */
+}
+
+/* Scrollbar thumb hover styles */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the thumb on hover */
+}
+
+/* Scrollbar size (width and height) */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the vertical scrollbar */
+  height: 10px; /* Height of the horizontal scrollbar */
+}
