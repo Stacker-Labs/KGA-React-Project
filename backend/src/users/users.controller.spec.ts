@@ -16,13 +16,30 @@ describe('UsersController', () => {
   });
 
   describe('Get Login User', () => {
+    it('Make getLoginUser', () => {
+      expect(typeof controller.getLoginUser).toBe('function');
+    });
+
+    it('Run getLoginUser with username', () => {
+      const username: string = 'username';
+      const getLoginUser = jest.fn();
+
+      controller.getLoginUser = getLoginUser;
+      controller.getLoginUser(username);
+
+      expect(getLoginUser).toHaveBeenCalledWith(username);
+    });
+
     it('Return value is accessToken and user', async () => {
       const result = await controller.getLoginUser('username');
       const keys = Object.keys(result).sort();
+
       expect(keys).toEqual(['accessToken', 'user']);
     });
+
     it('Throw error if not exist username', async () => {
-      const getLoginUser = controller.getLoginUser('username00');
+      const getLoginUser = controller.getLoginUser('notExistUser');
+
       await expect(getLoginUser).rejects.toThrow(BadRequestException);
     });
   });
