@@ -33,7 +33,7 @@ export class UsersController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get User' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  getUser(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
