@@ -56,13 +56,12 @@ const Write = () => {
       return;
     }
 
-//     const Token = userInfo?.token || "";
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
-        // Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         title,
         content,
