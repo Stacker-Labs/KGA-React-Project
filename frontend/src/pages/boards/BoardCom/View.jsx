@@ -57,6 +57,7 @@ const View = () => {
   const [nickname, setNickname] = useState("");
   const [tags, setTags] = useState("");
   const [userBoardDate, setUserBoardDate] = useState("");
+  const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
   const usersInfo = userInfo?.id || "";
@@ -66,7 +67,7 @@ const View = () => {
       const response = await fetch(
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
         {
-          method: "Get",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -84,50 +85,55 @@ const View = () => {
       setTags(result.tags);
       setContent(result.content);
       setUserBoardDate(commentDate);
+      setLoading(false);
     };
 
     getBoard();
-  }, []);
+  }, [params.id]);
 
   return (
     <>
-      <div className="w-[100%] flex flex-col">
-        <ViewPageWrap>
-          <IconBox>
-            <HandleScroll />
-            <ViewPageMain>
-              <ViewTitle>{title}</ViewTitle>
-              <h6>
-                {nickname} | {userBoardDate}
-              </h6>
-              <div>
-                <ul>
-                  <li>{tags}</li>
-                </ul>
-              </div>
-              <ViewContent className="ViewCont"></ViewContent>
-              <CommentList id={params.id} />
-            </ViewPageMain>
-          </IconBox>
-        </ViewPageWrap>
-        <StyledMUIButton>
-          {usersInfo !== "" && (
-            <>
-              <MUIButton customType="local">페이지 등록</MUIButton>
-              <Link
-                to={`/boards/${params.id}/edit?title=${encodeURIComponent(
-                  title
-                )}&content=${encodeURIComponent(
-                  content
-                )}&tags=${encodeURIComponent(tags)}`}
-              >
-                <MUIButton customType="social">수정</MUIButton>
-              </Link>
-              <MUIButton customType="social">삭제</MUIButton>
-            </>
-          )}
-        </StyledMUIButton>
-      </div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="w-[100%] flex flex-col">
+          <ViewPageWrap>
+            <IconBox>
+              <HandleScroll />
+              <ViewPageMain>
+                <ViewTitle>{title}</ViewTitle>
+                <h6>
+                  {nickname} | {userBoardDate}
+                </h6>
+                <div>
+                  <ul>
+                    <li>{tags}</li>
+                  </ul>
+                </div>
+                <ViewContent className="ViewCont"></ViewContent>
+                <CommentList id={params.id} />
+              </ViewPageMain>
+            </IconBox>
+          </ViewPageWrap>
+          <StyledMUIButton>
+            {usersInfo !== "" && (
+              <>
+                <MUIButton customType="local">페이지 등록</MUIButton>
+                <Link
+                  to={`/boards/${params.id}/edit?title=${encodeURIComponent(
+                    title
+                  )}&content=${encodeURIComponent(
+                    content
+                  )}&tags=${encodeURIComponent(tags)}`}
+                >
+                  <MUIButton customType="social">수정</MUIButton>
+                </Link>
+                <MUIButton customType="social">삭제</MUIButton>
+              </>
+            )}
+          </StyledMUIButton>
+        </div>
+      )}
     </>
   );
 };
