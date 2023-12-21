@@ -3,8 +3,8 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
-import { BoardModel } from 'src/boards/entities/board.entity';
-import { CommentModel } from 'src/boards/entities/comment.entity';
+import { BoardModel } from '../boards/entities/board.entity';
+import { CommentModel } from '../boards/entities/comment.entity';
 import { JwtService } from '@nestjs/jwt';
 import { RoomModel } from '../room/entities/room.entity';
 

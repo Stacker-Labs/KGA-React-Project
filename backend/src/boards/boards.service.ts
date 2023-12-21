@@ -8,12 +8,12 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardModel } from './entities/board.entity';
 import { Repository } from 'typeorm';
-import { Role } from 'src/common/const/role.enum';
+import { Role } from '../common/const/role.enum';
 import { TagModel } from './entities/tag.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentModel } from './entities/comment.entity';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class BoardsService {

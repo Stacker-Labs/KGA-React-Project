@@ -13,8 +13,8 @@ import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserGuard } from 'src/common/guards/user.guard';
-import { User } from 'src/common/decorator/user.decorator';
+import { UserGuard } from '../common/guards/user.guard';
+import { User } from '../common/decorator/user.decorator';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 

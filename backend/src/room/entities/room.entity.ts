@@ -1,4 +1,4 @@
-import { BaseModel } from 'src/common/entities/base.entity';
+import { BaseModel } from '../../common/entities/base.entity';
 import { Entity, ManyToMany, OneToMany } from 'typeorm';
 import { ChatModel } from './chat.entity';
 import { UserModel } from '../../users/entities/user.entity';

@@ -1,4 +1,4 @@
-import { BaseModel } from 'src/common/entities/base.entity';
+import { BaseModel } from '../../common/entities/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { UserModel } from '../../users/entities/user.entity';
 import { RoomModel } from './room.entity';

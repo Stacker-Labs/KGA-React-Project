@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { Role } from 'src/common/const/role.enum';
+import { Role } from '../common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { RoomModel } from '../room/entities/room.entity';
 import * as bcrypt from 'bcrypt';
