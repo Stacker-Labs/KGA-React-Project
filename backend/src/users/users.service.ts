@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { Role } from 'src/common/const/role.enum';
+import { Role } from '../common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { RoomModel } from '../room/entities/room.entity';
 import * as bcrypt from 'bcrypt';
@@ -32,7 +32,7 @@ export class UsersService {
     });
     const accessToken = this.jwtService.sign(
       { username },
-      { secret: process.env.JWT_SECRET, expiresIn: 3600 },
+      { secret: process.env.JWT_SECRET || 'secret', expiresIn: 3600 },
     );
 
     return { accessToken, user };
@@ -162,7 +162,7 @@ export class UsersService {
       relations,
     });
     if (!user) {
-      throw new UnauthorizedException('존재하지 않는 사용자입니다.');
+      throw new BadRequestException('존재하지 않는 사용자입니다.');
     }
 
     return user;

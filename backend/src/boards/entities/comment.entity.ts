@@ -1,5 +1,5 @@
-import { BaseModel } from 'src/common/entities/base.entity';
-import { UserModel } from 'src/users/entities/user.entity';
+import { BaseModel } from '../../common/entities/base.entity';
+import { UserModel } from '../../users/entities/user.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { BoardModel } from './board.entity';
 

@@ -4,10 +4,10 @@ import { BoardsController } from './boards.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardModel } from './entities/board.entity';
 import { CommentModel } from './entities/comment.entity';
-import { UserModel } from 'src/users/entities/user.entity';
+import { UserModel } from '../users/entities/user.entity';
 import { TagModel } from './entities/tag.entity';
 import { JwtService } from '@nestjs/jwt';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [

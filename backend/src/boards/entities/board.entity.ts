@@ -1,4 +1,4 @@
-import { BaseModel } from 'src/common/entities/base.entity';
+import { BaseModel } from '../../common/entities/base.entity';
 import {
   Column,
   Entity,
@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { CommentModel } from './comment.entity';
-import { UserModel } from 'src/users/entities/user.entity';
+import { UserModel } from '../../users/entities/user.entity';
 import { TagModel } from './tag.entity';
 
 @Entity()

@@ -13,9 +13,9 @@ import {
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from 'src/common/decorator/user.decorator';
-import { UserGuard } from 'src/common/guards/user.guard';
-import { CookieInterceptor } from 'src/common/interceptors/cookie.interceptor';
+import { User } from '../common/decorator/user.decorator';
+import { UserGuard } from '../common/guards/user.guard';
+import { CookieInterceptor } from '../common/interceptors/cookie.interceptor';
 
 @ApiTags('users')
 @Controller('users')
