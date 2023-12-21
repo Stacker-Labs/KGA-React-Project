@@ -24,18 +24,18 @@ describe('UsersController', () => {
   describe('Get Login User', () => {
     const username: string = user.username;
 
-    it('Make getLoginUser', () => {
+    it('Make | getLoginUser', () => {
       expect(typeof controller.getLoginUser).toBe('function');
     });
 
-    it('Run getLoginUser with username: string', () => {
+    it('Run | getLoginUser(username: string)', () => {
       const getLoginUser = jest.fn();
       controller.getLoginUser = getLoginUser;
       controller.getLoginUser(username);
       expect(controller.getLoginUser).toHaveBeenCalledWith(username);
     });
 
-    it('Return value is accessToken and user', async () => {
+    it('Return | {accessToken: string, user: UserModel}', async () => {
       const result = await controller.getLoginUser(username);
       const keys = Object.keys(result);
       const required = ['accessToken', 'user'];
@@ -43,7 +43,7 @@ describe('UsersController', () => {
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
-    it('Throw error if not exist user', async () => {
+    it('Error | user does not exist', async () => {
       const getLoginUser = controller.getLoginUser(notExistUser.username);
 
       await expect(getLoginUser).rejects.toThrow(BadRequestException);
@@ -54,11 +54,11 @@ describe('UsersController', () => {
   describe('Get User', () => {
     const id: number = user.id;
 
-    it('Make getUser', () => {
+    it('Make | getUser', () => {
       expect(typeof controller.getUser).toBe(FUNCTION);
     });
 
-    it('Run getUser with id: number', () => {
+    it('Run | getUser(id: number)', () => {
       const getUser = jest.fn();
       controller.getUser = getUser;
       controller.getUser(id);
@@ -66,7 +66,7 @@ describe('UsersController', () => {
       expect(controller.getUser).toHaveBeenCalledWith(id);
     });
 
-    it('Return value is user info', async () => {
+    it('Return | user: UserModel', async () => {
       const result = await controller.getUser(id);
       const keys = Object.keys(result);
       const required = [
@@ -80,7 +80,7 @@ describe('UsersController', () => {
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
-    it('Throw error if not exist user', async () => {
+    it('Error | user does not exist', async () => {
       const getUser = controller.getUser(notExistUser.id);
 
       await expect(getUser).rejects.toThrow(BadRequestException);
@@ -97,11 +97,11 @@ describe('UsersController', () => {
     };
     const username: string = user.username;
 
-    it('Make editUser', () => {
+    it('Make | editUser', () => {
       expect(typeof controller.editUser).toBe(FUNCTION);
     });
 
-    it('Run editUser with id: number, editUserDto: EditUserDto, username: string', () => {
+    it('Run | editUser(id: number, editUserDto: EditUserDto, username: string)', () => {
       const editUser = jest.fn();
       controller.editUser = editUser;
       controller.editUser(id, editUserDto, username);
@@ -113,7 +113,7 @@ describe('UsersController', () => {
       );
     });
 
-    it('Return value is edited user info', async () => {
+    it('Return | editedUser: UserModel', async () => {
       const result = await controller.editUser(id, editUserDto, username);
       const keys = Object.keys(result);
       const required = ['nickname', 'password', 'image'];
@@ -121,7 +121,7 @@ describe('UsersController', () => {
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
-    it('Throw error if not exist user', async () => {
+    it('Error | user does not exist', async () => {
       const result = controller.editUser(
         notExistUser.id,
         editUserDto,
@@ -130,7 +130,7 @@ describe('UsersController', () => {
       await expect(result).rejects.toThrow(BadRequestException);
     });
 
-    it('Throw error if not has permission', async () => {
+    it('Error | user does not have permission', async () => {
       const result = controller.editUser(
         user.id,
         editUserDto,
@@ -145,11 +145,11 @@ describe('UsersController', () => {
     const id: number = user.id;
     const username: string = user.username;
 
-    it('Make deleteUser', () => {
+    it('Make | deleteUser', () => {
       expect(typeof controller.deleteUser).toBe(FUNCTION);
     });
 
-    it('Run deleteUser with id: number, username: string', () => {
+    it('Run | deleteUser(id: number, username: string)', () => {
       const deleteUser = jest.fn();
       controller.deleteUser = deleteUser;
       controller.deleteUser(id, username);
@@ -157,9 +157,55 @@ describe('UsersController', () => {
       expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
     });
 
-    it('Throw error if user is not has permission', async () => {
+    it('Error | user does not have permission', async () => {
       const result = controller.deleteUser(id, username);
       await expect(result).rejects.toThrow(UnauthorizedException);
     });
+  });
+
+  // GETUSERBOARDS: - make, run, return
+  describe('Get User Boards', () => {
+    const id: number = user.id;
+    const page: number = 1;
+
+    it.todo('Make | getUserBoards');
+
+    it.todo('Run | getUserBoards(id: number, page: number)');
+
+    it.todo(
+      'Return | {boards: BoardModel[], boardLength: number, nextPage: number | boolean}',
+    );
+  });
+
+  // CREATEFOLLOW: - make, run, return, error
+  describe('Create Follow', () => {
+    const id: number = otherUser.id;
+    const username: string = user.username;
+
+    it.todo('Make | createFollow');
+
+    it.todo('Run | createFollow(id: number, username: string)');
+
+    it.todo('Return | user: UserModel');
+
+    it.todo('Error | user follow himself');
+
+    it.todo('Error | user does not exist');
+
+    it.todo('Error | user follow already following user');
+  });
+
+  // DELETEFOLLOW: - make, run, error
+  describe('Delete Follow', () => {
+    const id: number = otherUser.id;
+    const username: string = user.username;
+
+    it.todo('Make | deleteFollow');
+
+    it.todo('Run | deleteFollow(id: number, username: string)');
+
+    it.todo('Error | user does not exist');
+
+    it.todo('Error | user unfollow already unfollowing user');
   });
 });
