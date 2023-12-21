@@ -200,7 +200,7 @@ export class UsersService {
       relations,
     });
     if (!user) {
-      throw new UnauthorizedException('존재하지 않는 사용자입니다.');
+      throw new BadRequestException('존재하지 않는 사용자입니다.');
     }
 
     return user;
