@@ -5,6 +5,8 @@ import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/userState";
 
 const ModifyWrap = styled(Box)`
   display: flex;
@@ -38,6 +40,8 @@ const Modify = () => {
   const viewContent = searchParams.get("content");
   const [title, setTitle] = useState(viewTitle || "");
   const [content, setContent] = useState(viewContent || "");
+  const userInfo = useRecoilValue(userState);
+  const Token = userInfo?.token || "";
 
   const navigate = useNavigate();
   const postId = "";
@@ -67,9 +71,6 @@ const Modify = () => {
   const handleContentChange = useCallback((value) => {
     setContent(value);
   }, []);
-
-  const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
 
   const handleUpdate = async () => {
     if (!title) {

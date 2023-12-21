@@ -40,7 +40,6 @@ const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const userInfo = useRecoilValue(userState);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -55,9 +54,9 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    const Token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
-    const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
+    const userInfo = useRecoilValue(userState);
+    const Token = userInfo?.token || "";
+    const response = await fetch("http://api.subin.kr/boards", {
       method: "post",
       headers: {
         Authorization: `Bearer ${Token}`,
@@ -69,7 +68,6 @@ const Write = () => {
         tags: "#javascript",
       }),
     });
-    console.log(response);
     const result = await response.json();
     console.log(result);
     if (response.ok) {
@@ -98,3 +96,4 @@ const Write = () => {
 };
 
 export default Write;
+
