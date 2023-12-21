@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { usersProviders } from '../common/mock/provider/user.provider';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -78,6 +79,27 @@ describe('UsersController', () => {
       const getUser = controller.getUser(notExistUserId);
 
       await expect(getUser).rejects.toThrow(BadRequestException);
+    });
+  });
+
+  describe('Edit User', () => {
+    it('Make editUser', () => {
+      expect(typeof controller.editUser).toBe('function');
+    });
+
+    it('Run editUser with id: number, editUserDto: EditUserDto, username: string', () => {
+      const id: number = 1;
+      const editUserDto: EditUserDto = {};
+      const username: string = 'username';
+      const editUser = jest.fn();
+      controller.editUser = editUser;
+      controller.edituser(id, editUserDto, username);
+
+      expect(controller.editUser).toHaveBeenCalledWith(
+        id,
+        editUserDto,
+        username,
+      );
     });
   });
 });
