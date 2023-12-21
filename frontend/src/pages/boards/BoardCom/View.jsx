@@ -55,20 +55,23 @@ const View = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [nickname, setNickname] = useState("");
+  const [tags, setTags] = useState("");
   const [userBoardDate, setUserBoardDate] = useState("");
   const params = useParams();
   const userInfo = useRecoilValue(userState);
-  const Token = userInfo?.token || "";
+  const usersInfo = userInfo?.id || "";
 
   useEffect(() => {
     const getBoard = async () => {
-      const response = await fetch(`http://api.subin.kr/boards/${params.id}`, {
-        method: "Get",
-        headers: {
-          Authorization: `Bearer ${Token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
+        {
+          method: "Get",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const viewCont = document.querySelector(".ViewCont");
       const result = await response.json();
       viewCont.innerHTML = result.content;
@@ -78,6 +81,7 @@ const View = () => {
       console.log("result@@", result);
       setNickname(nickname);
       setTitle(result.title);
+      setTags(result.tags);
       setContent(result.content);
       setUserBoardDate(commentDate);
     };
@@ -96,19 +100,26 @@ const View = () => {
               <h6>
                 {nickname} | {userBoardDate}
               </h6>
+              <div>
+                <ul>
+                  <li>{tags}</li>
+                </ul>
+              </div>
               <ViewContent className="ViewCont"></ViewContent>
               <CommentList id={params.id} />
             </ViewPageMain>
           </IconBox>
         </ViewPageWrap>
         <StyledMUIButton>
-          {Token !== "" && (
+          {usersInfo !== "" && (
             <>
               <MUIButton customType="local">페이지 등록</MUIButton>
               <Link
                 to={`/boards/${params.id}/edit?title=${encodeURIComponent(
                   title
-                )}&content=${encodeURIComponent(content)}`}
+                )}&content=${encodeURIComponent(
+                  content
+                )}&tags=${encodeURIComponent(tags)}`}
               >
                 <MUIButton customType="social">수정</MUIButton>
               </Link>

@@ -45,7 +45,7 @@ const HandleScroll = () => {
   const [count, setCount] = useState(0);
 
   const userInfo = useRecoilValue(userState);
-  const Token = userInfo?.token || "";
+  const userId = userInfo?.id || "";
 
   const handleScroll = () => {
     if (!window.scrollY) return;
@@ -56,10 +56,10 @@ const HandleScroll = () => {
     });
   };
   const handleHeartClick = () => {
-    if (Token) {
+    if (userId) {
       setClicked((prevClicked) => !prevClicked);
       setCount((prevCount) => (clicked ? prevCount - 1 : prevCount + 1));
-    } else if (Token === "") {
+    } else if (userId === "") {
       alert("로그인이 필요합니다.");
     }
   };

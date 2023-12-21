@@ -19,7 +19,7 @@ const CommentForm = ({ id, addComment, comments }) => {
   const fetchUserInformation = async () => {
     try {
       const response = await fetch(
-        `https://api.subin.kr/boards/${id}/comments`,
+        `${process.env.REACT_APP_API_SERVER}/boards/${id}/comments`,
         {
           method: "post",
           headers: {
@@ -81,7 +81,10 @@ const CommentForm = ({ id, addComment, comments }) => {
       ) : (
         <div className="p-5 border">
           로그인이 필요합니다.
-          <Link to="http://localhost:3000/auth" className="text-blue-600">
+          <Link
+            to="https://stacker-labs.vercel.app/auth"
+            className="text-blue-600"
+          >
             여기를 클릭하여 로그인하세요.
           </Link>
         </div>
