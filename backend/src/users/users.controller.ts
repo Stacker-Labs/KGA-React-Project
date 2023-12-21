@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { EditUserDto } from './dto/edit-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '../common/decorator/user.decorator';
 import { UserGuard } from '../common/guards/user.guard';
@@ -33,7 +33,7 @@ export class UsersController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get User' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  getUser(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
@@ -41,12 +41,12 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Edit User' })
-  update(
+  editUser(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() editUserDto: EditUserDto,
     @User() username: string,
   ) {
-    return this.usersService.update(id, updateUserDto, username);
+    return this.usersService.update(id, editUserDto, username);
   }
 
   @Delete(':id')
