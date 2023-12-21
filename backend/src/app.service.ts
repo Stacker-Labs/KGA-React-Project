@@ -8,6 +8,7 @@ import AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
 import { RoomModel } from './room/entities/room.entity';
 import { ChatModel } from './room/entities/chat.entity';
+import { pagination } from './common/function/pagination';
 
 @Injectable()
 export class AppService {
@@ -41,7 +42,7 @@ export class AppService {
       take,
     });
 
-    return this.pagination(boards, take, skip, page);
+    return pagination(boards, take, skip, page);
   }
 
   // CMMT: - Get Search Board List
@@ -62,7 +63,7 @@ export class AppService {
       take,
     });
 
-    return this.pagination(boards, take, skip, page);
+    return pagination(boards, take, skip, page);
   }
 
   // CMMT: - Get Tag List
@@ -102,7 +103,7 @@ export class AppService {
       take,
     });
 
-    return this.pagination(boards, take, skip, page);
+    return pagination(boards, take, skip, page);
   }
 
   // CMMT: - Get User List
@@ -173,23 +174,5 @@ export class AppService {
           link: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
         };
       });
-  }
-
-  // CMNT: - Pagination
-  pagination(
-    boardList: [BoardModel[], number],
-    take: number,
-    skip: number,
-    page: number,
-  ) {
-    const boards = boardList[0].map((board) => ({
-      ...board,
-      comments: board.comments.length,
-    }));
-
-    const boardLength = boardList[1];
-    const nextPage = boardLength > skip + take && page + 1;
-
-    return { boards, boardLength, nextPage };
   }
 }
