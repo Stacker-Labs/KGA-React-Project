@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../../recoil/userState";
 const CommentForm = ({ id, addComment, comments }) => {
   const style = {
     fontFamily: "'Noto Sans KR', sans-serif",
@@ -13,9 +14,8 @@ const CommentForm = ({ id, addComment, comments }) => {
     const value = e.target.value;
     setNewComment(value);
   };
-  const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
-
+  const userInfo = useRecoilValue(userState);
+  const Token = userInfo?.token || "";
   const fetchUserInformation = async () => {
     try {
       const response = await fetch(
@@ -45,7 +45,7 @@ const CommentForm = ({ id, addComment, comments }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!Token) {
+    if (Token === "") {
       alert("로그인이 필요합니다.");
       return;
     }

@@ -5,6 +5,8 @@ import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/userState";
 
 const WriteWrap = styled(Box)`
   display: flex;
@@ -52,8 +54,8 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    const Token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
+    const userInfo = useRecoilValue(userState);
+    const Token = userInfo?.token || "";
     const response = await fetch("http://api.subin.kr/boards", {
       method: "post",
       headers: {

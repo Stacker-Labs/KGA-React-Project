@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import MUIButton from "../../../components/atoms/Button";
-import Comments from "./ViewAtoms/Comments";
 import HandleScroll from "./ViewAtoms/HandleScroll";
 import { useParams, Link } from "react-router-dom";
 import CommentList from "./ViewAtoms/CommentsList";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/userState";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
@@ -56,9 +57,8 @@ const View = () => {
   const [nickname, setNickname] = useState("");
   const [userBoardDate, setUserBoardDate] = useState("");
   const params = useParams();
-
-  const Token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBBUEEzbmFtZSIsImlhdCI6MTcwMzA2NDgwMCwiZXhwIjoxNzAzMDY4NDAwfQ.JEB-BQ-nnANMItwO8eASzutqPbdiKuN0AT0uMlS983c";
+  const userInfo = useRecoilValue(userState);
+  const Token = userInfo?.token || "";
 
   useEffect(() => {
     const getBoard = async () => {
@@ -102,15 +102,19 @@ const View = () => {
           </IconBox>
         </ViewPageWrap>
         <StyledMUIButton>
-          <MUIButton customType="local">페이지 등록</MUIButton>
-          <Link
-            to={`/boards/${params.id}/edit?title=${encodeURIComponent(
-              title
-            )}&content=${encodeURIComponent(content)}`}
-          >
-            <MUIButton customType="social">수정</MUIButton>
-          </Link>
-          <MUIButton customType="social">삭제</MUIButton>
+          {Token !== "" && (
+            <>
+              <MUIButton customType="local">페이지 등록</MUIButton>
+              <Link
+                to={`/boards/${params.id}/edit?title=${encodeURIComponent(
+                  title
+                )}&content=${encodeURIComponent(content)}`}
+              >
+                <MUIButton customType="social">수정</MUIButton>
+              </Link>
+              <MUIButton customType="social">삭제</MUIButton>
+            </>
+          )}
         </StyledMUIButton>
       </div>
     </>

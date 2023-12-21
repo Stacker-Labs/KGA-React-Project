@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CommentForm from "./CommentForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
+import { fetchUserInformation } from "./utils/apiUtils";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../../recoil/userState";
 const Comments = ({ id }) => {
   const [comments, setComments] = useState([]);
   const [replyText, setReplyText] = useState("");
@@ -9,11 +13,15 @@ const Comments = ({ id }) => {
   const [showReply, setShowReply] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [editingReplyIndex, setEditingReplyIndex] = useState(null);
-  const [replyInputDisabled, setReplyInputDisabled] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [nickname, setNickname] = useState("");
+  const userInfo = useRecoilValue(userState);
 
   const addComment = (newComment) => {
     setComments([...comments, { text: newComment, replies: [] }]);
   };
+
+  const Token = userInfo?.token || "";
 
   const addReply = (index) => {
     if (replyText.trim() === "" || editingReplyIndex !== null) return;
@@ -22,6 +30,8 @@ const Comments = ({ id }) => {
     setComments(updatedComments);
     setReplyText("");
     setReplyIndex(null);
+    fetchUserInformation(id, newComment, addComment, setNickname, Token);
+    setNewComment("");
   };
 
   const toggleReply = (index) => {
@@ -34,15 +44,6 @@ const Comments = ({ id }) => {
       setEditIndex(null);
     }
   };
-
-  // const toggleEditReply = (index) => {
-  //   setEditingReplyIndex((prevIndex) => (prevIndex === index ? null : index));
-  //   setShowReply(true);
-  // };
-
-  // useEffect(() => {
-  //   setReplyInputDisabled(editingReplyIndex !== null);
-  // }, [editingReplyIndex]);
 
   const deleteComment = (index) => {
     const updatedComments = [...comments];
@@ -75,36 +76,47 @@ const Comments = ({ id }) => {
   return (
     <div className="mt-[100px]">
       <h2>댓글 목록</h2>
-      <CommentForm addComment={addComment} id={id} comments={comments} />
+      {Token ? (
+        <CommentForm addComment={addComment} id={id} comments={comments} />
+      ) : (
+        <div className="p-5 border">
+          로그인이 필요합니다.
+          <Link to="http://localhost:3000/auth" className="text-blue-600">
+            여기를 클릭하여 로그인하세요.
+          </Link>
+        </div>
+      )}
       <ul>
         {comments.map((comment, index) => (
           <li key={index} className="border-b-2 my-[50px]">
             <div className="mb-10 flex flex-row justify-between">
-              <p>닉네임</p>
+              <p>{nickname}</p>
               <div>
-                <div className="gap-y-2">
-                  <button
-                    onClick={() => deleteComment(index)}
-                    className="border-4 p-[5px] bg-slate-600 text-white text-xs "
-                  >
-                    삭제
-                  </button>
-                  {editIndex === index ? (
+                {Token ? (
+                  <div className="gap-y-2">
                     <button
-                      onClick={() => saveEditedComment(index)}
-                      className="border-4 p-[5px] text-xs"
+                      onClick={() => deleteComment(index)}
+                      className="border-4 p-[5px] bg-slate-600 text-white text-xs"
                     >
-                      저장
+                      삭제
                     </button>
-                  ) : (
-                    <button
-                      onClick={() => editComment(index)}
-                      className="border-4 p-[5px] text-xs"
-                    >
-                      수정
-                    </button>
-                  )}
-                </div>
+                    {editIndex === index ? (
+                      <button
+                        onClick={() => saveEditedComment(index)}
+                        className="border-4 p-[5px] text-xs"
+                      >
+                        저장
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => editComment(index)}
+                        className="border-4 p-[5px] text-xs"
+                      >
+                        수정
+                      </button>
+                    )}
+                  </div>
+                ) : null}
               </div>
             </div>
             {editIndex === index ? (
@@ -124,21 +136,23 @@ const Comments = ({ id }) => {
             </div>
             {replyIndex === index && (
               <div>
-                <div className="flex flex-row">
-                  <textarea
-                    className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    disabled={!!editIndex} // 수정 중인 상태일 때 textarea 비활성화
-                  />
-                  <button
-                    className="bg-sky-600 p-[15px] rounded-md"
-                    onClick={() => addReply(index)}
-                    disabled={!!editIndex} // 수정 중인 상태일 때 버튼 비활성화
-                  >
-                    <p className="text-white mx-auto">등록</p>
-                  </button>
-                </div>
+                {Token ? (
+                  <div className="flex flex-row">
+                    <textarea
+                      className="w-[800px] p-[10px] resize-none rounded-md bg-neutral-100"
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      disabled={!!editIndex}
+                    />
+                    <button
+                      className="bg-sky-600 p-[15px] rounded-md"
+                      onClick={() => addReply(index)}
+                      disabled={!!editIndex}
+                    >
+                      <p className="text-white mx-auto">등록dd</p>
+                    </button>
+                  </div>
+                ) : null}
                 {comment.replies.map((reply, idx) => (
                   <div key={idx} className="p-[10px]">
                     <div className="flex flex-row">
@@ -147,13 +161,14 @@ const Comments = ({ id }) => {
                         className="transform rotate-180"
                       />
                       <div className="flex flex-row justify-between  w-[100%]">
-                        <p>닉네임</p>
-                        <button onClick={() => deleteReply(index, replyIndex)}>
-                          삭제
-                        </button>
+                        <p>{nickname}</p>
+                        {Token ? (
+                          <button onClick={() => deleteReply(index, idx)}>
+                            삭제dd
+                          </button>
+                        ) : null}
                       </div>
                     </div>
-
                     <div className="bg-slate-50">{reply}</div>
                   </div>
                 ))}

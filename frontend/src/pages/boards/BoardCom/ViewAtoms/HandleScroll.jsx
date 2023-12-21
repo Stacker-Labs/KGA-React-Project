@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../../recoil/userState";
 
 const IconStyledWrap = styled(Box)`
   position: sticky;
@@ -42,8 +44,8 @@ const HandleScroll = () => {
   const [clicked, setClicked] = useState(false);
   const [count, setCount] = useState(0);
 
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhbmduYW1lIiwiaWF0IjoxNzAzMDM1Njk4LCJleHAiOjE3MDMwMzkyOTh9.RAnl6UNjoN8WnDFN3Z6tSz0abkBRJ6eZBNxZd_ldJNQ";
+  const userInfo = useRecoilValue(userState);
+  const Token = userInfo?.token || "";
 
   const handleScroll = () => {
     if (!window.scrollY) return;
@@ -54,10 +56,10 @@ const HandleScroll = () => {
     });
   };
   const handleHeartClick = () => {
-    if (userToken) {
+    if (Token) {
       setClicked((prevClicked) => !prevClicked);
       setCount((prevCount) => (clicked ? prevCount - 1 : prevCount + 1));
-    } else {
+    } else if (Token === "") {
       alert("로그인이 필요합니다.");
     }
   };
