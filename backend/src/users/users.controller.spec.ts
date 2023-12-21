@@ -1,12 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { usersProviders } from '../common/mock/provider/user.provider';
-import { UpdateUserDto } from './dto/edit-user.dto';
+import { EditUserDto } from './dto/edit-user.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
   const user = { id: 1, username: 'username' };
+  const notExistUser = { id: 0, username: 'notExistUser' };
+  const otherUser = { id: 2, username: 'otherUser' };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -17,13 +19,14 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
+  // GETLOGINUSER: - make, run, return, error
   describe('Get Login User', () => {
     it('Make getLoginUser', () => {
       expect(typeof controller.getLoginUser).toBe('function');
     });
 
     it('Run getLoginUser with username: string', () => {
-      const username: string = 'username';
+      const username: string = user.username;
       const getLoginUser = jest.fn();
       controller.getLoginUser = getLoginUser;
       controller.getLoginUser(username);
@@ -39,20 +42,20 @@ describe('UsersController', () => {
     });
 
     it('Throw error if not exist user', async () => {
-      const notExistUsername: string = 'notExistUser';
-      const getLoginUser = controller.getLoginUser(notExistUsername);
+      const getLoginUser = controller.getLoginUser(notExistUser.username);
 
       await expect(getLoginUser).rejects.toThrow(BadRequestException);
     });
   });
 
+  // GETUSER : - make, run, return, error
   describe('Get User', () => {
     it('Make getUser', () => {
       expect(typeof controller.getUser).toBe('function');
     });
 
     it('Run getUser with id: number', () => {
-      const id: number = 1;
+      const id: number = user.id;
       const getUser = jest.fn();
       controller.getUser = getUser;
       controller.getUser(id);
@@ -75,31 +78,63 @@ describe('UsersController', () => {
     });
 
     it('Throw error if not exist user', async () => {
-      const notExistUserId: number = 0;
+      const notExistUserId: number = notExistUser.id;
       const getUser = controller.getUser(notExistUserId);
 
       await expect(getUser).rejects.toThrow(BadRequestException);
     });
   });
 
+  // EDITUSER : - make, run, return, error
   describe('Edit User', () => {
+    const id: number = user.id;
+    const editUserDto: EditUserDto = {
+      nickname: 'newNickname',
+      password: 'newPassword',
+      image: 'newImageLink',
+    };
+    const username: string = user.username;
+
     it('Make editUser', () => {
       expect(typeof controller.editUser).toBe('function');
     });
 
     it('Run editUser with id: number, editUserDto: EditUserDto, username: string', () => {
-      const id: number = 1;
-      const editUserDto: EditUserDto = {};
-      const username: string = 'username';
       const editUser = jest.fn();
       controller.editUser = editUser;
-      controller.edituser(id, editUserDto, username);
+      controller.editUser(id, editUserDto, username);
 
       expect(controller.editUser).toHaveBeenCalledWith(
         id,
         editUserDto,
         username,
       );
+    });
+
+    it('Return value is edited user info', async () => {
+      const result = await controller.editUser(id, editUserDto, username);
+      const keys = Object.keys(result);
+      const required = ['nickname', 'password', 'image'];
+
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+
+    it('Throw error if not exist user', async () => {
+      const result = controller.editUser(
+        notExistUser.id,
+        editUserDto,
+        username,
+      );
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
+
+    it('Throw error if not has permission', async () => {
+      const result = controller.editUser(
+        user.id,
+        editUserDto,
+        otherUser.username,
+      );
+      await expect(result).rejects.toThrow(UnauthorizedException);
     });
   });
 });
