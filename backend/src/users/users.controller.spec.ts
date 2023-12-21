@@ -9,6 +9,7 @@ describe('UsersController', () => {
   const user = { id: 1, username: 'username' };
   const notExistUser = { id: 0, username: 'notExistUser' };
   const otherUser = { id: 2, username: 'otherUser' };
+  const FUNCTION = 'function';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,12 +22,13 @@ describe('UsersController', () => {
 
   // GETLOGINUSER: - make, run, return, error
   describe('Get Login User', () => {
+    const username: string = user.username;
+
     it('Make getLoginUser', () => {
       expect(typeof controller.getLoginUser).toBe('function');
     });
 
     it('Run getLoginUser with username: string', () => {
-      const username: string = user.username;
       const getLoginUser = jest.fn();
       controller.getLoginUser = getLoginUser;
       controller.getLoginUser(username);
@@ -34,7 +36,7 @@ describe('UsersController', () => {
     });
 
     it('Return value is accessToken and user', async () => {
-      const result = await controller.getLoginUser(user.username);
+      const result = await controller.getLoginUser(username);
       const keys = Object.keys(result);
       const required = ['accessToken', 'user'];
 
@@ -48,14 +50,15 @@ describe('UsersController', () => {
     });
   });
 
-  // GETUSER : - make, run, return, error
+  // GETUSER: - make, run, return, error
   describe('Get User', () => {
+    const id: number = user.id;
+
     it('Make getUser', () => {
-      expect(typeof controller.getUser).toBe('function');
+      expect(typeof controller.getUser).toBe(FUNCTION);
     });
 
     it('Run getUser with id: number', () => {
-      const id: number = user.id;
       const getUser = jest.fn();
       controller.getUser = getUser;
       controller.getUser(id);
@@ -64,7 +67,7 @@ describe('UsersController', () => {
     });
 
     it('Return value is user info', async () => {
-      const result = await controller.getUser(user.id);
+      const result = await controller.getUser(id);
       const keys = Object.keys(result);
       const required = [
         'id',
@@ -78,14 +81,13 @@ describe('UsersController', () => {
     });
 
     it('Throw error if not exist user', async () => {
-      const notExistUserId: number = notExistUser.id;
-      const getUser = controller.getUser(notExistUserId);
+      const getUser = controller.getUser(notExistUser.id);
 
       await expect(getUser).rejects.toThrow(BadRequestException);
     });
   });
 
-  // EDITUSER : - make, run, return, error
+  // EDITUSER: - make, run, return, error
   describe('Edit User', () => {
     const id: number = user.id;
     const editUserDto: EditUserDto = {
@@ -96,7 +98,7 @@ describe('UsersController', () => {
     const username: string = user.username;
 
     it('Make editUser', () => {
-      expect(typeof controller.editUser).toBe('function');
+      expect(typeof controller.editUser).toBe(FUNCTION);
     });
 
     it('Run editUser with id: number, editUserDto: EditUserDto, username: string', () => {
@@ -134,6 +136,29 @@ describe('UsersController', () => {
         editUserDto,
         otherUser.username,
       );
+      await expect(result).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
+  // DELETEUSER: - make, run, error
+  describe('Delete User', () => {
+    const id: number = user.id;
+    const username: string = user.username;
+
+    it('Make deleteUser', () => {
+      expect(typeof controller.deleteUser).toBe(FUNCTION);
+    });
+
+    it('Run deleteUser with id: number, username: string', () => {
+      const deleteUser = jest.fn();
+      controller.deleteUser = deleteUser;
+      controller.deleteUser(id, username);
+
+      expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
+    });
+
+    it('Throw error if user is not has permission', async () => {
+      const result = controller.deleteUser(id, username);
       await expect(result).rejects.toThrow(UnauthorizedException);
     });
   });

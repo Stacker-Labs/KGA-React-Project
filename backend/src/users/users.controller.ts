@@ -53,7 +53,7 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete User' })
-  remove(@Param('id', ParseIntPipe) id: number, @User() username: string) {
+  deleteUser(@Param('id', ParseIntPipe) id: number, @User() username: string) {
     return this.usersService.remove(id, username);
   }
 
