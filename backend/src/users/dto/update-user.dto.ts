@@ -8,5 +8,8 @@ export class UpdateUserDto {
   nickname?: string;
 
   @ApiProperty({ example: null, required: false })
+  bio?: string;
+
+  @ApiProperty({ example: null, required: false })
   image?: string;
 }
