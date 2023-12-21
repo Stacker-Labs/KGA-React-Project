@@ -13,9 +13,9 @@ import {
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from 'src/common/decorator/user.decorator';
-import { UserGuard } from 'src/common/guards/user.guard';
-import { CookieInterceptor } from 'src/common/interceptors/cookie.interceptor';
+import { User } from '../common/decorator/user.decorator';
+import { UserGuard } from '../common/guards/user.guard';
+import { CookieInterceptor } from '../common/interceptors/cookie.interceptor';
 
 @ApiTags('users')
 @Controller('users')
@@ -55,6 +55,15 @@ export class UsersController {
   @ApiOperation({ summary: 'Delete User' })
   remove(@Param('id', ParseIntPipe) id: number, @User() username: string) {
     return this.usersService.remove(id, username);
+  }
+
+  @Get(':id/:page')
+  @ApiOperation({ summary: 'Get User Boards' })
+  getUserBoards(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('page', ParseIntPipe) page: number,
+  ) {
+    return this.usersService.getUserBoards(id, page);
   }
 
   @Post(':id/following')

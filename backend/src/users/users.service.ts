@@ -7,10 +7,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { Role } from 'src/common/const/role.enum';
+import { Role } from '../common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { RoomModel } from '../room/entities/room.entity';
 import * as bcrypt from 'bcrypt';
+import { BoardModel } from '../boards/entities/board.entity';
+import { pagination } from '../common/function/pagination';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +21,8 @@ export class UsersService {
     private readonly userRepository: Repository<UserModel>,
     @InjectRepository(RoomModel)
     private readonly roomRepository: Repository<RoomModel>,
+    @InjectRepository(BoardModel)
+    private readonly boardRepository: Repository<BoardModel>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -32,7 +36,7 @@ export class UsersService {
     });
     const accessToken = this.jwtService.sign(
       { username },
-      { secret: process.env.JWT_SECRET, expiresIn: 3600 },
+      { secret: process.env.JWT_SECRET || 'secret', expiresIn: 3600 },
     );
 
     return { accessToken, user };
@@ -84,6 +88,27 @@ export class UsersService {
     }
 
     throw new UnauthorizedException('권한이 없습니다.');
+  }
+
+  // GETCMMT: - Get User Boards
+  async getUserBoards(id: number, page: number) {
+    const take = 10;
+    const skip = take * (page - 1);
+    const boards = await this.boardRepository.findAndCount({
+      where: { user: { id } },
+      order: { id: 'DESC' },
+      relations: {
+        user: true,
+        comments: true,
+        tags: true,
+        likes: true,
+        views: true,
+      },
+      skip,
+      take,
+    });
+
+    return pagination(boards, take, skip, page);
   }
 
   // CMNT: - Create Follow
@@ -162,7 +187,7 @@ export class UsersService {
       relations,
     });
     if (!user) {
-      throw new UnauthorizedException('존재하지 않는 사용자입니다.');
+      throw new BadRequestException('존재하지 않는 사용자입니다.');
     }
 
     return user;

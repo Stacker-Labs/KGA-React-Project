@@ -4,12 +4,11 @@ import { cn } from "../../utils/cn";
 
 export const InfoBoxVariants = cva(
   `
-  rounded-md m-5 p-5 bg-gray-100 shadow-md
+  rounded-md m-5 p-5 bg-indigo-100 shadow-md w-[100%]
     `,
   {
     variants: {
       variant: {
-        count: "text-xl min-w-[180px]",
         userinfo:
           "m-0 w-7/12 flex flex-col justify-around items-center gap-y-5",
       },

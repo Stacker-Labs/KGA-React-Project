@@ -11,7 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChatModel } from './entities/chat.entity';
 import { BadRequestException } from '@nestjs/common';
-import { UserModel } from 'src/users/entities/user.entity';
+import { UserModel } from '../users/entities/user.entity';
 
 @WebSocketGateway({
   namespace: /room\/*/,
