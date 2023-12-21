@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { usersProviders } from '../common/mock/provider/user.provider';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto/edit-user.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;

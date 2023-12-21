@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { EditUserDto } from './dto/edit-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -55,21 +55,21 @@ export class UsersService {
   }
 
   // CMMT: - Update User
-  async update(id: number, updateUserDto: UpdateUserDto, username: string) {
+  async update(id: number, editUserDto: EditUserDto, username: string) {
     await this.verifiedUser(id);
 
     const user = await this.getUser(username);
 
-    const { password } = updateUserDto;
+    const { password } = editUserDto;
     if (password) {
       const hash = await bcrypt.hash(password, 10);
-      updateUserDto.password = hash;
+      editUserDto.password = hash;
     }
 
     if (id === user.id || user.role === Role.ADMIN) {
       const newUser = await this.userRepository.save({
         id,
-        ...updateUserDto,
+        ...editUserDto,
       });
       return newUser;
     }
