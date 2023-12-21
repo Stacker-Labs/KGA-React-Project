@@ -7,6 +7,7 @@ import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/userState";
+import TagPage from "./WriteAtoms/TagPage";
 
 const ModifyWrap = styled(Box)`
   display: flex;
@@ -38,17 +39,21 @@ const Modify = () => {
   const [searchParams] = useSearchParams();
   const viewTitle = searchParams.get("title");
   const viewContent = searchParams.get("content");
+  const viewTags = searchParams.get("tags");
   const [title, setTitle] = useState(viewTitle || "");
   const [content, setContent] = useState(viewContent || "");
+  const [tags, setTags] = useState(viewTags || "");
   const userInfo = useRecoilValue(userState);
-  const Token = userInfo?.token || "";
+  const userId = userInfo;
 
   const navigate = useNavigate();
-  const postId = "";
+  // const postId = "";
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`https://api.subin.kr/boards/${postId}`);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_SERVER}/boards/${userId}`
+      );
       if (response.ok) {
         const data = await response.json();
         setTitle(data.title);
@@ -61,8 +66,7 @@ const Modify = () => {
 
   useEffect(() => {
     fetchPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 빈 배열로 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 설정합니다.
+  }, []);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -72,16 +76,19 @@ const Modify = () => {
     setContent(value);
   }, []);
 
+  const handleTagsChange = useCallback((value) => {
+    setTags(value);
+  }, []);
+
   const handleUpdate = async () => {
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
     }
     try {
-      const response = await fetch(`https://api.subin.kr/boards/${postId}`, {
+      const response = await fetch(`https://api.subin.kr/boards/${userId}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -92,7 +99,7 @@ const Modify = () => {
       const result = await response.json();
       console.log(result);
       if (response.ok) {
-        navigate(`/boards/${postId}`);
+        navigate(`/boards/${userId}`);
       }
     } catch (error) {
       console.error("Error updating post:", error);
@@ -101,6 +108,7 @@ const Modify = () => {
 
   return (
     <>
+      <TagPage value={tags} onChange={handleTagsChange} />
       <ModifyWrap>
         <BoardTitle>
           <InputTitle

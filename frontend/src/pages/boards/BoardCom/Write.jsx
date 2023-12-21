@@ -77,7 +77,7 @@ const Write = () => {
       }),
     });
     const result = await response.json();
-    console.log(result.id);
+    console.log(result);
     if (response.ok) {
       navigate(`/boards/${result.id}`);
     }

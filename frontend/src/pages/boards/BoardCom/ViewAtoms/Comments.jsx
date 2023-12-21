@@ -21,7 +21,7 @@ const Comments = ({ id }) => {
     setComments([...comments, { text: newComment, replies: [] }]);
   };
 
-  const Token = userInfo?.token || "";
+  const usersId = userInfo?.id || "";
 
   const addReply = (index) => {
     if (replyText.trim() === "" || editingReplyIndex !== null) return;
@@ -30,7 +30,7 @@ const Comments = ({ id }) => {
     setComments(updatedComments);
     setReplyText("");
     setReplyIndex(null);
-    fetchUserInformation(id, newComment, addComment, setNickname, Token);
+    fetchUserInformation(id, newComment, addComment, setNickname, userInfo);
     setNewComment("");
   };
 
@@ -76,12 +76,15 @@ const Comments = ({ id }) => {
   return (
     <div className="mt-[100px]">
       <h2>댓글 목록</h2>
-      {Token ? (
+      {usersId ? (
         <CommentForm addComment={addComment} id={id} comments={comments} />
       ) : (
         <div className="p-5 border">
           로그인이 필요합니다.
-          <Link to="http://localhost:3000/auth" className="text-blue-600">
+          <Link
+            to="https://stacker-labs.vercel.app/auth"
+            className="text-blue-600"
+          >
             여기를 클릭하여 로그인하세요.
           </Link>
         </div>
@@ -92,7 +95,7 @@ const Comments = ({ id }) => {
             <div className="mb-10 flex flex-row justify-between">
               <p>{nickname}</p>
               <div>
-                {Token ? (
+                {usersId ? (
                   <div className="gap-y-2">
                     <button
                       onClick={() => deleteComment(index)}
@@ -136,7 +139,7 @@ const Comments = ({ id }) => {
             </div>
             {replyIndex === index && (
               <div>
-                {Token ? (
+                {usersId ? (
                   <div className="flex flex-row">
                     <textarea
                       className="w-[800px] p-[10px] resize-none rounded-md bg-neutral-100"
@@ -162,7 +165,7 @@ const Comments = ({ id }) => {
                       />
                       <div className="flex flex-row justify-between  w-[100%]">
                         <p>{nickname}</p>
-                        {Token ? (
+                        {userInfo ? (
                           <button onClick={() => deleteReply(index, idx)}>
                             삭제dd
                           </button>
