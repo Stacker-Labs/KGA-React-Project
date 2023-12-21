@@ -44,6 +44,8 @@ const Write = () => {
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
 
+  const userNickname = userInfo?.user?.nickname;
+  const userId = userInfo?.user?.id;
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -62,8 +64,6 @@ const Write = () => {
       return;
     }
 
-    // const usersInfo = userInfo.id || "";
-    // const userId = userInfo.id || "";
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
@@ -74,6 +74,8 @@ const Write = () => {
         title,
         content,
         tags,
+        userId,
+        userNickname,
       }),
     });
     const result = await response.json();
@@ -107,4 +109,3 @@ const Write = () => {
 };
 
 export default Write;
-
