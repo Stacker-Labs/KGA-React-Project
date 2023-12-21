@@ -39,6 +39,7 @@ const BoardConntent = styled(Box)`
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
@@ -54,7 +55,7 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    const userInfo = useRecoilValue(userState);
+
     const Token = userInfo?.token || "";
     const response = await fetch("http://api.subin.kr/boards", {
       method: "post",
@@ -96,4 +97,3 @@ const Write = () => {
 };
 
 export default Write;
-
