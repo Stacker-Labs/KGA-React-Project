@@ -7,6 +7,7 @@ import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/userState";
+import TagPage from "./WriteAtoms/TagPage";
 
 const WriteWrap = styled(Box)`
   display: flex;
@@ -39,6 +40,7 @@ const BoardConntent = styled(Box)`
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [tags, setTags] = useState("");
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
 
@@ -50,33 +52,39 @@ const Write = () => {
     setContent(value);
   }, []);
 
+  const handleTagsChange = useCallback((value) => {
+    setTags(value);
+  }, []);
+
   const handleSave = async () => {
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
     }
 
-    const Token = userInfo?.token || "";
-    const response = await fetch("http://api.subin.kr/boards", {
+    // const usersInfo = userInfo.id || "";
+    // const userId = userInfo.id || "";
+    const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
-        Authorization: `Bearer ${Token}`,
+        // Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         title,
         content,
-        tags: "#javascript",
+        tags,
       }),
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result.id);
     if (response.ok) {
       navigate(`/boards/${result.id}`);
     }
   };
   return (
-    <>
+    <div className="flex flex-row">
+      <TagPage value={tags} onChange={handleTagsChange} />
       <WriteWrap>
         <BoardTitle>
           <InputTitle
@@ -87,12 +95,14 @@ const Write = () => {
             onChange={handleTitleChange}
           />
         </BoardTitle>
+
         <BoardConntent>
           <TinyMCEEditor value={content} onChange={handleContentChange} />
         </BoardConntent>
+
         <WritePageBottom handleSave={handleSave} disabled={!title} />
       </WriteWrap>
-    </>
+    </div>
   );
 };
 
