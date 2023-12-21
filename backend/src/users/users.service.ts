@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Role } from 'src/common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { RoomModel } from '../room/entities/room.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -26,7 +27,6 @@ export class UsersService {
     const user = await this.getUser(username, {
       followingUsers: true,
       followerUsers: true,
-      boards: true,
       comments: true,
       rooms: true,
     });
@@ -43,7 +43,6 @@ export class UsersService {
     const user = await this.verifiedUser(id, {
       followerUsers: true,
       followingUsers: true,
-      boards: true,
       comments: true,
       rooms: true,
     });
@@ -57,10 +56,17 @@ export class UsersService {
 
     const user = await this.getUser(username);
 
-    // TODO: - UpdateUserDto 내용 확인
+    const { password } = updateUserDto;
+    if (password) {
+      const hash = await bcrypt.hash(password, 10);
+      updateUserDto.password = hash;
+    }
 
     if (id === user.id || user.role === Role.ADMIN) {
-      const newUser = await this.userRepository.save({ id, ...updateUserDto });
+      const newUser = await this.userRepository.save({
+        id,
+        ...updateUserDto,
+      });
       return newUser;
     }
 

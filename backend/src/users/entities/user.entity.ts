@@ -23,6 +23,9 @@ export class UserModel extends BaseModel {
   @Column({ nullable: true })
   image?: string;
 
+  @Column({ nullable: true })
+  bio?: string;
+
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
