@@ -13,10 +13,12 @@ export const ButtonVariants = cva(
         default: " shadow-none active:scale-100 ",
         grey: " bg-slate-buttongrey ",
         blue: " bg-accent-blue text-white",
+        red: " bg-white text-red-300 border border-red-300",
         white: "bg-white border border-accent-blue text-accent-blue",
       },
       size: {
         default: "",
+        sm: "inline-flex w-[4rem] h-[1.33rem] text-[0.75rem] rounded-md",
         md: " w-[6.875rem] h-[2.375rem] text-[1rem] rounded-md",
         lg: "w-[21.875rem] h-[7.5rem] text-[3rem] rounded-3xl",
         wlg: "w-[24rem] h-[5.25rem] text-[2rem]",

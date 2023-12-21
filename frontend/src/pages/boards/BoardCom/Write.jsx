@@ -56,11 +56,11 @@ const Write = () => {
       return;
     }
 
-    const Token = userInfo?.token || "";
-    const response = await fetch("http://api.subin.kr/boards", {
+//     const Token = userInfo?.token || "";
+    const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
-        Authorization: `Bearer ${Token}`,
+        // Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
