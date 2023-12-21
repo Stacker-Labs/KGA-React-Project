@@ -57,6 +57,15 @@ export class UsersController {
     return this.usersService.remove(id, username);
   }
 
+  @Get(':id/:page')
+  @ApiOperation({ summary: 'Get User Boards' })
+  getUserBoards(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('page', ParseIntPipe) page: number,
+  ) {
+    return this.usersService.getUserBoards(id, page);
+  }
+
   @Post(':id/following')
   @UseGuards(UserGuard)
   @ApiBearerAuth()

@@ -11,6 +11,8 @@ import { Role } from '../common/const/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { RoomModel } from '../room/entities/room.entity';
 import * as bcrypt from 'bcrypt';
+import { BoardModel } from '../boards/entities/board.entity';
+import { pagination } from '../common/function/pagination';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +21,8 @@ export class UsersService {
     private readonly userRepository: Repository<UserModel>,
     @InjectRepository(RoomModel)
     private readonly roomRepository: Repository<RoomModel>,
+    @InjectRepository(BoardModel)
+    private readonly boardRepository: Repository<BoardModel>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -84,6 +88,27 @@ export class UsersService {
     }
 
     throw new UnauthorizedException('권한이 없습니다.');
+  }
+
+  // GETCMMT: - Get User Boards
+  async getUserBoards(id: number, page: number) {
+    const take = 10;
+    const skip = take * (page - 1);
+    const boards = await this.boardRepository.findAndCount({
+      where: { user: { id } },
+      order: { id: 'DESC' },
+      relations: {
+        user: true,
+        comments: true,
+        tags: true,
+        likes: true,
+        views: true,
+      },
+      skip,
+      take,
+    });
+
+    return pagination(boards, take, skip, page);
   }
 
   // CMNT: - Create Follow
