@@ -30,7 +30,7 @@ export class BoardsService {
   // POSTCMMT: - Create Board
   async create(createBoardDto: CreateBoardDto, username: string) {
     const { title, content, tags } = createBoardDto;
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     const board = await this.boardRepository.save({ title, content, user });
 
@@ -49,7 +49,7 @@ export class BoardsService {
       likes: true,
     });
 
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     const views = board.views ? [...board.views] : [];
     const viewIndex = views.findIndex((viewer) => viewer.id === user.id);
@@ -70,7 +70,7 @@ export class BoardsService {
 
     // TODO: - UpdateBoardDto 내용 확인
 
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     if (board.user.id === user.id || user.role === Role.ADMIN) {
       const updatedBoard = await this.boardRepository.save({
@@ -90,7 +90,7 @@ export class BoardsService {
   // DELETECMMT: - Delete Board
   async remove(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true });
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     if (board.user.id === user.id || user.role === Role.ADMIN) {
       return this.boardRepository.delete(id);
@@ -102,7 +102,7 @@ export class BoardsService {
   // POSTCMMT: - Create Likes
   async createLikes(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true, likes: true });
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     const likes = board.likes ? [...board.likes] : [];
     const index = likes.findIndex((liker) => liker.id === user.id);
@@ -118,7 +118,7 @@ export class BoardsService {
   // DELETECMMT: - Delete Likes
   async removeLikes(id: number, username: string) {
     const board = await this.verifiedBoard(id, { user: true, likes: true });
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     const likes = board.likes ? [...board.likes] : [];
     const index = likes.findIndex((liker) => liker.id === user.id);
@@ -175,7 +175,7 @@ export class BoardsService {
     username: string,
   ) {
     const { content, parentCommentId } = createCommentDto;
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
 
     const parentComment = await this.commentRepository.findOne({
       where: { id: parentCommentId },
@@ -212,7 +212,7 @@ export class BoardsService {
     updateCommentDto: UpdateCommentDto,
     username: string,
   ) {
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
     const comment = await this.verifiedComment(id, user.id);
 
     const updatedComment = await this.commentRepository.save({
@@ -225,7 +225,7 @@ export class BoardsService {
 
   // DELETECMMT: - Delete Comment
   async removeComment(id: number, username: string) {
-    const user = await this.userService.getUser(username);
+    const user = await this.userService.getCookieUser(username);
     const comment = await this.verifiedComment(id, user.id);
 
     return this.commentRepository.save({
