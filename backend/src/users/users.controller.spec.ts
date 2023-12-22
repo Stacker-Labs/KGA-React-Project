@@ -6,12 +6,13 @@ import { ReqEditUserDto } from './dto/req-editUser.dto';
 import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
+import { MockUserRepository } from '../common/mock/repository/user.repository';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  const user = { id: 1, username: 'username' };
-  const notExistUser = { id: 0, username: 'notExistUser' };
-  const otherUser = { id: 2, username: 'otherUser' };
+  const mockUser = new MockUserRepository();
+  const [user, otherUser] = mockUser.userModels;
+  const notExistUser = mockUser.notExistUser;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -137,12 +138,16 @@ describe('UsersController', () => {
       const deleteUser = jest.fn();
       controller.deleteUser = deleteUser;
       controller.deleteUser(id, username);
-
       expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
     });
 
+    it('Error | user does not exist', async () => {
+      const result = controller.deleteUser(notExistUser.id, username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
+
     it('Error | user does not have permission', async () => {
-      const result = controller.deleteUser(id, username);
+      const result = controller.deleteUser(id, otherUser.username);
       await expect(result).rejects.toThrow(UnauthorizedException);
     });
   });
