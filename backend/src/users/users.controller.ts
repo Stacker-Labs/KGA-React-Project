@@ -27,6 +27,7 @@ import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
+import { ResCreateFollowDto } from './dto/res-createFollow.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -92,7 +93,7 @@ export class UsersController {
   createFollow(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
-  ) {
+  ): Promise<ResCreateFollowDto> {
     return this.usersService.createFollow(id, username);
   }
 

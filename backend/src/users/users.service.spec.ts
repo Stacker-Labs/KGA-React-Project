@@ -10,6 +10,7 @@ describe('UsersService', () => {
   const mockUser = MockUserRepository;
   const [user, otherUser] = mockUser.userModels;
   const notExistUser = mockUser.notExistUser;
+  const influencer = mockUser.influencer;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -159,13 +160,33 @@ describe('UsersService', () => {
     });
   });
 
-  // CREATEFOLLOW: - makex, returnx, errorx
+  // CREATEFOLLOW: - make, return, error
   describe('Create Follow', () => {
-    it.todo('Make | createFollow');
+    it('Make | createFollow', () => {
+      expect(typeof service.createFollow).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | ');
+    it('Return | {message: string}', async () => {
+      const result = await service.createFollow(otherUser.id, user.username);
+      const keys = Object.keys(result);
+      const required = ['message'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
 
-    it.todo('Error | user does not exist');
+    it('Error | user cannot follow himself', async () => {
+      const result = service.createFollow(user.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
+
+    it('Error | user follow already following user', async () => {
+      const result = service.createFollow(influencer.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
+
+    it('Error | user does not exist', async () => {
+      const result = service.createFollow(notExistUser.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
   });
 
   // DELETEFOLLOW: - makex, returnx, errorx

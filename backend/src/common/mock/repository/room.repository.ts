@@ -1,1 +1,3 @@
-export class MockRoomRepository {}
+export class MockRoomRepository {
+  save() {}
+}

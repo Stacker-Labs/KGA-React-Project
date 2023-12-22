@@ -3,6 +3,31 @@ import { Role } from '../../../common/const/role.enum';
 import { UserModel } from '../../../users/entities/user.entity';
 
 export class MockUserRepository {
+  static notExistUser = {
+    id: 0,
+    username: 'notExistUser',
+  };
+
+  static influencer = {
+    id: 3,
+    username: 'influencer',
+    nickname: 'influencer',
+    password: 'p@ssw0rd',
+    role: Role.USER,
+    provider: Provider.LOCAL,
+    followingUsers: [],
+    followerUsers: [],
+    comments: [],
+    rooms: [],
+    chats: [],
+    boards: [],
+    likes: [],
+    views: [],
+    createdAt: new Date(),
+    image: null,
+    bio: '',
+  };
+
   static userModels: UserModel[] = [
     {
       id: 1,
@@ -11,7 +36,7 @@ export class MockUserRepository {
       password: 'p@ssw0rd',
       role: Role.ADMIN,
       provider: Provider.LOCAL,
-      followingUsers: [],
+      followingUsers: [MockUserRepository.influencer],
       followerUsers: [],
       comments: [],
       rooms: [],
@@ -43,11 +68,6 @@ export class MockUserRepository {
       bio: '',
     },
   ];
-
-  static notExistUser = {
-    id: 0,
-    username: 'notExistUser',
-  };
 
   findOne({ where: { username, id } }) {
     const findUser = username
