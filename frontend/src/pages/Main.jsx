@@ -3,6 +3,8 @@ import Sidebar from "../components/organisms/Sidebar";
 import MainContent from "../components/organisms/MainContent";
 import ChatContent from "../components/organisms/ChatContent";
 import axios from "axios";
+import { cn } from "../utils/cn";
+import SearchBar from "../components/molecules/SearchBar";
 
 const Main = () => {
   const [data, setData] = useState({});
@@ -50,7 +52,7 @@ const Main = () => {
 
   return (
     <>
-      <div className="flex w-full items-stretch">
+      <div className={cn("flex desktop:w-full items-stretch")}>
         <Sidebar />
         <MainContent board={board} />
         <ChatContent />

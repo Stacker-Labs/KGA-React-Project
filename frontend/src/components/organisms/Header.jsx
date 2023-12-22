@@ -33,32 +33,51 @@ const Header = () => {
     <>
       <div
         className={cn(
-          "sticky flex flex-row items-center justify-center",
+          "sticky flex flex-row items-center justify-between ",
           "w-[100%] h-[80px]",
           "top-0 border-b z-30 bg-white",
+          "tablet:justify-between",
           darkMode ? "dark" : ""
         )}
       >
-        <div className="w-[40%] flex flex-row items-center justify-around">
-          <Link to={"/"} className="font-logo text-4xl text-accent-blue ">
+        <div
+          className={cn(
+            "w-[40%] flex flex-row items-center gap-11 px-6",
+            "note:flex-row note:w-[45%]",
+            "tablet:flex-col tablet:w-[33%]"
+          )}
+        >
+          <Link
+            to={"/"}
+            className="tablet:text-3xl font-logo text-4xl text-accent-blue"
+          >
             Stacker-Labs
           </Link>
           <SearchBar handleSearch={handleSearch} />
         </div>
-        <div className="w-[60%] flex flex-row justify-evenly items-center">
-          {user?.role === "ADMIN" && (
+        <div
+          className={cn(
+            "flex flex-row justify-around items-center",
+            "note:w-[30%]",
+            "tablet:gap-4 tablet:p-2 tablet:w-[50%] "
+          )}
+        >
+          {user.role === "ADMIN" && (
+
             <Link to={"/admin"}>
               <Button variant={"white"} size={"md"}>
                 Admin
               </Button>
             </Link>
           )}
-          <Link to={"/boards"}>
-            <Button variant={"white"} size={"md"}>
-              Create Post
-            </Button>
-          </Link>
-          {user?.id ? (
+          {user.id && (
+            <Link to={"/boards"}>
+              <Button variant={"white"} size={"md"}>
+                Create Post
+              </Button>
+            </Link>
+          )}
+          {user.id ? (
             <Link to={"/auth/logout"}>
               <Button variant={"white"} size={"md"}>
                 Logout

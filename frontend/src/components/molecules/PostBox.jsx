@@ -1,13 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { TempUserImg } from "../../images";
+import { cn } from "../../utils/cn";
 
 const PostBox = ({ board }) => {
   return (
     <>
       {board.map((item, index) => {
         return (
-          <div key={index} className="border rounded-md w-[800px] p-8">
+          <div
+            key={index}
+            className={cn(
+              "border rounded-md w-4/6 p-8",
+              "note:w-5/6",
+              "tablet:w-[90%]"
+            )}
+          >
             <div className="flex flex-row">
               <Link to={`/users/${item.user.id}`}>
                 <img
