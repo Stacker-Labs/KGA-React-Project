@@ -116,13 +116,33 @@ describe('UsersService', () => {
 
   // DELETEUSER: - makex, returnx, errorx
   describe('Delete User', () => {
-    it('Make | deleteUser', () => {});
+    it('Make | deleteUser', () => {
+      expect(typeof service.deleteUser).toEqual(FUNCTION);
+    });
 
-    it('Return | ', async () => {});
+    it('Return | {message: string}', async () => {
+      const result = await service.deleteUser(user.id, user.username);
+      const keys = Object.keys(result);
+      const required = ['message'];
+      console.log(keys, required);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
 
-    it('Error | user does not exist', async () => {});
+    it('Error | user does not exist', async () => {
+      const idResult = service.deleteUser(notExistUser.id, user.username);
+      await expect(idResult).rejects.toThrow(BadRequestException);
 
-    it('Error | user does not have permission', async () => {});
+      const usernameResult = service.deleteUser(user.id, notExistUser.username);
+      await expect(usernameResult).rejects.toThrow(BadRequestException);
+    });
+
+    it('Error | user does not have permission', async () => {
+      const adminResult = service.deleteUser(otherUser.id, user.username);
+      await expect(adminResult).resolves.not.toThrow();
+
+      const result = service.deleteUser(user.id, otherUser.username);
+      await expect(result).rejects.toThrow(UnauthorizedException);
+    });
   });
 
   // GETUSERBOARDS: - makex, returnx, errorx

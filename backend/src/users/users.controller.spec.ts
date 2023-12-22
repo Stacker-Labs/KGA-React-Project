@@ -6,6 +6,7 @@ import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
 import { MockUserRepository } from '../common/mock/repository/user.repository';
+import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -95,7 +96,7 @@ describe('UsersController', () => {
     });
   });
 
-  // DELETEUSER: - make, run, returnx
+  // DELETEUSER: - make, run, return
   describe('Delete User', () => {
     const id: number = user.id;
     const username: string = user.username;
@@ -111,7 +112,10 @@ describe('UsersController', () => {
       expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
     });
 
-    it.todo('Return | ResDeleteUserDto');
+    it('Return | ResDeleteUserDto', async () => {
+      const result = await controller.deleteUser(id, username);
+      expect(result).toBeInstanceOf(ResDeleteUserDto);
+    });
   });
 
   // GETUSERBOARDS: - makex, runx, returnx

@@ -98,4 +98,6 @@ export class MockUserRepository {
 
     return this.userModels[userIdx];
   }
+
+  delete(id: number) {}
 }

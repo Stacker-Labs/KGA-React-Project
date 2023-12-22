@@ -17,6 +17,7 @@ import { plainToInstance } from 'class-transformer';
 import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
+import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -96,14 +97,18 @@ export class UsersService {
     throw new UnauthorizedException('권한이 없습니다.');
   }
 
-  // CMMT: - Remove User
-  async remove(id: number, username: string) {
+  // DELETEUSER: - {message: string}
+  async deleteUser(id: number, username: string): Promise<ResDeleteUserDto> {
     await this.verifiedUser(id);
 
     const user = await this.getCookieUser(username);
 
     if (id === user.id || user.role === Role.ADMIN) {
-      return this.userRepository.delete(id);
+      await this.userRepository.delete(id);
+
+      const message = 'User has been deleted.';
+      const result = plainToInstance(ResDeleteUserDto, { message });
+      return result;
     }
 
     throw new UnauthorizedException('권한이 없습니다.');
