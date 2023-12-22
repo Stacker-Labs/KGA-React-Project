@@ -85,7 +85,6 @@ const View = () => {
       setTags(result.tags);
       setContent(result.content);
       setUserBoardDate(commentDate);
-      // setLoading(false);
     };
 
     getBoard();
