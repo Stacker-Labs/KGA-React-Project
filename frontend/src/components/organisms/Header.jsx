@@ -18,11 +18,6 @@ const Header = () => {
   const navigate = useNavigate();
   const darkMode = useRecoilValue(darkModeState);
 
-  const init = () => {
-    setUser(tempUserInfo);
-    console.log("Temp User Initialized.");
-  };
-
   const toggleUserMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -84,8 +79,6 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          <Button onClick={init} variant={"white"} size={"md"}>
-            Init
           </Button>
           <DarkmodeBtn />
           <button>
@@ -96,7 +89,7 @@ const Header = () => {
               onClick={toggleUserMenu}
               className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
               src={user.image}
-              alt=""
+              alt="..."
             />
           )}
         </div>
