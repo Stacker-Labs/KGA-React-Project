@@ -33,3 +33,12 @@
   width: 10px; /* Width of the vertical scrollbar */
   height: 10px; /* Height of the horizontal scrollbar */
 }
+
+* {
+  @apply transition-colors duration-100;
+}
+
+.dark {
+  background-color: #23272f;
+  color: #fff;
+}

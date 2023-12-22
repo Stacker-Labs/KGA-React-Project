@@ -1,6 +1,8 @@
 // import { ButtonHTMLAttributes, Children, FC } from "react";
 import { cva } from "class-variance-authority"; // VariantProps
 import { cn } from "../../utils/cn";
+import { useRecoilValue } from "recoil";
+import { darkModeState } from "../../recoil/darkmode";
 
 export const ButtonVariants = cva(
   `
@@ -40,16 +42,15 @@ export const ButtonVariants = cva(
 //   children?: React.ReactElement;
 // }
 
-const Button = ({
-  variant,
-  size,
-
-  children,
-  label,
-  ...props
-}) => {
+const Button = ({ variant, size, children, label, ...props }) => {
+  const darkMode = useRecoilValue(darkModeState);
   return (
-    <button className={cn(ButtonVariants({ variant, size }))} {...props}>
+    <button
+      className={cn(ButtonVariants({ variant, size }), {
+        "dark:bg-accent-blue dark:text-white": darkMode,
+      })}
+      {...props}
+    >
       {children && children}
       {label && label}
     </button>

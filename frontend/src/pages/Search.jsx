@@ -60,7 +60,7 @@ const Search = () => {
     <>
       <div className=" w-7/12 mx-auto py-5 font-serif flex justify-between items-center">
         <div className="text-3xl">Search results for {searchQuery} </div>
-        <ul className="flex flex-row gap-5">
+        {/* <ul className="flex flex-row gap-5">
           <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg ">
             Most Relevant
           </li>
@@ -70,7 +70,8 @@ const Search = () => {
           <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg">
             Oldest
           </li>
-        </ul>
+        </ul> */}
+        <div className="text-xl ">Total : {searchBoard.length} post</div>
       </div>
       <div className=" w-7/12 mx-auto flex flex-row gap-8">
         <ul className="w-[30%] flex flex-col gap-2 ">
