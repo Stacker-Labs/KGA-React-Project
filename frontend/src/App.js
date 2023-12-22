@@ -18,9 +18,22 @@ import UserEdit from "./pages/users/UserEdit";
 import TagItem from "./pages/TagItem";
 import { useResetMenu } from "./hooks/useResetMenu";
 import Logout from "./pages/auth/Logout";
+import { useRecoilValue } from "recoil";
+import { darkModeState } from "./recoil/darkmode";
+import { useEffect } from "react";
 
 function App() {
   useResetMenu();
+
+  const darkMode = useRecoilValue(darkModeState);
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", darkMode);
+
+    return () => {
+      document.body.classList.remove("dark");
+    };
+  }, [darkMode]);
 
   return (
     <>

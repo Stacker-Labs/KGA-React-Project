@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const UserMenu = ({ userid }) => {
   return (
-    <ul className="fixed top-80px right-10 w-[200px] px-5 rounded-lg z-40 bg-white shadow-md">
+    <ul className="fixed top-80px right-10 w-[200px] px-5 rounded-lg z-40 bg-white shadow-md dark:text-black">
       <li className="border-b py-4 cursor-pointer">
         <Link className="cursor-pointer" to={`/users/${userid}`}>
           UserName

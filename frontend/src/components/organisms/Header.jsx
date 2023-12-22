@@ -1,23 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../molecules/SearchBar";
 import Button from "../../tw_components/atoms/Buttons";
-import {
-  Bell_icon,
-  Darkmode_icon,
-  Lightmode_icon,
-  TempUserImg,
-} from "../../images";
 import { useRecoilState, useRecoilValue } from "recoil";
 import UserMenu from "../molecules/UserMenu";
 import { userMenuState } from "../../recoil/userMenuState";
 import { userState } from "../../recoil/userState";
 import { tempUserInfo } from "../../recoil/tempuserinfo";
+import DarkmodeBtn from "../molecules/DarkmodeBtn";
+import { darkModeState } from "../../recoil/darkmode";
+import { FaRegBell } from "react-icons/fa6";
+import { cn } from "../../utils/cn";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useRecoilState(userMenuState);
   const [{ user }, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
+  const darkMode = useRecoilValue(darkModeState);
 
   const init = () => {
     setUser(tempUserInfo);
@@ -38,7 +37,14 @@ const Header = () => {
 
   return (
     <>
-      <div className="sticky top-0 w-[100%] h-[80px] border-b flex flex-row items-center justify-center z-30 bg-white">
+      <div
+        className={cn(
+          "sticky flex flex-row items-center justify-center",
+          "w-[100%] h-[80px]",
+          "top-0 border-b z-30 bg-white",
+          darkMode ? "dark" : ""
+        )}
+      >
         <div className="w-[40%] flex flex-row items-center justify-around">
           <Link to={"/"} className="font-logo text-4xl text-accent-blue ">
             Stacker-Labs
@@ -81,18 +87,9 @@ const Header = () => {
           <Button onClick={init} variant={"white"} size={"md"}>
             Init
           </Button>
+          <DarkmodeBtn />
           <button>
-            <img className="w-[70%]" src={Darkmode_icon} alt="dark mode icon" />
-          </button>
-          <button>
-            <img
-              className="w-[70%]"
-              src={Lightmode_icon}
-              alt="dark mode icon"
-            />
-          </button>
-          <button>
-            <img className="w-[70%]" src={Bell_icon} alt="dark mode icon" />
+            <FaRegBell className="text-2xl dark:text-white" />
           </button>
           {user.id && (
             <img
