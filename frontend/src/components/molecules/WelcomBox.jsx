@@ -1,11 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { cn } from "../../utils/cn";
 
 const WelcomBox = () => {
   return (
-    <div className="rounded-2xl bg-accent-blue w-[800px] p-16">
-      <p className="font-logo text-5xl text-white py-4">stacker-labs</p>
-      <p className="font-logo text-4xl text-white py-4">
+    <div
+      className={cn(
+        "rounded-2xl bg-accent-blue w-4/6 p-16",
+        "note:p-12 note:w-5/6",
+        "tablet:w-[90%] tablet:p-5 "
+      )}
+    >
+      <p className=" tablet:text-3xl font-logo text-5xl text-white py-4">
+        stacker-labs
+      </p>
+      <p className="tablet:text-3xl font-logo text-4xl text-white py-4">
         You’re now a part of the community!
       </p>
       <br />

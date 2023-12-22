@@ -8,6 +8,7 @@ export const ButtonVariants = cva(
   `
     flex justify-around items-center active:scale-95 rounded-xl 
     text-sm transition-all shadow-md hover:scale-105 duration-200
+    tablet:
     `, //font-bold text-slate-100
   {
     variants: {
@@ -42,13 +43,17 @@ export const ButtonVariants = cva(
 //   children?: React.ReactElement;
 // }
 
-const Button = ({ variant, size, children, label, ...props }) => {
+const Button = ({ variant, size, children, label, className, ...props }) => {
   const darkMode = useRecoilValue(darkModeState);
   return (
     <button
-      className={cn(ButtonVariants({ variant, size }), {
-        "dark:bg-accent-blue dark:text-white": darkMode,
-      })}
+      className={cn(
+        ButtonVariants({ variant, size }),
+        {
+          "dark:bg-accent-blue dark:text-white": darkMode,
+        },
+        className
+      )}
       {...props}
     >
       {children && children}
