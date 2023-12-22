@@ -32,18 +32,20 @@ export class UsersService {
 
   // CMNT: - Get Login User
   async getLoginUser(username: string): Promise<ResGetLoginUserDto> {
-    const user = await this.getUser(username, {
+    const user = await this.getCookieUser(username, {
       followingUsers: true,
       followerUsers: true,
       comments: true,
       rooms: true,
     });
+
     const accessToken = this.jwtService.sign(
       { username },
       { secret: process.env.JWT_SECRET || 'secret', expiresIn: 3600 },
     );
 
-    const result = plainToInstance(ResGetLoginUserDto, { accessToken, user });
+    const resGetLoginUserDto = { accessToken, user };
+    const result = plainToInstance(ResGetLoginUserDto, resGetLoginUserDto);
 
     return result;
   }
@@ -57,7 +59,8 @@ export class UsersService {
       rooms: true,
     });
 
-    const result = plainToInstance(ResGetUserDto, user);
+    const resGetUserDto = { user };
+    const result = plainToInstance(ResGetUserDto, resGetUserDto);
 
     return result;
   }
@@ -70,7 +73,7 @@ export class UsersService {
   ): Promise<ResEditUserDto> {
     await this.verifiedUser(id);
 
-    const user = await this.getUser(username);
+    const user = await this.getCookieUser(username);
 
     const { password } = reqEditUserDto;
     if (password) {
@@ -95,7 +98,7 @@ export class UsersService {
   async remove(id: number, username: string) {
     await this.verifiedUser(id);
 
-    const user = await this.getUser(username);
+    const user = await this.getCookieUser(username);
 
     if (id === user.id || user.role === Role.ADMIN) {
       return this.userRepository.delete(id);
@@ -127,7 +130,7 @@ export class UsersService {
 
   // CMNT: - Create Follow
   async createFollow(id: number, username: string) {
-    const user = await this.getUser(username, {
+    const user = await this.getCookieUser(username, {
       followingUsers: true,
       followerUsers: true,
     });
@@ -160,7 +163,7 @@ export class UsersService {
 
   // CMNT: - Remove Follow
   async removeFollow(id: number, username: string) {
-    const user = await this.getUser(username, {
+    const user = await this.getCookieUser(username, {
       followingUsers: true,
       followerUsers: true,
     });
@@ -195,7 +198,7 @@ export class UsersService {
   }
 
   // CMNT: - Get User by username
-  async getUser(username: string, relations?: object) {
+  async getCookieUser(username: string, relations?: object) {
     const user = await this.userRepository.findOne({
       where: { username },
       relations,

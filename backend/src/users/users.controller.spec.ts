@@ -27,7 +27,7 @@ describe('UsersController', () => {
     const username: string = user.username;
 
     it('Make | getLoginUser', () => {
-      expect(typeof controller.getLoginUser).toBe('function');
+      expect(typeof controller.getLoginUser).toBe(FUNCTION);
     });
 
     it('Run | getLoginUser(username: string)', () => {
@@ -37,7 +37,7 @@ describe('UsersController', () => {
       expect(controller.getLoginUser).toHaveBeenCalledWith(username);
     });
 
-    it('Return | {accessToken: string, user: UserModel}', async () => {
+    it('Return | ResGetLoginUserDto', async () => {
       const result = await controller.getLoginUser(username);
       expect(result).toBeInstanceOf(ResGetLoginUserDto);
     });
@@ -58,7 +58,7 @@ describe('UsersController', () => {
       expect(controller.getUser).toHaveBeenCalledWith(id);
     });
 
-    it('Return | user: ResGetUserDto', async () => {
+    it('Return | ResGetUserDto', async () => {
       const result = await controller.getUser(id);
       expect(result).toBeInstanceOf(ResGetUserDto);
     });
@@ -89,13 +89,13 @@ describe('UsersController', () => {
       );
     });
 
-    it('Return | editedUser: ResEditUserDto', async () => {
+    it('Return | ResEditUserDto', async () => {
       const result = await controller.editUser(id, reqEditUserDto, username);
       expect(result).toBeInstanceOf(ResEditUserDto);
     });
   });
 
-  // DELETEUSER: - make, run
+  // DELETEUSER: - make, run, returnx
   describe('Delete User', () => {
     const id: number = user.id;
     const username: string = user.username;
@@ -110,9 +110,11 @@ describe('UsersController', () => {
       controller.deleteUser(id, username);
       expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
     });
+
+    it.todo('Return | ResDeleteUserDto');
   });
 
-  // GETUSERBOARDS: - make, run, return
+  // GETUSERBOARDS: - makex, runx, returnx
   describe('Get User Boards', () => {
     const id: number = user.id;
     const page: number = 1;
@@ -121,12 +123,10 @@ describe('UsersController', () => {
 
     it.todo('Run | getUserBoards(id: number, page: number)');
 
-    it.todo(
-      'Return | {boards: BoardModel[], boardLength: number, nextPage: number | boolean}',
-    );
+    it.todo('Return | ResGetUserBoardsDto');
   });
 
-  // CREATEFOLLOW: - make, run, return
+  // CREATEFOLLOW: - makex, runx, returnx
   describe('Create Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -135,10 +135,10 @@ describe('UsersController', () => {
 
     it.todo('Run | createFollow(id: number, username: string)');
 
-    it.todo('Return | user: UserModel');
+    it.todo('Return | ResCreateFollowDto');
   });
 
-  // DELETEFOLLOW: - make, run
+  // DELETEFOLLOW: - makex, runx, returnx
   describe('Delete Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -146,5 +146,7 @@ describe('UsersController', () => {
     it.todo('Make | deleteFollow');
 
     it.todo('Run | deleteFollow(id: number, username: string)');
+
+    it.todo('Return | ResDeleteFollowDto');
   });
 });
