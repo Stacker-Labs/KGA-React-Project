@@ -139,7 +139,7 @@ const User = () => {
           ) : (
             <Link to={``}>
               <Button onClick={follow} size={"md"} variant={"blue"}>
-                Follow
+                {isFollowed ? "Unfollow" : "Follow"}
               </Button>
             </Link>
           )}
