@@ -36,6 +36,7 @@ export class CookieInterceptor implements NestInterceptor {
             data.expiresIn === 0
               ? 'User is logged out'
               : 'Access token is in cookie now.',
+          accessToken: data.accessToken,
           user: data.user,
         })),
       );
