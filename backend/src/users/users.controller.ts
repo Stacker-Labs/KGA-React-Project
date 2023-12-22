@@ -91,6 +91,7 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create Follow' })
+  @ApiOkResponse({ type: ResCreateFollowDto })
   createFollow(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
@@ -102,10 +103,11 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Follow' })
+  @ApiOkResponse({ type: ResDeleteFollowDto })
   deleteFollow(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
-  ) {
+  ): Promise<ResDeleteFollowDto> {
     return this.usersService.deleteFollow(id, username);
   }
 }
