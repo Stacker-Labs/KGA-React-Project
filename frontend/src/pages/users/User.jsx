@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../tw_components/atoms/Buttons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import InfoBox from "../../tw_components/atoms/InfoBox";
 import Following from "./Following";
 import Follower from "./Follower";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../recoil/userState";
 
 const User = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [userBoard, setUserBoard] = useState(null);
   const [followingOpen, setFollowingOpen] = useState(false);
   const [followerOpen, setFollowerOpen] = useState(false);
+  const [isFollowed, setIsFollowed] = useState(false);
+  const {
+    user: { id: globalId },
+  } = useRecoilValue(userState);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,6 +31,10 @@ const User = () => {
         };
         const response = await fetch(host, options);
         console.log(response);
+        if (response.status === 400) {
+          alert("This user does not exist.");
+          return navigate("/");
+        }
         const { user: data } = await response.json();
         console.log(data);
         setUser(data);
@@ -75,6 +86,35 @@ const User = () => {
     setFollowerOpen(false);
   };
 
+  const follow = async () => {
+    const host = `${process.env.REACT_APP_API_SERVER}/users/${user.id}/following`;
+    const postOptions = {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const deleteOptions = {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    if (!isFollowed) {
+      const response = await fetch(host, postOptions);
+      console.log(response);
+      const result = await response.json();
+      console.log(result);
+      setIsFollowed(true);
+    } else {
+      const response = await fetch(host, deleteOptions);
+      console.log(response);
+      const result = await response.json();
+      console.log(result);
+      setIsFollowed(false);
+    }
+  };
+
   return (
     <div>
       <div
@@ -88,11 +128,20 @@ const User = () => {
         />
 
         <div className="flex flex-row justify-between w-[40%]">
-          <Link to={`/users/${user?.id}/edit`}>
-            <Button size={"md"} variant={"blue"}>
-              Edit Profile
-            </Button>
-          </Link>
+          {globalId === user?.id ? (
+            <Link to={`/users/${user?.id}/edit`}>
+              <Button size={"md"} variant={"blue"}>
+                Edit Profile
+              </Button>
+            </Link>
+          ) : (
+            <Link to={``}>
+              <Button onClick={follow} size={"md"} variant={"blue"}>
+                Follow
+              </Button>
+            </Link>
+          )}
+
           <div className="relative">
             <Button
               onMouseEnter={() => {
