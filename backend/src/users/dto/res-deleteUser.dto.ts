@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ResDeleteUserDto {
   @ApiProperty({
-    example: 'User has been deleted.',
+    example: '탈퇴가 완료되었습니다.',
   })
   @IsString()
   @IsNotEmpty()

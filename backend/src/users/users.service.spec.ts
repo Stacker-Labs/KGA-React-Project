@@ -7,9 +7,9 @@ import { ReqEditUserDto } from './dto/req-editUser.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
-  const mockUser = new MockUserRepository();
-  const [user, otherUser] = mockUser.userModels;
-  const notExistUser = mockUser.notExistUser;
+  const [user, otherUser] = MockUserRepository.userModels;
+  const notExistUser = MockUserRepository.notExistUser;
+  const influencer = MockUserRepository.influencer;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -114,7 +114,7 @@ describe('UsersService', () => {
     });
   });
 
-  // DELETEUSER: - makex, returnx, errorx
+  // DELETEUSER: - make, return, error
   describe('Delete User', () => {
     it('Make | deleteUser', () => {
       expect(typeof service.deleteUser).toEqual(FUNCTION);
@@ -145,30 +145,65 @@ describe('UsersService', () => {
     });
   });
 
-  // GETUSERBOARDS: - makex, returnx, errorx
+  // GETUSERBOARDS: - make, return
   describe('Get User Boards', () => {
-    it.todo('Make | getUserBoards');
+    it('Make | getUserBoards', () => {
+      expect(typeof service.getUserBoards).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | ');
-
-    it.todo('Error | user does not exist');
+    it('Return | {boards: BoardModel[], boardLength: number, nextPage: number | boolean}', async () => {
+      const result = await service.getUserBoards(user.id, 1);
+      const keys = Object.keys(result);
+      const required = ['boards', 'boardLength', 'nextPage'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 
-  // CREATEFOLLOW: - makex, returnx, errorx
+  // CREATEFOLLOW: - make, return, error
   describe('Create Follow', () => {
-    it.todo('Make | createFollow');
+    it('Make | createFollow', () => {
+      expect(typeof service.createFollow).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | ');
+    it('Return | {message: string}', async () => {
+      const result = await service.createFollow(otherUser.id, user.username);
+      const keys = Object.keys(result);
+      const required = ['message'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
 
-    it.todo('Error | user does not exist');
+    it('Error | user follow himself', async () => {
+      const result = service.createFollow(user.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
+
+    it('Error | user follow already following user', async () => {
+      const result = service.createFollow(influencer.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
+
+    it('Error | user does not exist', async () => {
+      const result = service.createFollow(notExistUser.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
   });
 
-  // DELETEFOLLOW: - makex, returnx, errorx
+  // DELETEFOLLOW: - make, return, error
   describe('Delete Follow', () => {
-    it.todo('Make | deleteFollow');
+    it('Make | deleteFollow', () => {
+      expect(typeof service.deleteFollow).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | ');
+    it('Return | {message: string}', async () => {
+      const result = await service.deleteFollow(influencer.id, user.username);
+      const keys = Object.keys(result);
+      const required = ['message'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
 
-    it.todo('Error | user does not exist');
+    it('Error | user unfollow already unfollowing user', async () => {
+      const result = service.deleteFollow(otherUser.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
   });
 });
