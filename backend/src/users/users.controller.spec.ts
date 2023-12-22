@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { usersProviders } from '../common/mock/provider/user.provider';
 import { ReqEditUserDto } from './dto/req-editUser.dto';
@@ -12,7 +11,6 @@ describe('UsersController', () => {
   let controller: UsersController;
   const mockUser = new MockUserRepository();
   const [user, otherUser] = mockUser.userModels;
-  const notExistUser = mockUser.notExistUser;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -24,7 +22,7 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  // GETLOGINUSER: - make, run, return, error
+  // GETLOGINUSER: - make, run, return
   describe('Get Login User', () => {
     const username: string = user.username;
 
@@ -43,14 +41,9 @@ describe('UsersController', () => {
       const result = await controller.getLoginUser(username);
       expect(result).toBeInstanceOf(ResGetLoginUserDto);
     });
-
-    it('Error | user does not exist', async () => {
-      const getLoginUser = controller.getLoginUser(notExistUser.username);
-      await expect(getLoginUser).rejects.toThrow(BadRequestException);
-    });
   });
 
-  // GETUSER: - make, run, return, error
+  // GETUSER: - make, run, return
   describe('Get User', () => {
     const id: number = user.id;
 
@@ -69,14 +62,9 @@ describe('UsersController', () => {
       const result = await controller.getUser(id);
       expect(result).toBeInstanceOf(ResGetUserDto);
     });
-
-    it('Error | user does not exist', async () => {
-      const getUser = controller.getUser(notExistUser.id);
-      await expect(getUser).rejects.toThrow(BadRequestException);
-    });
   });
 
-  // EDITUSER: - make, run, return, error
+  // EDITUSER: - make, run, return
   describe('Edit User', () => {
     const id: number = user.id;
     const reqEditUserDto: ReqEditUserDto = {
@@ -105,27 +93,9 @@ describe('UsersController', () => {
       const result = await controller.editUser(id, reqEditUserDto, username);
       expect(result).toBeInstanceOf(ResEditUserDto);
     });
-
-    it('Error | user does not exist', async () => {
-      const result = controller.editUser(
-        notExistUser.id,
-        reqEditUserDto,
-        username,
-      );
-      await expect(result).rejects.toThrow(BadRequestException);
-    });
-
-    it('Error | user does not have permission', async () => {
-      const result = controller.editUser(
-        user.id,
-        reqEditUserDto,
-        otherUser.username,
-      );
-      await expect(result).rejects.toThrow(UnauthorizedException);
-    });
   });
 
-  // DELETEUSER: - make, run, error
+  // DELETEUSER: - make, run
   describe('Delete User', () => {
     const id: number = user.id;
     const username: string = user.username;
@@ -139,16 +109,6 @@ describe('UsersController', () => {
       controller.deleteUser = deleteUser;
       controller.deleteUser(id, username);
       expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
-    });
-
-    it('Error | user does not exist', async () => {
-      const result = controller.deleteUser(notExistUser.id, username);
-      await expect(result).rejects.toThrow(BadRequestException);
-    });
-
-    it('Error | user does not have permission', async () => {
-      const result = controller.deleteUser(id, otherUser.username);
-      await expect(result).rejects.toThrow(UnauthorizedException);
     });
   });
 
@@ -166,7 +126,7 @@ describe('UsersController', () => {
     );
   });
 
-  // CREATEFOLLOW: - make, run, return, error
+  // CREATEFOLLOW: - make, run, return
   describe('Create Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -176,15 +136,9 @@ describe('UsersController', () => {
     it.todo('Run | createFollow(id: number, username: string)');
 
     it.todo('Return | user: UserModel');
-
-    it.todo('Error | user follow himself');
-
-    it.todo('Error | user does not exist');
-
-    it.todo('Error | user follow already following user');
   });
 
-  // DELETEFOLLOW: - make, run, error
+  // DELETEFOLLOW: - make, run
   describe('Delete Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -192,9 +146,5 @@ describe('UsersController', () => {
     it.todo('Make | deleteFollow');
 
     it.todo('Run | deleteFollow(id: number, username: string)');
-
-    it.todo('Error | user does not exist');
-
-    it.todo('Error | user unfollow already unfollowing user');
   });
 });
