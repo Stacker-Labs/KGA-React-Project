@@ -3,7 +3,7 @@ import { Role } from '../../../common/const/role.enum';
 import { UserModel } from '../../../users/entities/user.entity';
 
 export class MockUserRepository {
-  #userModel: UserModel[] = [
+  userModels: UserModel[] = [
     {
       id: 1,
       username: 'username',
@@ -44,10 +44,15 @@ export class MockUserRepository {
     },
   ];
 
+  notExistUser = {
+    id: 0,
+    username: 'notExistUser',
+  };
+
   findOne({ where: { username, id } }) {
     const findUser = username
-      ? this.#userModel.find((user) => user.username === username)
-      : this.#userModel.find((user) => user.id === id);
+      ? this.userModels.find((user) => user.username === username)
+      : this.userModels.find((user) => user.id === id);
 
     if (!findUser) {
       return null;
@@ -57,9 +62,9 @@ export class MockUserRepository {
   }
 
   save({ id, username, nickname, password, image, bio }) {
-    const userIdx = this.#userModel.findIndex((user) => user.id === id);
+    const userIdx = this.userModels.findIndex((user) => user.id === id);
     if (userIdx === -1) {
-      this.#userModel.push({
+      this.userModels.push({
         id,
         username,
         password,
@@ -79,18 +84,20 @@ export class MockUserRepository {
         bio,
       });
 
-      return this.#userModel.slice(-1)[0];
+      return this.userModels.slice(-1)[0];
     }
     if (nickname) {
-      this.#userModel[userIdx].nickname = nickname;
+      this.userModels[userIdx].nickname = nickname;
     }
     if (password) {
-      this.#userModel[userIdx].password = password;
+      this.userModels[userIdx].password = password;
     }
     if (image) {
-      this.#userModel[userIdx].image = image;
+      this.userModels[userIdx].image = image;
     }
 
-    return this.#userModel[userIdx];
+    return this.userModels[userIdx];
   }
+
+  delete(id: number) {}
 }

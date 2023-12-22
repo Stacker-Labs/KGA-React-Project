@@ -25,6 +25,7 @@ import { CookieInterceptor } from '../common/interceptors/cookie.interceptor';
 import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
+import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -45,7 +46,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get User' })
   @ApiOkResponse({ type: ResGetUserDto })
   async getUser(@Param('id', ParseIntPipe) id: number): Promise<ResGetUserDto> {
-    return this.usersService.findOne(id);
+    return this.usersService.getUser(id);
   }
 
   @Put(':id')
@@ -58,15 +59,18 @@ export class UsersController {
     @Body() reqEditUserDto: ReqEditUserDto,
     @User() username: string,
   ): Promise<ResEditUserDto> {
-    return this.usersService.update(id, reqEditUserDto, username);
+    return this.usersService.editUser(id, reqEditUserDto, username);
   }
 
   @Delete(':id')
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete User' })
-  deleteUser(@Param('id', ParseIntPipe) id: number, @User() username: string) {
-    return this.usersService.remove(id, username);
+  deleteUser(
+    @Param('id', ParseIntPipe) id: number,
+    @User() username: string,
+  ): Promise<ResDeleteUserDto> {
+    return this.usersService.deleteUser(id, username);
   }
 
   @Get(':id/:page')

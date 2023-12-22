@@ -10,7 +10,6 @@ export class ResEditUserDto {
       id: 1,
       username: 'username',
       nickname: 'nickname',
-      password: 'p@ssw0rd',
       image: null,
       bio: '',
       role: Role.ADMIN,
