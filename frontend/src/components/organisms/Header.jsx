@@ -79,7 +79,6 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          </Button>
           <DarkmodeBtn />
           <button>
             <FaRegBell className="text-2xl dark:text-white" />
