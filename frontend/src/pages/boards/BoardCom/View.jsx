@@ -85,11 +85,19 @@ const View = () => {
       setTags(result.tags);
       setContent(result.content);
       setUserBoardDate(commentDate);
-      setLoading(false);
+      // setLoading(false);
     };
 
     getBoard();
   }, [params.id]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
