@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { EditUserDto } from './dto/edit-user.dto';
+import { ReqEditUserDto } from './dto/req-editUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -13,6 +13,10 @@ import { RoomModel } from '../room/entities/room.entity';
 import * as bcrypt from 'bcrypt';
 import { BoardModel } from '../boards/entities/board.entity';
 import { pagination } from '../common/function/pagination';
+import { plainToInstance } from 'class-transformer';
+import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
+import { ResGetUserDto } from './dto/res-getUser.dto';
+import { ResEditUserDto } from './dto/res-editUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -27,7 +31,7 @@ export class UsersService {
   ) {}
 
   // CMNT: - Get Login User
-  async getLoginUser(username: string) {
+  async getLoginUser(username: string): Promise<ResGetLoginUserDto> {
     const user = await this.getUser(username, {
       followingUsers: true,
       followerUsers: true,
@@ -39,11 +43,13 @@ export class UsersService {
       { secret: process.env.JWT_SECRET || 'secret', expiresIn: 3600 },
     );
 
-    return { accessToken, user };
+    const result = plainToInstance(ResGetLoginUserDto, { accessToken, user });
+
+    return result;
   }
 
   // CMMT: - Find User
-  async findOne(id: number) {
+  async findOne(id: number): Promise<ResGetUserDto> {
     const user = await this.verifiedUser(id, {
       followerUsers: true,
       followingUsers: true,
@@ -51,27 +57,35 @@ export class UsersService {
       rooms: true,
     });
 
-    return user;
+    const result = plainToInstance(ResGetUserDto, user);
+
+    return result;
   }
 
   // CMMT: - Update User
-  async update(id: number, editUserDto: EditUserDto, username: string) {
+  async update(
+    id: number,
+    reqEditUserDto: ReqEditUserDto,
+    username: string,
+  ): Promise<ResEditUserDto> {
     await this.verifiedUser(id);
 
     const user = await this.getUser(username);
 
-    const { password } = editUserDto;
+    const { password } = reqEditUserDto;
     if (password) {
       const hash = await bcrypt.hash(password, 10);
-      editUserDto.password = hash;
+      reqEditUserDto.password = hash;
     }
 
     if (id === user.id || user.role === Role.ADMIN) {
       const newUser = await this.userRepository.save({
         id,
-        ...editUserDto,
+        ...reqEditUserDto,
       });
-      return newUser;
+      const result = plainToInstance(ResEditUserDto, newUser);
+
+      return result;
     }
 
     throw new UnauthorizedException('권한이 없습니다.');
