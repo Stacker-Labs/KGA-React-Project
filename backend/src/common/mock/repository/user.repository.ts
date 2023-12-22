@@ -1,9 +1,35 @@
 import { Provider } from '../../../common/const/provider.enum';
 import { Role } from '../../../common/const/role.enum';
 import { UserModel } from '../../../users/entities/user.entity';
+import { MockRoomRepository } from './room.repository';
 
 export class MockUserRepository {
-  userModels: UserModel[] = [
+  static notExistUser = {
+    id: 0,
+    username: 'notExistUser',
+  };
+
+  static influencer = {
+    id: 3,
+    username: 'influencer',
+    nickname: 'influencer',
+    password: 'p@ssw0rd',
+    role: Role.USER,
+    provider: Provider.LOCAL,
+    followingUsers: [],
+    followerUsers: [],
+    comments: [],
+    rooms: [MockRoomRepository.roomModels[0]],
+    chats: [],
+    boards: [],
+    likes: [],
+    views: [],
+    createdAt: new Date(),
+    image: null,
+    bio: '',
+  };
+
+  static userModels: UserModel[] = [
     {
       id: 1,
       username: 'username',
@@ -11,10 +37,10 @@ export class MockUserRepository {
       password: 'p@ssw0rd',
       role: Role.ADMIN,
       provider: Provider.LOCAL,
-      followingUsers: [],
+      followingUsers: [MockUserRepository.influencer],
       followerUsers: [],
       comments: [],
-      rooms: [],
+      rooms: [MockRoomRepository.roomModels[0]],
       chats: [],
       boards: [],
       likes: [],
@@ -44,15 +70,10 @@ export class MockUserRepository {
     },
   ];
 
-  notExistUser = {
-    id: 0,
-    username: 'notExistUser',
-  };
-
   findOne({ where: { username, id } }) {
     const findUser = username
-      ? this.userModels.find((user) => user.username === username)
-      : this.userModels.find((user) => user.id === id);
+      ? MockUserRepository.userModels.find((user) => user.username === username)
+      : MockUserRepository.userModels.find((user) => user.id === id);
 
     if (!findUser) {
       return null;
@@ -62,9 +83,11 @@ export class MockUserRepository {
   }
 
   save({ id, username, nickname, password, image, bio }) {
-    const userIdx = this.userModels.findIndex((user) => user.id === id);
+    const userIdx = MockUserRepository.userModels.findIndex(
+      (user) => user.id === id,
+    );
     if (userIdx === -1) {
-      this.userModels.push({
+      MockUserRepository.userModels.push({
         id,
         username,
         password,
@@ -84,19 +107,19 @@ export class MockUserRepository {
         bio,
       });
 
-      return this.userModels.slice(-1)[0];
+      return MockUserRepository.userModels.slice(-1)[0];
     }
     if (nickname) {
-      this.userModels[userIdx].nickname = nickname;
+      MockUserRepository.userModels[userIdx].nickname = nickname;
     }
     if (password) {
-      this.userModels[userIdx].password = password;
+      MockUserRepository.userModels[userIdx].password = password;
     }
     if (image) {
-      this.userModels[userIdx].image = image;
+      MockUserRepository.userModels[userIdx].image = image;
     }
 
-    return this.userModels[userIdx];
+    return MockUserRepository.userModels[userIdx];
   }
 
   delete(id: number) {}

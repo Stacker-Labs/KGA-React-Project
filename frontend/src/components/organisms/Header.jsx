@@ -6,7 +6,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import UserMenu from "../molecules/UserMenu";
 import { userMenuState } from "../../recoil/userMenuState";
 import { userState } from "../../recoil/userState";
-import { tempUserInfo } from "../../recoil/tempuserinfo";
 import DarkmodeBtn from "../molecules/DarkmodeBtn";
 import { darkModeState } from "../../recoil/darkmode";
 import { FaRegBell } from "react-icons/fa6";
@@ -14,14 +13,9 @@ import { cn } from "../../utils/cn";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useRecoilState(userMenuState);
-  const [{ user }, setUser] = useRecoilState(userState);
+  const [{ user }] = useRecoilState(userState);
   const navigate = useNavigate();
   const darkMode = useRecoilValue(darkModeState);
-
-  const init = () => {
-    setUser(tempUserInfo);
-    console.log("Temp User Initialized.");
-  };
 
   const toggleUserMenu = () => {
     setMenuOpen(!menuOpen);
@@ -69,6 +63,7 @@ const Header = () => {
           )}
         >
           {user.role === "ADMIN" && (
+
             <Link to={"/admin"}>
               <Button variant={"white"} size={"md"}>
                 Admin
@@ -95,32 +90,29 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          {!user.id && (
+          {!user?.id && (
             <Link to={"/auth/register"}>
               <Button variant={"white"} size={"md"}>
                 Sign Up
               </Button>
             </Link>
           )}
-          {/* <Button onClick={init} variant={"white"} size={"md"}>
-            Init
-          </Button> */}
           <DarkmodeBtn />
           <button>
             <FaRegBell className="text-2xl dark:text-white" />
           </button>
-          {user.id && (
+          {user?.id && (
             <img
               onClick={toggleUserMenu}
               className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
-              src={user.image}
-              alt=""
+              src={user?.image}
+              alt="..."
             />
           )}
         </div>
       </div>
 
-      {menuOpen && <UserMenu userid={user.id} />}
+      {menuOpen && <UserMenu userid={user?.id} />}
     </>
   );
 };

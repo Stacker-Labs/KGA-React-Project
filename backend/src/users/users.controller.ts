@@ -26,6 +26,9 @@ import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
+import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
+import { ResCreateFollowDto } from './dto/res-createFollow.dto';
+import { ResDeleteFollowDto } from './dto/res-deleteFollowUser.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -38,14 +41,14 @@ export class UsersController {
   @ApiOperation({ summary: 'Get Login User' })
   @ApiBearerAuth()
   @ApiOkResponse({ type: ResGetLoginUserDto })
-  async getLoginUser(@User() username: string): Promise<ResGetLoginUserDto> {
+  getLoginUser(@User() username: string): Promise<ResGetLoginUserDto> {
     return this.usersService.getLoginUser(username);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get User' })
   @ApiOkResponse({ type: ResGetUserDto })
-  async getUser(@Param('id', ParseIntPipe) id: number): Promise<ResGetUserDto> {
+  getUser(@Param('id', ParseIntPipe) id: number): Promise<ResGetUserDto> {
     return this.usersService.getUser(id);
   }
 
@@ -54,7 +57,7 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Edit User' })
   @ApiCreatedResponse({ type: ResEditUserDto })
-  async editUser(
+  editUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() reqEditUserDto: ReqEditUserDto,
     @User() username: string,
@@ -66,6 +69,7 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete User' })
+  @ApiOkResponse({ type: ResDeleteUserDto })
   deleteUser(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
@@ -75,10 +79,11 @@ export class UsersController {
 
   @Get(':id/:page')
   @ApiOperation({ summary: 'Get User Boards' })
+  @ApiOkResponse({ type: ResGetUserBoardsDto })
   getUserBoards(
     @Param('id', ParseIntPipe) id: number,
     @Param('page', ParseIntPipe) page: number,
-  ) {
+  ): Promise<ResGetUserBoardsDto> {
     return this.usersService.getUserBoards(id, page);
   }
 
@@ -86,10 +91,11 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create Follow' })
+  @ApiOkResponse({ type: ResCreateFollowDto })
   createFollow(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
-  ) {
+  ): Promise<ResCreateFollowDto> {
     return this.usersService.createFollow(id, username);
   }
 
@@ -97,10 +103,11 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Follow' })
-  removeFollow(
+  @ApiOkResponse({ type: ResDeleteFollowDto })
+  deleteFollow(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
-  ) {
-    return this.usersService.removeFollow(id, username);
+  ): Promise<ResDeleteFollowDto> {
+    return this.usersService.deleteFollow(id, username);
   }
 }
