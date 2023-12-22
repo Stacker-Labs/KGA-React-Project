@@ -20,6 +20,7 @@ import { ResEditUserDto } from './dto/res-editUser.dto';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
 import { ResCreateFollowDto } from './dto/res-createFollow.dto';
+import { ResDeleteFollowDto } from './dto/res-deleteFollowUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -183,7 +184,10 @@ export class UsersService {
   }
 
   // CMNT: - Remove Follow
-  async removeFollow(id: number, username: string) {
+  async deleteFollow(
+    id: number,
+    username: string,
+  ): Promise<ResDeleteFollowDto> {
     const user = await this.getCookieUser(username, {
       followingUsers: true,
       followerUsers: true,
@@ -212,10 +216,12 @@ export class UsersService {
       await this.roomRepository.delete(room.id);
     }
 
-    return this.userRepository.save({
-      id: user.id,
-      followingUsers,
-    });
+    await this.userRepository.save({ id: user.id, followingUsers });
+
+    const resDeleteFollowDto = { message: '언팔로잉 했습니다.' };
+    const result = plainToInstance(ResDeleteFollowDto, resDeleteFollowDto);
+
+    return result;
   }
 
   // CMNT: - Get User by username

@@ -1,6 +1,7 @@
 import { Provider } from '../../../common/const/provider.enum';
 import { Role } from '../../../common/const/role.enum';
 import { UserModel } from '../../../users/entities/user.entity';
+import { MockRoomRepository } from './room.repository';
 
 export class MockUserRepository {
   static notExistUser = {
@@ -18,7 +19,7 @@ export class MockUserRepository {
     followingUsers: [],
     followerUsers: [],
     comments: [],
-    rooms: [],
+    rooms: [MockRoomRepository.roomModels[0]],
     chats: [],
     boards: [],
     likes: [],
@@ -39,7 +40,7 @@ export class MockUserRepository {
       followingUsers: [MockUserRepository.influencer],
       followerUsers: [],
       comments: [],
-      rooms: [],
+      rooms: [MockRoomRepository.roomModels[0]],
       chats: [],
       boards: [],
       likes: [],

@@ -8,11 +8,12 @@ import { ResEditUserDto } from './dto/res-editUser.dto';
 import { MockUserRepository } from '../common/mock/repository/user.repository';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
+import { ResCreateFollowDto } from './dto/res-createFollow.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  const mockUser = MockUserRepository;
-  const [user, otherUser] = mockUser.userModels;
+  const [user, otherUser] = MockUserRepository.userModels;
+  const influencer = MockUserRepository.influencer;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -141,27 +142,46 @@ describe('UsersController', () => {
     });
   });
 
-  // CREATEFOLLOW: - makex, runx, returnx
+  // CREATEFOLLOW: - make, run, return
   describe('Create Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
 
-    it.todo('Make | createFollow');
+    it('Make | createFollow', () => {
+      expect(typeof controller.createFollow).toEqual(FUNCTION);
+    });
 
-    it.todo('Run | createFollow(id: number, username: string)');
+    it('Run | createFollow(id: number, username: string)', () => {
+      const createFollow = jest.fn();
+      controller.createFollow = createFollow;
+      controller.createFollow(id, username);
+      expect(controller.createFollow).toHaveBeenCalledWith(id, username);
+    });
 
-    it.todo('Return | ResCreateFollowDto');
+    it('Return | ResCreateFollowDto', async () => {
+      const result = await controller.createFollow(otherUser.id, username);
+      expect(result).toBeInstanceOf(ResCreateFollowDto);
+    });
   });
 
-  // DELETEFOLLOW: - makex, runx, returnx
+  // DELETEFOLLOW: - make, run, return
   describe('Delete Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
 
-    it.todo('Make | deleteFollow');
+    it('Make | deleteFollow', () => {
+      expect(typeof controller.deleteFollow).toEqual(FUNCTION);
+    });
 
-    it.todo('Run | deleteFollow(id: number, username: string)');
+    it('Run | deleteFollow(id: number, username: string)', () => {
+      const deleteFollow = jest.fn();
+      controller.deleteFollow = deleteFollow;
+      controller.deleteFollow(id, username);
+      expect(controller.deleteFollow).toHaveBeenCalledWith(id, username);
+    });
 
-    it.todo('Return | ResDeleteFollowDto');
+    it('Return | ResDeleteFollowDto', async () => {
+      const result = await controller.deleteFollow(influencer.id, username);
+    });
   });
 });

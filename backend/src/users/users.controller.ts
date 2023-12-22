@@ -28,6 +28,7 @@ import { ResEditUserDto } from './dto/res-editUser.dto';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
 import { ResCreateFollowDto } from './dto/res-createFollow.dto';
+import { ResDeleteFollowDto } from './dto/res-deleteFollowUser.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -101,10 +102,10 @@ export class UsersController {
   @UseGuards(UserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete Follow' })
-  removeFollow(
+  deleteFollow(
     @Param('id', ParseIntPipe) id: number,
     @User() username: string,
   ) {
-    return this.usersService.removeFollow(id, username);
+    return this.usersService.deleteFollow(id, username);
   }
 }

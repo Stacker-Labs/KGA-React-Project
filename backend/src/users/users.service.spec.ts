@@ -7,10 +7,9 @@ import { ReqEditUserDto } from './dto/req-editUser.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
-  const mockUser = MockUserRepository;
-  const [user, otherUser] = mockUser.userModels;
-  const notExistUser = mockUser.notExistUser;
-  const influencer = mockUser.influencer;
+  const [user, otherUser] = MockUserRepository.userModels;
+  const notExistUser = MockUserRepository.notExistUser;
+  const influencer = MockUserRepository.influencer;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -173,7 +172,7 @@ describe('UsersService', () => {
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
-    it('Error | user cannot follow himself', async () => {
+    it('Error | user follow himself', async () => {
       const result = service.createFollow(user.id, user.username);
       await expect(result).rejects.toThrow(BadRequestException);
     });
@@ -189,12 +188,22 @@ describe('UsersService', () => {
     });
   });
 
-  // DELETEFOLLOW: - makex, returnx, errorx
+  // DELETEFOLLOW: - make, return, error
   describe('Delete Follow', () => {
-    it.todo('Make | deleteFollow');
+    it('Make | deleteFollow', () => {
+      expect(typeof service.deleteFollow).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | ');
+    it('Return | {message: string}', async () => {
+      const result = await service.deleteFollow(influencer.id, user.username);
+      const keys = Object.keys(result);
+      const required = ['message'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
 
-    it.todo('Error | user does not exist');
+    it('Error | user unfollow already unfollowing user', async () => {
+      const result = service.deleteFollow(otherUser.id, user.username);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
   });
 });
