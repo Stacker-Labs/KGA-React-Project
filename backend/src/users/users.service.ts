@@ -18,6 +18,7 @@ import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
+import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
 
 @Injectable()
 export class UsersService {
@@ -114,8 +115,8 @@ export class UsersService {
     throw new UnauthorizedException('권한이 없습니다.');
   }
 
-  // GETCMMT: - Get User Boards
-  async getUserBoards(id: number, page: number) {
+  // GETUSERBOARDS: - {boards: BoardModel[], boardLength: number, nextPage: number | boolean}
+  async getUserBoards(id: number, page: number): Promise<ResGetUserBoardsDto> {
     const take = 10;
     const skip = take * (page - 1);
     const boards = await this.boardRepository.findAndCount({
@@ -132,7 +133,10 @@ export class UsersService {
       take,
     });
 
-    return pagination(boards, take, skip, page);
+    const resGetUserBoards = pagination(boards, take, skip, page);
+    const result = plainToInstance(ResGetUserBoardsDto, resGetUserBoards);
+
+    return result;
   }
 
   // CMNT: - Create Follow

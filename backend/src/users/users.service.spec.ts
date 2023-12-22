@@ -7,7 +7,7 @@ import { ReqEditUserDto } from './dto/req-editUser.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
-  const mockUser = new MockUserRepository();
+  const mockUser = MockUserRepository;
   const [user, otherUser] = mockUser.userModels;
   const notExistUser = mockUser.notExistUser;
   const FUNCTION = 'function';
@@ -114,7 +114,7 @@ describe('UsersService', () => {
     });
   });
 
-  // DELETEUSER: - makex, returnx, errorx
+  // DELETEUSER: - make, return, error
   describe('Delete User', () => {
     it('Make | deleteUser', () => {
       expect(typeof service.deleteUser).toEqual(FUNCTION);
@@ -145,13 +145,18 @@ describe('UsersService', () => {
     });
   });
 
-  // GETUSERBOARDS: - makex, returnx, errorx
+  // GETUSERBOARDS: - make, return
   describe('Get User Boards', () => {
-    it.todo('Make | getUserBoards');
+    it('Make | getUserBoards', () => {
+      expect(typeof service.getUserBoards).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | ');
-
-    it.todo('Error | user does not exist');
+    it('Return | {boards: BoardModel[], boardLength: number, nextPage: number | boolean}', async () => {
+      const result = await service.getUserBoards(user.id, 1);
+      const keys = Object.keys(result);
+      const required = ['boards', 'boardLength', 'nextPage'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 
   // CREATEFOLLOW: - makex, returnx, errorx

@@ -7,10 +7,11 @@ import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
 import { MockUserRepository } from '../common/mock/repository/user.repository';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
+import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  const mockUser = new MockUserRepository();
+  const mockUser = MockUserRepository;
   const [user, otherUser] = mockUser.userModels;
   const FUNCTION = 'function';
 
@@ -118,16 +119,26 @@ describe('UsersController', () => {
     });
   });
 
-  // GETUSERBOARDS: - makex, runx, returnx
+  // GETUSERBOARDS: - make, run, return
   describe('Get User Boards', () => {
     const id: number = user.id;
     const page: number = 1;
 
-    it.todo('Make | getUserBoards');
+    it('Make | getUserBoards', () => {
+      expect(typeof controller.getUserBoards).toEqual(FUNCTION);
+    });
 
-    it.todo('Run | getUserBoards(id: number, page: number)');
+    it('Run | getUserBoards(id: number, page: number)', () => {
+      const getUserBoards = jest.fn();
+      controller.getUserBoards = getUserBoards;
+      controller.getUserBoards(id, page);
+      expect(controller.getUserBoards).toHaveBeenCalledWith(id, page);
+    });
 
-    it.todo('Return | ResGetUserBoardsDto');
+    it('Return | ResGetUserBoardsDto', async () => {
+      const result = await controller.getUserBoards(id, page);
+      expect(result).toBeInstanceOf(ResGetUserBoardsDto);
+    });
   });
 
   // CREATEFOLLOW: - makex, runx, returnx

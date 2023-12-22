@@ -3,7 +3,7 @@ import { Role } from '../../../common/const/role.enum';
 import { UserModel } from '../../../users/entities/user.entity';
 
 export class MockUserRepository {
-  userModels: UserModel[] = [
+  static userModels: UserModel[] = [
     {
       id: 1,
       username: 'username',
@@ -44,15 +44,15 @@ export class MockUserRepository {
     },
   ];
 
-  notExistUser = {
+  static notExistUser = {
     id: 0,
     username: 'notExistUser',
   };
 
   findOne({ where: { username, id } }) {
     const findUser = username
-      ? this.userModels.find((user) => user.username === username)
-      : this.userModels.find((user) => user.id === id);
+      ? MockUserRepository.userModels.find((user) => user.username === username)
+      : MockUserRepository.userModels.find((user) => user.id === id);
 
     if (!findUser) {
       return null;
@@ -62,9 +62,11 @@ export class MockUserRepository {
   }
 
   save({ id, username, nickname, password, image, bio }) {
-    const userIdx = this.userModels.findIndex((user) => user.id === id);
+    const userIdx = MockUserRepository.userModels.findIndex(
+      (user) => user.id === id,
+    );
     if (userIdx === -1) {
-      this.userModels.push({
+      MockUserRepository.userModels.push({
         id,
         username,
         password,
@@ -84,19 +86,19 @@ export class MockUserRepository {
         bio,
       });
 
-      return this.userModels.slice(-1)[0];
+      return MockUserRepository.userModels.slice(-1)[0];
     }
     if (nickname) {
-      this.userModels[userIdx].nickname = nickname;
+      MockUserRepository.userModels[userIdx].nickname = nickname;
     }
     if (password) {
-      this.userModels[userIdx].password = password;
+      MockUserRepository.userModels[userIdx].password = password;
     }
     if (image) {
-      this.userModels[userIdx].image = image;
+      MockUserRepository.userModels[userIdx].image = image;
     }
 
-    return this.userModels[userIdx];
+    return MockUserRepository.userModels[userIdx];
   }
 
   delete(id: number) {}
