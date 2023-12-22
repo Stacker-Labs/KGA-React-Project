@@ -6,7 +6,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import UserMenu from "../molecules/UserMenu";
 import { userMenuState } from "../../recoil/userMenuState";
 import { userState } from "../../recoil/userState";
-import { tempUserInfo } from "../../recoil/tempuserinfo";
 import DarkmodeBtn from "../molecules/DarkmodeBtn";
 import { darkModeState } from "../../recoil/darkmode";
 import { FaRegBell } from "react-icons/fa6";
@@ -14,7 +13,7 @@ import { cn } from "../../utils/cn";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useRecoilState(userMenuState);
-  const [{ user }, setUser] = useRecoilState(userState);
+  const [{ user }] = useRecoilState(userState);
   const navigate = useNavigate();
   const darkMode = useRecoilValue(darkModeState);
 
@@ -47,7 +46,7 @@ const Header = () => {
           <SearchBar handleSearch={handleSearch} />
         </div>
         <div className="w-[60%] flex flex-row justify-evenly items-center">
-          {user.role === "ADMIN" && (
+          {user?.role === "ADMIN" && (
             <Link to={"/admin"}>
               <Button variant={"white"} size={"md"}>
                 Admin
@@ -59,7 +58,7 @@ const Header = () => {
               Create Post
             </Button>
           </Link>
-          {user.id ? (
+          {user?.id ? (
             <Link to={"/auth/logout"}>
               <Button variant={"white"} size={"md"}>
                 Logout
@@ -72,7 +71,7 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          {!user.id && (
+          {!user?.id && (
             <Link to={"/auth/register"}>
               <Button variant={"white"} size={"md"}>
                 Sign Up
@@ -83,18 +82,18 @@ const Header = () => {
           <button>
             <FaRegBell className="text-2xl dark:text-white" />
           </button>
-          {user.id && (
+          {user?.id && (
             <img
               onClick={toggleUserMenu}
               className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
-              src={user.image}
+              src={user?.image}
               alt="..."
             />
           )}
         </div>
       </div>
 
-      {menuOpen && <UserMenu userid={user.id} />}
+      {menuOpen && <UserMenu userid={user?.id} />}
     </>
   );
 };
