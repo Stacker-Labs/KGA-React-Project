@@ -93,12 +93,14 @@ const User = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      credential: "include",
     };
     const deleteOptions = {
       method: "delete",
       headers: {
         "Content-Type": "application/json",
       },
+      credential: "include",
     };
     if (!isFollowed) {
       const response = await fetch(host, postOptions);
