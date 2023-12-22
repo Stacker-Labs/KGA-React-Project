@@ -19,10 +19,10 @@ const Header = () => {
   const [{ user }, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
-  const init = () => {
-    setUser(tempUserInfo);
-    console.log("Temp User Initialized.");
-  };
+  // const init = () => {
+  //   setUser(tempUserInfo);
+  //   console.log("Temp User Initialized.");
+  // };
 
   const toggleUserMenu = () => {
     setMenuOpen(!menuOpen);
@@ -78,9 +78,9 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          <Button onClick={init} variant={"white"} size={"md"}>
+          {/* <Button onClick={init} variant={"white"} size={"md"}>
             Init
-          </Button>
+          </Button> */}
           <button>
             <img className="w-[70%]" src={Darkmode_icon} alt="dark mode icon" />
           </button>
@@ -99,7 +99,7 @@ const Header = () => {
               onClick={toggleUserMenu}
               className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
               src={user.image}
-              alt=""
+              alt="..."
             />
           )}
         </div>
