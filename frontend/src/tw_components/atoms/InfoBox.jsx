@@ -4,7 +4,7 @@ import { cn } from "../../utils/cn";
 
 export const InfoBoxVariants = cva(
   `
-  rounded-md m-5 p-5 bg-indigo-100 shadow-md w-[100%]
+  rounded-md m-5 p-5 shadow-md w-[100%] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30
     `,
   {
     variants: {
@@ -30,9 +30,12 @@ export const InfoBoxVariants = cva(
 //   children?: React.ReactElement;
 // }
 
-const InfoBox = ({ variant, size, children, label, ...props }) => {
+const InfoBox = ({ variant, size, children, label, className, ...props }) => {
   return (
-    <div className={cn(InfoBoxVariants({ variant, size }))} {...props}>
+    <div
+      className={cn(InfoBoxVariants({ variant, size }), className)}
+      {...props}
+    >
       {children && children}
       {label && label}
     </div>

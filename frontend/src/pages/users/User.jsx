@@ -129,7 +129,7 @@ const User = () => {
           alt="..."
         />
 
-        <div className="flex flex-row justify-between w-[40%]">
+        <div className="flex flex-row justify-between w-[45%]">
           {globalId === user?.id ? (
             <Link to={`/users/${user?.id}/edit`}>
               <Button size={"md"} variant={"blue"}>
