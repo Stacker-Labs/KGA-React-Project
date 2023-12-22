@@ -45,7 +45,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get User' })
   @ApiOkResponse({ type: ResGetUserDto })
   async getUser(@Param('id', ParseIntPipe) id: number): Promise<ResGetUserDto> {
-    return this.usersService.findOne(id);
+    return this.usersService.getUser(id);
   }
 
   @Put(':id')

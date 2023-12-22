@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { usersProviders } from '../common/mock/provider/user.provider';
 import { MockUserRepository } from '../common/mock/repository/user.repository';
-import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { ReqEditUserDto } from './dto/req-editUser.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -22,8 +22,6 @@ describe('UsersService', () => {
 
   // GETLOGINUSER: - make, return, error
   describe('Get Login user', () => {
-    const username = user.username;
-
     it('Make | getLoginUser', () => {
       expect(typeof service.getLoginUser).toBe(FUNCTION);
     });
@@ -36,36 +34,95 @@ describe('UsersService', () => {
     });
 
     it('Error | user does not exist', async () => {
-      const result = await service.getLoginUser(notExistUser.username);
-      expect(result).rejects.toThrow(BadRequestException);
+      const result = service.getLoginUser(notExistUser.username);
+      await expect(result).rejects.toThrow(BadRequestException);
     });
   });
 
-  // GETUSER: - makex, returnx, errorx
+  // GETUSER: - make, return, error
   describe('Get User', () => {
-    it.todo('Make | getUser');
+    it('Make | getUser', () => {
+      expect(typeof service.getUser).toEqual(FUNCTION);
+    });
 
-    it.todo('Return | {user: UserModel}');
+    it('Return | {user: UserModel}', async () => {
+      const result = await service.getUser(user.id);
+      const keys = Object.keys(result);
+      const required = ['user'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
 
-    it.todo('Error | user does not exist');
+    it('Error | user does not exist', async () => {
+      const result = service.getUser(notExistUser.id);
+      await expect(result).rejects.toThrow(BadRequestException);
+    });
   });
 
-  // EDITUSER: - makex, returnx, errorx
+  // EDITUSER: - make, return, error
   describe('Edit User', () => {
-    it.todo('Make | editUser');
+    const reqEditUserDto: ReqEditUserDto = {
+      nickname: 'newNickname',
+      password: 'newPassword',
+      image: 'newImageLink',
+    };
 
-    it.todo('Return | ');
+    it('Make | editUser', () => {
+      expect(typeof service.editUser).toEqual(FUNCTION);
+    });
 
-    it.todo('Error | user does not exist');
+    it('Return | {editedUser: UserModel}', async () => {
+      const result = await service.editUser(
+        user.id,
+        reqEditUserDto,
+        user.username,
+      );
+      const keys = Object.keys(result);
+      const required = ['editedUser'];
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+
+    it('Error | user does not exist', async () => {
+      const idResult = service.editUser(
+        notExistUser.id,
+        reqEditUserDto,
+        user.username,
+      );
+      await expect(idResult).rejects.toThrow(BadRequestException);
+
+      const usernameResult = service.editUser(
+        user.id,
+        reqEditUserDto,
+        notExistUser.username,
+      );
+      await expect(usernameResult).rejects.toThrow(BadRequestException);
+    });
+
+    it('Error | user does not have permission', async () => {
+      const adminResult = service.editUser(
+        otherUser.id,
+        reqEditUserDto,
+        user.username,
+      );
+      await expect(adminResult).resolves.not.toThrow();
+
+      const result = service.editUser(
+        user.id,
+        reqEditUserDto,
+        otherUser.username,
+      );
+      await expect(result).rejects.toThrow(UnauthorizedException);
+    });
   });
 
   // DELETEUSER: - makex, returnx, errorx
   describe('Delete User', () => {
-    it.todo('Make | deleteUser');
+    it('Make | deleteUser', () => {});
 
-    it.todo('Return | ');
+    it('Return | ', async () => {});
 
-    it.todo('Error | user does not exist');
+    it('Error | user does not exist', async () => {});
+
+    it('Error | user does not have permission', async () => {});
   });
 
   // GETUSERBOARDS: - makex, returnx, errorx

@@ -30,7 +30,7 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // CMNT: - Get Login User
+  // GETLOGINUSER: - {accessToken: string, user: UserModel}
   async getLoginUser(username: string): Promise<ResGetLoginUserDto> {
     const user = await this.getCookieUser(username, {
       followingUsers: true,
@@ -41,7 +41,7 @@ export class UsersService {
 
     const accessToken = this.jwtService.sign(
       { username },
-      { secret: process.env.JWT_SECRET || 'secret', expiresIn: 3600 },
+      { secret: process.env.JWT_SECRET || 'secret', expiresIn: 360000 },
     );
 
     const resGetLoginUserDto = { accessToken, user };
@@ -50,8 +50,8 @@ export class UsersService {
     return result;
   }
 
-  // CMMT: - Find User
-  async findOne(id: number): Promise<ResGetUserDto> {
+  // GETUSER: - {user: UserModel}
+  async getUser(id: number): Promise<ResGetUserDto> {
     const user = await this.verifiedUser(id, {
       followerUsers: true,
       followingUsers: true,
@@ -65,8 +65,8 @@ export class UsersService {
     return result;
   }
 
-  // CMMT: - Update User
-  async update(
+  // EDITUSER: - {editedUser: UserModel}
+  async editUser(
     id: number,
     reqEditUserDto: ReqEditUserDto,
     username: string,
@@ -82,11 +82,13 @@ export class UsersService {
     }
 
     if (id === user.id || user.role === Role.ADMIN) {
-      const newUser = await this.userRepository.save({
+      const editedUser = await this.userRepository.save({
         id,
         ...reqEditUserDto,
       });
-      const result = plainToInstance(ResEditUserDto, newUser);
+
+      const resEditUserDto = { editedUser };
+      const result = plainToInstance(ResEditUserDto, resEditUserDto);
 
       return result;
     }
