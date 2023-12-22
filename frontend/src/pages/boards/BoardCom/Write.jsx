@@ -44,8 +44,8 @@ const Write = () => {
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
 
-  const userNickname = userInfo?.user?.nickname;
-  const userId = userInfo?.user?.id;
+  const userNickname = userInfo?.user?.nickname || "";
+  const userId = userInfo?.user?.id || "";
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -80,6 +80,8 @@ const Write = () => {
     });
     const result = await response.json();
     console.log(result);
+    console.log("닉네임", result.nickname);
+    console.log("아이디", result.id);
     if (response.ok) {
       navigate(`/boards/${result.id}`);
     }
