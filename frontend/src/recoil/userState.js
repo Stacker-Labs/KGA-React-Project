@@ -1,4 +1,7 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export const userState = atom({
   key: "userState",
@@ -6,4 +9,5 @@ export const userState = atom({
     message: "",
     user: "",
   },
+  effects_UNSTABLE: [persistAtom],
 });
