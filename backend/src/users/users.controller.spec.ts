@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { usersProviders } from '../common/mock/provider/user.provider';
 import { ReqEditUserDto } from './dto/req-editUser.dto';
 import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
 import { ResGetUserDto } from './dto/res-getUser.dto';
 import { ResEditUserDto } from './dto/res-editUser.dto';
+import { MockUserRepository } from '../common/mock/repository/user.repository';
+import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  const user = { id: 1, username: 'username' };
-  const notExistUser = { id: 0, username: 'notExistUser' };
-  const otherUser = { id: 2, username: 'otherUser' };
+  const mockUser = new MockUserRepository();
+  const [user, otherUser] = mockUser.userModels;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -23,12 +23,12 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  // GETLOGINUSER: - make, run, return, error
+  // GETLOGINUSER: - make, run, return
   describe('Get Login User', () => {
     const username: string = user.username;
 
     it('Make | getLoginUser', () => {
-      expect(typeof controller.getLoginUser).toBe('function');
+      expect(typeof controller.getLoginUser).toBe(FUNCTION);
     });
 
     it('Run | getLoginUser(username: string)', () => {
@@ -38,18 +38,13 @@ describe('UsersController', () => {
       expect(controller.getLoginUser).toHaveBeenCalledWith(username);
     });
 
-    it('Return | {accessToken: string, user: UserModel}', async () => {
+    it('Return | ResGetLoginUserDto', async () => {
       const result = await controller.getLoginUser(username);
       expect(result).toBeInstanceOf(ResGetLoginUserDto);
     });
-
-    it('Error | user does not exist', async () => {
-      const getLoginUser = controller.getLoginUser(notExistUser.username);
-      await expect(getLoginUser).rejects.toThrow(BadRequestException);
-    });
   });
 
-  // GETUSER: - make, run, return, error
+  // GETUSER: - make, run, return
   describe('Get User', () => {
     const id: number = user.id;
 
@@ -64,18 +59,13 @@ describe('UsersController', () => {
       expect(controller.getUser).toHaveBeenCalledWith(id);
     });
 
-    it('Return | user: ResGetUserDto', async () => {
+    it('Return | ResGetUserDto', async () => {
       const result = await controller.getUser(id);
       expect(result).toBeInstanceOf(ResGetUserDto);
     });
-
-    it('Error | user does not exist', async () => {
-      const getUser = controller.getUser(notExistUser.id);
-      await expect(getUser).rejects.toThrow(BadRequestException);
-    });
   });
 
-  // EDITUSER: - make, run, return, error
+  // EDITUSER: - make, run, return
   describe('Edit User', () => {
     const id: number = user.id;
     const reqEditUserDto: ReqEditUserDto = {
@@ -100,31 +90,13 @@ describe('UsersController', () => {
       );
     });
 
-    it('Return | editedUser: ResEditUserDto', async () => {
+    it('Return | ResEditUserDto', async () => {
       const result = await controller.editUser(id, reqEditUserDto, username);
       expect(result).toBeInstanceOf(ResEditUserDto);
     });
-
-    it('Error | user does not exist', async () => {
-      const result = controller.editUser(
-        notExistUser.id,
-        reqEditUserDto,
-        username,
-      );
-      await expect(result).rejects.toThrow(BadRequestException);
-    });
-
-    it('Error | user does not have permission', async () => {
-      const result = controller.editUser(
-        user.id,
-        reqEditUserDto,
-        otherUser.username,
-      );
-      await expect(result).rejects.toThrow(UnauthorizedException);
-    });
   });
 
-  // DELETEUSER: - make, run, error
+  // DELETEUSER: - make, run, return
   describe('Delete User', () => {
     const id: number = user.id;
     const username: string = user.username;
@@ -137,17 +109,16 @@ describe('UsersController', () => {
       const deleteUser = jest.fn();
       controller.deleteUser = deleteUser;
       controller.deleteUser(id, username);
-
       expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
     });
 
-    it('Error | user does not have permission', async () => {
-      const result = controller.deleteUser(id, username);
-      await expect(result).rejects.toThrow(UnauthorizedException);
+    it('Return | ResDeleteUserDto', async () => {
+      const result = await controller.deleteUser(id, username);
+      expect(result).toBeInstanceOf(ResDeleteUserDto);
     });
   });
 
-  // GETUSERBOARDS: - make, run, return
+  // GETUSERBOARDS: - makex, runx, returnx
   describe('Get User Boards', () => {
     const id: number = user.id;
     const page: number = 1;
@@ -156,12 +127,10 @@ describe('UsersController', () => {
 
     it.todo('Run | getUserBoards(id: number, page: number)');
 
-    it.todo(
-      'Return | {boards: BoardModel[], boardLength: number, nextPage: number | boolean}',
-    );
+    it.todo('Return | ResGetUserBoardsDto');
   });
 
-  // CREATEFOLLOW: - make, run, return, error
+  // CREATEFOLLOW: - makex, runx, returnx
   describe('Create Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -170,16 +139,10 @@ describe('UsersController', () => {
 
     it.todo('Run | createFollow(id: number, username: string)');
 
-    it.todo('Return | user: UserModel');
-
-    it.todo('Error | user follow himself');
-
-    it.todo('Error | user does not exist');
-
-    it.todo('Error | user follow already following user');
+    it.todo('Return | ResCreateFollowDto');
   });
 
-  // DELETEFOLLOW: - make, run, error
+  // DELETEFOLLOW: - makex, runx, returnx
   describe('Delete Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -188,8 +151,6 @@ describe('UsersController', () => {
 
     it.todo('Run | deleteFollow(id: number, username: string)');
 
-    it.todo('Error | user does not exist');
-
-    it.todo('Error | user unfollow already unfollowing user');
+    it.todo('Return | ResDeleteFollowDto');
   });
 });

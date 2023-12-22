@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    const user = await this.usersService.getUser(req.username);
+    const user = await this.usersService.getCookieUser(req.username);
     if (user.role !== Role.ADMIN) {
       throw new UnauthorizedException('관리자 권한이 필요합니다.');
     }
