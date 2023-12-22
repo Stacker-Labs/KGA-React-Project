@@ -81,7 +81,9 @@ const Write = () => {
     const result = await response.json();
     console.log(result);
     console.log("닉네임", result.nickname);
+    console.log("닉네임2", result.userNickname);
     console.log("아이디", result.id);
+    console.log("아이디2", result.userId);
     if (response.ok) {
       navigate(`/boards/${result.id}`);
     }
