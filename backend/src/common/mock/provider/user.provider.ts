@@ -7,6 +7,10 @@ import { BoardModel } from '../../../boards/entities/board.entity';
 import { MockUserRepository } from '../repository/user.repository';
 import { MockRoomRepository } from '../repository/room.repository';
 import { MockBoardRepository } from '../repository/board.repository';
+import { AppService } from '../../../app.service';
+import { TagModel } from '../../../boards/entities/tag.entity';
+import { ChatModel } from '../../../room/entities/chat.entity';
+import { MockChatRepository } from '../repository/chat.repository';
 
 export const usersProviders = [
   UsersService,
@@ -22,5 +26,17 @@ export const usersProviders = [
   {
     provide: getRepositoryToken(BoardModel),
     useClass: MockBoardRepository,
+  },
+  {
+    provide: getRepositoryToken(TagModel),
+    useClass: MockBoardRepository,
+  },
+  {
+    provide: getRepositoryToken(RoomModel),
+    useClass: MockRoomRepository,
+  },
+  {
+    provide: getRepositoryToken(ChatModel),
+    useClass: MockChatRepository,
   },
 ];
