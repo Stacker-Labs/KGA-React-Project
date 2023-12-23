@@ -1,7 +1,9 @@
 import {
-  BadRequestException,
+  NotFoundException,
+  ForbiddenException,
   Injectable,
-  UnauthorizedException,
+  NotAcceptableException,
+  BadRequestException,
 } from '@nestjs/common';
 import { ReqEditUserDto } from './dto/req-editUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -97,7 +99,7 @@ export class UsersService {
       return result;
     }
 
-    throw new UnauthorizedException('권한이 없습니다.');
+    throw new ForbiddenException('권한이 없습니다.');
   }
 
   // DELETEUSER: - {message: string}
@@ -114,7 +116,7 @@ export class UsersService {
       return result;
     }
 
-    throw new UnauthorizedException('권한이 없습니다.');
+    throw new ForbiddenException('권한이 없습니다.');
   }
 
   // GETUSERBOARDS: - {boards: BoardModel[], boardLength: number, nextPage: number | boolean}
@@ -163,7 +165,7 @@ export class UsersService {
     if (isFollowingUser === -1) {
       followingUsers.push(targetUser);
     } else {
-      throw new BadRequestException('이미 팔로우 한 사용자입니다.');
+      throw new NotAcceptableException('이미 팔로우 한 사용자입니다.');
     }
 
     const followerUsers = user.followerUsers ? [...user.followerUsers] : [];
@@ -198,7 +200,7 @@ export class UsersService {
       (following) => following.id === id,
     );
     if (isFollowingUser === -1) {
-      throw new BadRequestException('이미 팔로우가 취소되었습니다.');
+      throw new NotAcceptableException('이미 팔로우가 취소되었습니다.');
     }
 
     followingUsers.splice(isFollowingUser, 1);
@@ -231,7 +233,7 @@ export class UsersService {
       relations,
     });
     if (!user) {
-      throw new BadRequestException('존재하지 않는 사용자입니다.');
+      throw new NotFoundException('존재하지 않는 사용자입니다.');
     }
 
     return user;
@@ -244,7 +246,7 @@ export class UsersService {
       relations,
     });
     if (!user) {
-      throw new BadRequestException('존재하지 않는 사용자입니다.');
+      throw new NotFoundException('존재하지 않는 사용자입니다.');
     }
 
     return user;

@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { usersProviders } from '../common/mock/provider/user.provider';
 import { MockUserRepository } from '../common/mock/repository/user.repository';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ReqEditUserDto } from './dto/req-editUser.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
@@ -42,7 +47,7 @@ describe('UsersService', () => {
 
   it('Error | user does not exist', async () => {
     const result = usersService.getCookieUser(notExistUser.username);
-    await expect(result).rejects.toThrow(BadRequestException);
+    await expect(result).rejects.toThrow(NotFoundException);
   });
 
   // VERIFIEDUSER: - make, return, error
@@ -61,7 +66,7 @@ describe('UsersService', () => {
 
   it('Error | user does not exist', async () => {
     const result = usersService.verifiedUser(notExistUser.id);
-    await expect(result).rejects.toThrow(BadRequestException);
+    await expect(result).rejects.toThrow(NotFoundException);
   });
 
   // GETLOGINUSER: - make, use, return
@@ -162,7 +167,7 @@ describe('UsersService', () => {
         reqEditUserDto,
         otherUser.username,
       );
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -197,7 +202,7 @@ describe('UsersService', () => {
       await expect(adminResult).resolves.not.toThrow();
 
       const result = usersService.deleteUser(user.id, otherUser.username);
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -258,12 +263,12 @@ describe('UsersService', () => {
 
     it('Error | user follow already following user', async () => {
       const result = usersService.createFollow(influencer.id, user.username);
-      await expect(result).rejects.toThrow(BadRequestException);
+      await expect(result).rejects.toThrow(NotAcceptableException);
     });
 
     it('Error | user does not exist', async () => {
       const result = usersService.createFollow(notExistUser.id, user.username);
-      await expect(result).rejects.toThrow(BadRequestException);
+      await expect(result).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -293,7 +298,7 @@ describe('UsersService', () => {
 
     it('Error | user unfollow already unfollowing user', async () => {
       const result = usersService.deleteFollow(otherUser.id, user.username);
-      await expect(result).rejects.toThrow(BadRequestException);
+      await expect(result).rejects.toThrow(NotAcceptableException);
     });
   });
 });

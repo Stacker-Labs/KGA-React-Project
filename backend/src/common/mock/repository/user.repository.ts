@@ -68,13 +68,14 @@ export class MockUserRepository {
       image: null,
       bio: '',
     },
+    this.influencer,
   ];
 
   static accessToken =
     'eyasidfjhaiowejf.wejafiowjfiowefwae.aweoifwjaeiwoa - this token is not working';
 
   findOne({ where: { username, id } }) {
-    const findUser = username
+    const findUser = !id
       ? MockUserRepository.userModels.find((user) => user.username === username)
       : MockUserRepository.userModels.find((user) => user.id === id);
 
