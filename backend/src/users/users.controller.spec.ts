@@ -9,9 +9,11 @@ import { MockUserRepository } from '../common/mock/repository/user.repository';
 import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
 import { ResCreateFollowDto } from './dto/res-createFollow.dto';
+import { UsersService } from './users.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
+  let service: UsersService;
   const [user, otherUser] = MockUserRepository.userModels;
   const influencer = MockUserRepository.influencer;
   const FUNCTION = 'function';
@@ -23,9 +25,10 @@ describe('UsersController', () => {
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
+    service = module.get<UsersService>(UsersService);
   });
 
-  // GETLOGINUSER: - make, run, return
+  // GETLOGINUSER: - make, use, return
   describe('Get Login User', () => {
     const username: string = user.username;
 
@@ -33,11 +36,10 @@ describe('UsersController', () => {
       expect(typeof controller.getLoginUser).toBe(FUNCTION);
     });
 
-    it('Run | getLoginUser(username: string)', () => {
-      const getLoginUser = jest.fn();
-      controller.getLoginUser = getLoginUser;
-      controller.getLoginUser(username);
-      expect(controller.getLoginUser).toHaveBeenCalledWith(username);
+    it('Use | getLoginUser(username: string)', async () => {
+      service.getLoginUser = jest.fn();
+      await controller.getLoginUser(username);
+      expect(service.getLoginUser).toHaveBeenCalledWith(username);
     });
 
     it('Return | ResGetLoginUserDto', async () => {
@@ -46,7 +48,7 @@ describe('UsersController', () => {
     });
   });
 
-  // GETUSER: - make, run, return
+  // GETUSER: - make, use, return
   describe('Get User', () => {
     const id: number = user.id;
 
@@ -54,11 +56,10 @@ describe('UsersController', () => {
       expect(typeof controller.getUser).toBe(FUNCTION);
     });
 
-    it('Run | getUser(id: number)', () => {
-      const getUser = jest.fn();
-      controller.getUser = getUser;
-      controller.getUser(id);
-      expect(controller.getUser).toHaveBeenCalledWith(id);
+    it('Use | getUser(id: number)', async () => {
+      service.getUser = jest.fn();
+      await controller.getUser(id);
+      expect(service.getUser).toHaveBeenCalledWith(id);
     });
 
     it('Return | ResGetUserDto', async () => {
@@ -67,7 +68,7 @@ describe('UsersController', () => {
     });
   });
 
-  // EDITUSER: - make, run, return
+  // EDITUSER: - make, use, return
   describe('Edit User', () => {
     const id: number = user.id;
     const reqEditUserDto: ReqEditUserDto = {
@@ -81,11 +82,10 @@ describe('UsersController', () => {
       expect(typeof controller.editUser).toBe(FUNCTION);
     });
 
-    it('Run | editUser(id: number, reqEditUserDto: ReqEditUserDto, username: string)', () => {
-      const editUser = jest.fn();
-      controller.editUser = editUser;
-      controller.editUser(id, reqEditUserDto, username);
-      expect(controller.editUser).toHaveBeenCalledWith(
+    it('Use | editUser(id: number, reqEditUserDto: ReqEditUserDto, username: string)', async () => {
+      service.editUser = jest.fn();
+      await controller.editUser(id, reqEditUserDto, username);
+      expect(service.editUser).toHaveBeenCalledWith(
         id,
         reqEditUserDto,
         username,
@@ -98,7 +98,7 @@ describe('UsersController', () => {
     });
   });
 
-  // DELETEUSER: - make, run, return
+  // DELETEUSER: - make, use, return
   describe('Delete User', () => {
     const id: number = user.id;
     const username: string = user.username;
@@ -107,11 +107,10 @@ describe('UsersController', () => {
       expect(typeof controller.deleteUser).toBe(FUNCTION);
     });
 
-    it('Run | deleteUser(id: number, username: string)', () => {
-      const deleteUser = jest.fn();
-      controller.deleteUser = deleteUser;
-      controller.deleteUser(id, username);
-      expect(controller.deleteUser).toHaveBeenCalledWith(id, username);
+    it('Use | deleteUser(id: number, username: string)', async () => {
+      service.deleteUser = jest.fn();
+      await controller.deleteUser(id, username);
+      expect(service.deleteUser).toHaveBeenCalledWith(id, username);
     });
 
     it('Return | ResDeleteUserDto', async () => {
@@ -120,7 +119,7 @@ describe('UsersController', () => {
     });
   });
 
-  // GETUSERBOARDS: - make, run, return
+  // GETUSERBOARDS: - make, use, return
   describe('Get User Boards', () => {
     const id: number = user.id;
     const page: number = 1;
@@ -129,11 +128,10 @@ describe('UsersController', () => {
       expect(typeof controller.getUserBoards).toEqual(FUNCTION);
     });
 
-    it('Run | getUserBoards(id: number, page: number)', () => {
-      const getUserBoards = jest.fn();
-      controller.getUserBoards = getUserBoards;
-      controller.getUserBoards(id, page);
-      expect(controller.getUserBoards).toHaveBeenCalledWith(id, page);
+    it('Use | getUserBoards(id: number, page: number)', async () => {
+      service.getUserBoards = jest.fn();
+      await controller.getUserBoards(id, page);
+      expect(service.getUserBoards).toHaveBeenCalledWith(id, page);
     });
 
     it('Return | ResGetUserBoardsDto', async () => {
@@ -142,7 +140,7 @@ describe('UsersController', () => {
     });
   });
 
-  // CREATEFOLLOW: - make, run, return
+  // CREATEFOLLOW: - make, use, return
   describe('Create Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -151,11 +149,10 @@ describe('UsersController', () => {
       expect(typeof controller.createFollow).toEqual(FUNCTION);
     });
 
-    it('Run | createFollow(id: number, username: string)', () => {
-      const createFollow = jest.fn();
-      controller.createFollow = createFollow;
-      controller.createFollow(id, username);
-      expect(controller.createFollow).toHaveBeenCalledWith(id, username);
+    it('Use | createFollow(id: number, username: string)', async () => {
+      service.createFollow = jest.fn();
+      await controller.createFollow(id, username);
+      expect(service.createFollow).toHaveBeenCalledWith(id, username);
     });
 
     it('Return | ResCreateFollowDto', async () => {
@@ -164,7 +161,7 @@ describe('UsersController', () => {
     });
   });
 
-  // DELETEFOLLOW: - make, run, return
+  // DELETEFOLLOW: - make, use, return
   describe('Delete Follow', () => {
     const id: number = otherUser.id;
     const username: string = user.username;
@@ -173,10 +170,9 @@ describe('UsersController', () => {
       expect(typeof controller.deleteFollow).toEqual(FUNCTION);
     });
 
-    it('Run | deleteFollow(id: number, username: string)', () => {
-      const deleteFollow = jest.fn();
-      controller.deleteFollow = deleteFollow;
-      controller.deleteFollow(id, username);
+    it('Use | deleteFollow(id: number, username: string)', async () => {
+      controller.deleteFollow = jest.fn();
+      await controller.deleteFollow(id, username);
       expect(controller.deleteFollow).toHaveBeenCalledWith(id, username);
     });
 

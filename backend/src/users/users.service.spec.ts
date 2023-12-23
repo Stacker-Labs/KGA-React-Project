@@ -4,12 +4,21 @@ import { usersProviders } from '../common/mock/provider/user.provider';
 import { MockUserRepository } from '../common/mock/repository/user.repository';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { ReqEditUserDto } from './dto/req-editUser.dto';
+import { JwtService } from '@nestjs/jwt';
+import { ResGetLoginUserDto } from './dto/res-getLoginUser.dto';
+import { ResGetUserDto } from './dto/res-getUser.dto';
+import { ResEditUserDto } from './dto/res-editUser.dto';
+import { ResDeleteFollowDto } from './dto/res-deleteFollowUser.dto';
+import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
+import { ResCreateFollowDto } from './dto/res-createFollow.dto';
 
 describe('UsersService', () => {
-  let service: UsersService;
+  let usersService: UsersService;
+  let jwtService: JwtService;
   const [user, otherUser] = MockUserRepository.userModels;
   const notExistUser = MockUserRepository.notExistUser;
   const influencer = MockUserRepository.influencer;
+  const accessToken = MockUserRepository.accessToken;
   const FUNCTION = 'function';
 
   beforeEach(async () => {
@@ -17,95 +26,138 @@ describe('UsersService', () => {
       providers: usersProviders,
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    usersService = module.get<UsersService>(UsersService);
+    jwtService = module.get<JwtService>(JwtService);
   });
 
-  // GETLOGINUSER: - make, return, error
+  // GETCOOKIEUSER: - make, return, error
+  it('Make | getCookieUser', () => {
+    expect(typeof usersService.getCookieUser).toEqual(FUNCTION);
+  });
+
+  it('Return | user: UserModel', async () => {
+    const result = await usersService.getCookieUser(user.username);
+    expect(result).toStrictEqual(user);
+  });
+
+  it('Error | user does not exist', async () => {
+    const result = usersService.getCookieUser(notExistUser.username);
+    await expect(result).rejects.toThrow(BadRequestException);
+  });
+
+  // VERIFIEDUSER: - make, return, error
+  it('Make | verifiedUser', () => {
+    expect(typeof usersService.verifiedUser).toEqual(FUNCTION);
+  });
+
+  it('Return | accessToken: string', () => {
+    const accessToken = jwtService.sign(
+      { username: user.username },
+      { secret: 'secret' },
+    );
+    const result = jwtService.verify(accessToken, { secret: 'secret' });
+    expect(result.username).toStrictEqual(user.username);
+  });
+
+  it('Error | user does not exist', async () => {
+    const result = usersService.verifiedUser(notExistUser.id);
+    await expect(result).rejects.toThrow(BadRequestException);
+  });
+
+  // GETLOGINUSER: - make, use, return
   describe('Get Login user', () => {
+    const resGetLoginUserDto: ResGetLoginUserDto = { accessToken, user };
+
     it('Make | getLoginUser', () => {
-      expect(typeof service.getLoginUser).toBe(FUNCTION);
+      expect(typeof usersService.getLoginUser).toBe(FUNCTION);
+    });
+
+    it('Use | getCookieUser', async () => {
+      jest.spyOn(usersService, 'getCookieUser');
+      await usersService.getLoginUser(user.username);
+      expect(usersService.getCookieUser).toHaveBeenCalled();
+    });
+
+    it('Use | jwtService.sign', async () => {
+      jest.spyOn(jwtService, 'sign');
+      await usersService.getLoginUser(user.username);
+      expect(jwtService.sign).toHaveBeenCalled();
     });
 
     it('Return | {accessToken: string, user: UserModel}', async () => {
-      const result = await service.getLoginUser(user.username);
+      const result = await usersService.getLoginUser(user.username);
       const keys = Object.keys(result);
-      const required = ['accessToken', 'user'];
+      const required = Object.keys(resGetLoginUserDto);
       expect(keys).toEqual(expect.arrayContaining(required));
-    });
-
-    it('Error | user does not exist', async () => {
-      const result = service.getLoginUser(notExistUser.username);
-      await expect(result).rejects.toThrow(BadRequestException);
     });
   });
 
-  // GETUSER: - make, return, error
+  // GETUSER: - make, use, return, error
   describe('Get User', () => {
+    const resGetUserDto: ResGetUserDto = { user };
     it('Make | getUser', () => {
-      expect(typeof service.getUser).toEqual(FUNCTION);
+      expect(typeof usersService.getUser).toEqual(FUNCTION);
+    });
+
+    it('Use | verifiedUser', async () => {
+      jest.spyOn(usersService, 'verifiedUser');
+      await usersService.getUser(user.id);
+      expect(usersService.verifiedUser).toHaveBeenCalled();
     });
 
     it('Return | {user: UserModel}', async () => {
-      const result = await service.getUser(user.id);
+      const result = await usersService.getUser(user.id);
       const keys = Object.keys(result);
-      const required = ['user'];
+      const required = Object.keys(resGetUserDto);
       expect(keys).toEqual(expect.arrayContaining(required));
-    });
-
-    it('Error | user does not exist', async () => {
-      const result = service.getUser(notExistUser.id);
-      await expect(result).rejects.toThrow(BadRequestException);
     });
   });
 
-  // EDITUSER: - make, return, error
+  // EDITUSER: - make, use, return, error
   describe('Edit User', () => {
     const reqEditUserDto: ReqEditUserDto = {
       nickname: 'newNickname',
       password: 'newPassword',
       image: 'newImageLink',
     };
+    const resEditUserDto: ResEditUserDto = { editedUser: user };
 
     it('Make | editUser', () => {
-      expect(typeof service.editUser).toEqual(FUNCTION);
+      expect(typeof usersService.editUser).toEqual(FUNCTION);
+    });
+
+    it('Use | verifiedUser', async () => {
+      jest.spyOn(usersService, 'verifiedUser');
+      await usersService.editUser(user.id, reqEditUserDto, user.username);
+      expect(usersService.verifiedUser).toHaveBeenCalled();
+    });
+
+    it('Use | getCookieUser', async () => {
+      jest.spyOn(usersService, 'getCookieUser');
+      await usersService.editUser(user.id, reqEditUserDto, user.username);
+      expect(usersService.getCookieUser).toHaveBeenCalled();
     });
 
     it('Return | {editedUser: UserModel}', async () => {
-      const result = await service.editUser(
+      const result = await usersService.editUser(
         user.id,
         reqEditUserDto,
         user.username,
       );
       const keys = Object.keys(result);
-      const required = ['editedUser'];
+      const required = Object.keys(resEditUserDto);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
-    it('Error | user does not exist', async () => {
-      const idResult = service.editUser(
-        notExistUser.id,
-        reqEditUserDto,
-        user.username,
-      );
-      await expect(idResult).rejects.toThrow(BadRequestException);
-
-      const usernameResult = service.editUser(
-        user.id,
-        reqEditUserDto,
-        notExistUser.username,
-      );
-      await expect(usernameResult).rejects.toThrow(BadRequestException);
-    });
-
     it('Error | user does not have permission', async () => {
-      const adminResult = service.editUser(
+      const adminResult = usersService.editUser(
         otherUser.id,
         reqEditUserDto,
         user.username,
       );
       await expect(adminResult).resolves.not.toThrow();
 
-      const result = service.editUser(
+      const result = usersService.editUser(
         user.id,
         reqEditUserDto,
         otherUser.username,
@@ -116,93 +168,131 @@ describe('UsersService', () => {
 
   // DELETEUSER: - make, return, error
   describe('Delete User', () => {
+    const resDeleteFollowDto: ResDeleteFollowDto = { message: '' };
     it('Make | deleteUser', () => {
-      expect(typeof service.deleteUser).toEqual(FUNCTION);
+      expect(typeof usersService.deleteUser).toEqual(FUNCTION);
+    });
+
+    it('Use | verifiedUser', async () => {
+      jest.spyOn(usersService, 'verifiedUser');
+      await usersService.deleteUser(user.id, user.username);
+      expect(usersService.verifiedUser).toHaveBeenCalled();
+    });
+
+    it('Use | getCookieUser', async () => {
+      jest.spyOn(usersService, 'getCookieUser');
+      await usersService.deleteUser(user.id, user.username);
+      expect(usersService.getCookieUser).toHaveBeenCalled();
     });
 
     it('Return | {message: string}', async () => {
-      const result = await service.deleteUser(user.id, user.username);
+      const result = await usersService.deleteUser(user.id, user.username);
       const keys = Object.keys(result);
-      const required = ['message'];
-      console.log(keys, required);
+      const required = Object.keys(resDeleteFollowDto);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
-    it('Error | user does not exist', async () => {
-      const idResult = service.deleteUser(notExistUser.id, user.username);
-      await expect(idResult).rejects.toThrow(BadRequestException);
-
-      const usernameResult = service.deleteUser(user.id, notExistUser.username);
-      await expect(usernameResult).rejects.toThrow(BadRequestException);
-    });
-
     it('Error | user does not have permission', async () => {
-      const adminResult = service.deleteUser(otherUser.id, user.username);
+      const adminResult = usersService.deleteUser(otherUser.id, user.username);
       await expect(adminResult).resolves.not.toThrow();
 
-      const result = service.deleteUser(user.id, otherUser.username);
+      const result = usersService.deleteUser(user.id, otherUser.username);
       await expect(result).rejects.toThrow(UnauthorizedException);
     });
   });
 
   // GETUSERBOARDS: - make, return
   describe('Get User Boards', () => {
+    const resGetUserBoardsDto: ResGetUserBoardsDto = {
+      boardLength: 0,
+      boards: [],
+      nextPage: 0,
+    };
+
     it('Make | getUserBoards', () => {
-      expect(typeof service.getUserBoards).toEqual(FUNCTION);
+      expect(typeof usersService.getUserBoards).toEqual(FUNCTION);
     });
 
     it('Return | {boards: BoardModel[], boardLength: number, nextPage: number | boolean}', async () => {
-      const result = await service.getUserBoards(user.id, 1);
+      const result = await usersService.getUserBoards(user.id, 1);
       const keys = Object.keys(result);
-      const required = ['boards', 'boardLength', 'nextPage'];
+      const required = Object.keys(resGetUserBoardsDto);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 
   // CREATEFOLLOW: - make, return, error
   describe('Create Follow', () => {
+    const resCreateFollowDto: ResCreateFollowDto = { message: '' };
+
     it('Make | createFollow', () => {
-      expect(typeof service.createFollow).toEqual(FUNCTION);
+      expect(typeof usersService.createFollow).toEqual(FUNCTION);
+    });
+
+    it('Use | getCookieUser', async () => {
+      jest.spyOn(usersService, 'getCookieUser');
+      await usersService.createFollow(otherUser.id, user.username);
+      expect(usersService.getCookieUser).toHaveBeenCalled();
+    });
+
+    it('Use | verifiedUser', async () => {
+      jest.spyOn(usersService, 'verifiedUser');
+      await usersService.createFollow(otherUser.id, user.username);
+      expect(usersService.verifiedUser).toHaveBeenCalled();
     });
 
     it('Return | {message: string}', async () => {
-      const result = await service.createFollow(otherUser.id, user.username);
+      const result = await usersService.createFollow(
+        otherUser.id,
+        user.username,
+      );
       const keys = Object.keys(result);
-      const required = ['message'];
+      const required = Object.keys(resCreateFollowDto);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
     it('Error | user follow himself', async () => {
-      const result = service.createFollow(user.id, user.username);
+      const result = usersService.createFollow(user.id, user.username);
       await expect(result).rejects.toThrow(BadRequestException);
     });
 
     it('Error | user follow already following user', async () => {
-      const result = service.createFollow(influencer.id, user.username);
+      const result = usersService.createFollow(influencer.id, user.username);
       await expect(result).rejects.toThrow(BadRequestException);
     });
 
     it('Error | user does not exist', async () => {
-      const result = service.createFollow(notExistUser.id, user.username);
+      const result = usersService.createFollow(notExistUser.id, user.username);
       await expect(result).rejects.toThrow(BadRequestException);
     });
   });
 
   // DELETEFOLLOW: - make, return, error
   describe('Delete Follow', () => {
+    const resDeleteFollowDto: ResDeleteFollowDto = { message: '' };
+
     it('Make | deleteFollow', () => {
-      expect(typeof service.deleteFollow).toEqual(FUNCTION);
+      expect(typeof usersService.deleteFollow).toEqual(FUNCTION);
+    });
+
+    it('Use | getCookieUser', async () => {
+      jest.spyOn(usersService, 'getCookieUser');
+      await usersService.deleteFollow(influencer.id, user.username);
+      expect(usersService.getCookieUser).toHaveBeenCalled();
     });
 
     it('Return | {message: string}', async () => {
-      const result = await service.deleteFollow(influencer.id, user.username);
+      const result = await usersService.deleteFollow(
+        influencer.id,
+        user.username,
+      );
       const keys = Object.keys(result);
-      const required = ['message'];
+      const required = Object.keys(resDeleteFollowDto);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
     it('Error | user unfollow already unfollowing user', async () => {
-      const result = service.deleteFollow(otherUser.id, user.username);
+      const result = usersService.deleteFollow(otherUser.id, user.username);
       await expect(result).rejects.toThrow(BadRequestException);
     });
   });

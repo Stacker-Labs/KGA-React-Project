@@ -9,10 +9,12 @@ import {
   UseGuards,
   Post,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ReqEditUserDto } from './dto/req-editUser.dto';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
@@ -41,6 +43,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get Login User' })
   @ApiBearerAuth()
   @ApiOkResponse({ type: ResGetLoginUserDto })
+  @ApiBadRequestResponse({ type: BadRequestException })
   getLoginUser(@User() username: string): Promise<ResGetLoginUserDto> {
     return this.usersService.getLoginUser(username);
   }
