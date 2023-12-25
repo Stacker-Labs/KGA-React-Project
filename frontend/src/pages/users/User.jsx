@@ -6,6 +6,7 @@ import Following from "./Following";
 import Follower from "./Follower";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
+import { No_Profile } from "../../images";
 
 const User = () => {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ const User = () => {
   };
 
   const follow = async () => {
-    const host = `${process.env.REACT_APP_API_SERVER}/users/${user.id}/following`;
+    const host = `${process.env.REACT_APP_API_SERVER}/users/${user?.id}/following`;
     const postOptions = {
       method: "post",
       headers: {
@@ -124,9 +125,9 @@ const User = () => {
         id="container"
       >
         <img
-          src={user?.image}
+          src={user?.image || No_Profile}
           className="w-[150px] h-[150px] rounded-full mt-10"
-          alt="..."
+          alt=""
         />
 
         <div className="flex flex-row justify-between w-[45%]">
@@ -137,11 +138,9 @@ const User = () => {
               </Button>
             </Link>
           ) : (
-            <Link to={``}>
-              <Button onClick={follow} size={"md"} variant={"blue"}>
-                {isFollowed ? "Unfollow" : "Follow"}
-              </Button>
-            </Link>
+            <Button onClick={follow} size={"md"} variant={"blue"}>
+              {isFollowed ? "Unfollow" : "Follow"}
+            </Button>
           )}
 
           <div className="relative">
