@@ -58,10 +58,11 @@ const View = () => {
   const [tags, setTags] = useState(null);
   const [userBoardDate, setUserBoardDate] = useState("");
   const [loading, setLoading] = useState(true);
+  const [comments, setComments] = useState([]);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
-  const hasPermission = userInfo?.views?.some((view) => view.id === userId);
   const userId = userInfo?.user?.id || "";
+  const hasPermission = userInfo?.views?.some((view) => view.id === userId);
   const viewContentRef = useRef();
 
   // const Token = process.env.REACT_APP_TOKEN;
@@ -85,7 +86,7 @@ const View = () => {
         // const viewCont = document.querySelector(".ViewCont");
 
         const result = await response.json();
-        const nickname = result.user?.nickname; // 속성에 안전하게 접근
+        const nickname = result.user?.nickname;
         const commentDate = result.createdAt;
 
         console.log("result@@", result);
@@ -102,6 +103,20 @@ const View = () => {
 
     getBoard();
   }, [params.id, loading]);
+
+  useEffect(() => {
+    const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
+    setComments(storedComments);
+  }, [params.id, loading]);
+
+  useEffect(() => {
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }, [comments]);
+
+  const addNewComment = (newComment) => {
+    const updatedComments = [...comments, newComment];
+    setComments(updatedComments);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -133,7 +148,11 @@ const View = () => {
                   </ul>
                 </div>
                 <div ref={viewContentRef}></div>
-                <CommentList id={params.id} />
+                <CommentList
+                  id={params.id}
+                  comments={comments}
+                  addNewComment={addNewComment}
+                />
               </ViewPageMain>
             </IconBox>
           </ViewPageWrap>
