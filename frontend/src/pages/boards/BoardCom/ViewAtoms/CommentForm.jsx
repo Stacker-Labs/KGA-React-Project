@@ -25,9 +25,9 @@ const CommentForm = ({ id, addComment, comments }) => {
         {
           method: "post",
           headers: {
-            // Authorization: `Bearer ${Token}`,
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({
             content: newComment,
             parentCommentId: null,

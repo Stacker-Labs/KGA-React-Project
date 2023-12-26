@@ -94,6 +94,7 @@ const Modify = () => {
           // Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           title,
           content,
