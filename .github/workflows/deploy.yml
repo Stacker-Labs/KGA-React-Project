@@ -26,8 +26,5 @@ jobs:
         run: fuser -k 3000/tcp
       - name: Run background
         run: |
-          cd frontend
-          RUNNER_TRACKING_ID="" && nohup serve -s build &
-          echo
-      - name: Port Check
-        run: lsof | grep 3000
+          RUNNER_TRACKING_ID="" && nohup serve -s frontend/build &
+          echo | lsof | grep 3000
