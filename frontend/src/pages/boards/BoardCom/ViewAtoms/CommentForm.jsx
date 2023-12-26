@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-const CommentForm = ({ id, addComment, comments }) => {
+const CommentForm = ({ id }) => {
   const style = {
     fontFamily: "'Noto Sans KR', sans-serif",
   };

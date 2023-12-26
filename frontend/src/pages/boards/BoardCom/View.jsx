@@ -58,7 +58,7 @@ const View = () => {
   const [tags, setTags] = useState(null);
   const [userBoardDate, setUserBoardDate] = useState("");
   const [loading, setLoading] = useState(true);
-  // const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([]);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id || "";
@@ -88,12 +88,14 @@ const View = () => {
         const result = await response.json();
         const nickname = result.user?.nickname;
         const commentDate = result.createdAt;
+        // const pageComment = result.comments;
 
         console.log("result@@", result);
         setNickname(nickname);
         setUserBoardDate(commentDate);
         setTitle(result.title);
         setTags(result.tags || []);
+        setComments(result.comments);
         setContent(result.content);
       } else {
         // viewCont.innerHTML = result.content;
@@ -102,7 +104,7 @@ const View = () => {
     };
 
     getBoard();
-  }, [params.id, loading]);
+  }, [params.id, loading, comments]);
 
   // useEffect(() => {
   //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];

@@ -19,9 +19,9 @@ const Comments = ({ id }) => {
   const usersId = userInfo?.id || "";
   const userNickname = userInfo?.user?.nickname || "";
 
-  const addComment = (newComment) => {
-    setComments([...comments, { text: newComment, replies: [] }]);
-  };
+  // const addComment = (newComment) => {
+  //   setComments([...comments, { text: newComment, replies: [] }]);
+  // };
 
   const addReply = (index) => {
     if (replyText.trim() === "") return;
@@ -77,7 +77,7 @@ const Comments = ({ id }) => {
     <div className="mt-[100px]">
       <h2>댓글 목록</h2>
 
-      <CommentForm addComment={addComment} id={id} comments={comments} />
+      <CommentForm id={id} />
 
       <ul>
         {comments.map((comment, index) => (
