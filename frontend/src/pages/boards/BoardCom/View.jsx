@@ -58,11 +58,11 @@ const View = () => {
   const [tags, setTags] = useState(null);
   const [userBoardDate, setUserBoardDate] = useState("");
   const [loading, setLoading] = useState(true);
-  const [comments, setComments] = useState([]);
+  // const [comments, setComments] = useState([]);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id || "";
-  const hasPermission = userInfo?.views?.some((view) => view.id === userId);
+  const hasPermission = userInfo?.id?.some((view) => view.id === userId);
   const viewContentRef = useRef();
 
   // const Token = process.env.REACT_APP_TOKEN;
@@ -104,19 +104,15 @@ const View = () => {
     getBoard();
   }, [params.id, loading]);
 
-  useEffect(() => {
-    const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
-    setComments(storedComments);
-  }, [params.id, loading]);
+  // useEffect(() => {
+  //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
+  //   setComments(storedComments);
+  // }, [params.id, loading]);
 
-  useEffect(() => {
-    localStorage.setItem("comments", JSON.stringify(comments));
-  }, [comments]);
-
-  const addNewComment = (newComment) => {
-    const updatedComments = [...comments, newComment];
-    setComments(updatedComments);
-  };
+  // const addNewComment = (newComment) => {
+  //   const updatedComments = [...comments, newComment];
+  //   setComments(updatedComments);
+  // };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -148,11 +144,7 @@ const View = () => {
                   </ul>
                 </div>
                 <div ref={viewContentRef}></div>
-                <CommentList
-                  id={params.id}
-                  comments={comments}
-                  addNewComment={addNewComment}
-                />
+                <CommentList id={params.id} />
               </ViewPageMain>
             </IconBox>
           </ViewPageWrap>
