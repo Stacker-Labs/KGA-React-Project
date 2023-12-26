@@ -60,7 +60,8 @@ const View = () => {
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
-  const usersInfo = userInfo?.id || "";
+  const hasPermission = userInfo?.views?.some((view) => view.id === userId);
+  const userId = userInfo?.user?.id || "";
   const viewContentRef = useRef();
 
   // const Token = process.env.REACT_APP_TOKEN;
@@ -138,7 +139,7 @@ const View = () => {
             </IconBox>
           </ViewPageWrap>
           <StyledMUIButton>
-            {usersInfo !== "" && (
+            {hasPermission && (
               <>
                 <MUIButton customType="local">페이지 등록</MUIButton>
                 <Link
