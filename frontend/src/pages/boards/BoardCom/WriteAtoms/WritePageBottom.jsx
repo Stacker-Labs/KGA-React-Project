@@ -20,7 +20,7 @@ const WritePageBottom = ({ handleSave }) => {
   return (
     <>
       <WritePageFoot>
-        <button>저장</button>
+        <button onClick={handleSave}>저장</button>
       </WritePageFoot>
     </>
   );
