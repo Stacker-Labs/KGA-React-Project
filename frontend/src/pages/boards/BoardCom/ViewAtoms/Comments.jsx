@@ -24,7 +24,7 @@ const Comments = ({ id }) => {
 
   const usersId = userInfo?.id || "";
   const userInId = userInfo.user.id;
-  const userBoardInId = userInfo.board.user.id;
+  const userBoardInId = userInfo.id;
   const userNickname = userInfo.user.nickname;
   const shouldShowButton = userInId === userBoardInId;
 
@@ -103,31 +103,29 @@ const Comments = ({ id }) => {
             <div className="mb-10 flex flex-row justify-between">
               <p>{userNickname}</p>
               <div>
-                {shouldShowButton ? (
-                  <div className="gap-y-2">
+                <div className="gap-y-2">
+                  <button
+                    onClick={() => deleteComment(index)}
+                    className="border-4 p-[5px] bg-slate-600 text-white text-xs"
+                  >
+                    삭제
+                  </button>
+                  {editIndex === index ? (
                     <button
-                      onClick={() => deleteComment(index)}
-                      className="border-4 p-[5px] bg-slate-600 text-white text-xs"
+                      onClick={() => saveEditedComment(index)}
+                      className="border-4 p-[5px] text-xs"
                     >
-                      삭제
+                      저장
                     </button>
-                    {editIndex === index ? (
-                      <button
-                        onClick={() => saveEditedComment(index)}
-                        className="border-4 p-[5px] text-xs"
-                      >
-                        저장
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => editComment(index)}
-                        className="border-4 p-[5px] text-xs"
-                      >
-                        수정
-                      </button>
-                    )}
-                  </div>
-                ) : null}
+                  ) : (
+                    <button
+                      onClick={() => editComment(index)}
+                      className="border-4 p-[5px] text-xs"
+                    >
+                      수정
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
             {editIndex === index ? (
