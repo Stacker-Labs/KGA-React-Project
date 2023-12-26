@@ -7,7 +7,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
       credentials: true,
-      origin: ['https://stacker-labs.vercel.app', 'http://localhost:3000'],
+      origin: [
+        'https://eunjae.store',
+        'https://stacker-labs.vercel.app',
+        'http://localhost:3000',
+      ],
     },
   });
 
