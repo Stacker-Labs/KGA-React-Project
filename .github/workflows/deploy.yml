@@ -18,13 +18,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+
       - name: Install npm packages
         run: cd frontend && npm ci
+
       - name: Build
         run: cd frontend && npm run build
+
       - name: Kill process
-        run: fuser -k 3000/tcp
-      - name: Run background
+        run: fuser -k 3000/tcp || true
+
+      - name: Run server in background
         run: |
-          RUNNER_TRACKING_ID="" && nohup serve -s frontend/build &
-          echo | lsof | grep 3000
+          cd frontend
+          RUNNER_TRACKING_ID="" nohup serve -s build > ../serve.log 2>&1 &
+          echo "Server started"
+
+      - name: Delay for server start
+        run: sleep 10
+
+      - name: Check if server is running on port 3000
+        run: lsof -i :3000
