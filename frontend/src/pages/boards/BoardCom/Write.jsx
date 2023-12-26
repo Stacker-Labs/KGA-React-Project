@@ -51,7 +51,7 @@ const Write = () => {
   const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
-
+  const usersInfo = userInfo?.id || "";
   const userNickname = userInfo?.user?.nickname || "";
   const userId = userInfo?.user?.id || "";
   const handleTitleChange = (e) => {
@@ -76,13 +76,14 @@ const Write = () => {
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
-        // Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         title,
         content,
         tags: tagList.join(" "),
+        usersInfo,
         userId,
         userNickname,
       }),

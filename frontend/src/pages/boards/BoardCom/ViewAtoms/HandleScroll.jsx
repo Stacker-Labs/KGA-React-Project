@@ -45,7 +45,8 @@ const HandleScroll = () => {
   const [count, setCount] = useState(0);
 
   const userInfo = useRecoilValue(userState);
-  const userId = userInfo?.id || "";
+  const userId = userInfo?.user.id || "";
+  const userNickname = userInfo?.user.nickname || "";
 
   const handleScroll = () => {
     if (!window.scrollY) return;
