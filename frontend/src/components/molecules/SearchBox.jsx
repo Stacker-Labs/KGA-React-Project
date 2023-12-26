@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { No_Profile } from "../../images";
 import { cn } from "../../utils/cn";
+import DateTime from "./DateTime";
 
 const SearchBox = ({ searchBoard }) => {
   return (
@@ -27,7 +28,9 @@ const SearchBox = ({ searchBoard }) => {
                       {item.user.username}
                     </Link>
                   </p>
-                  <p className="mobile:text-base">{item.createdAt}</p>
+                  <p className="mobile:text-base">
+                    <DateTime dateString={item.createdAt} />
+                  </p>
                 </div>
               </div>
               <div className="text-2xl py-5 mobile:text-lg">
