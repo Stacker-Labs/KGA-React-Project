@@ -23,6 +23,8 @@ const Comments = ({ id }) => {
   };
 
   const usersId = userInfo?.id || "";
+  const userInId = userInfo.user.id;
+  const userBoardInId = userInfo.board.user.id;
   const userNickname = userInfo.user.nickname;
 
   const addReply = (index) => {
@@ -97,7 +99,7 @@ const Comments = ({ id }) => {
             <div className="mb-10 flex flex-row justify-between">
               <p>{userNickname}</p>
               <div>
-                {usersId ? (
+                {userInId === userBoardInId ? (
                   <div className="gap-y-2">
                     <button
                       onClick={() => deleteComment(index)}
