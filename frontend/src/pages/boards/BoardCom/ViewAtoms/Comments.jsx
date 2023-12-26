@@ -19,16 +19,8 @@ const Comments = ({ id }) => {
   const usersId = userInfo?.id || "";
   const userNickname = userInfo?.user?.nickname || "";
 
-  useEffect(() => {
-    const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
-    if (storedComments.length > 0) {
-      setComments(storedComments);
-    }
-  }, []);
-
   const addComment = (newComment) => {
-    const updatedComments = [...comments, { text: newComment, replies: [] }];
-    setComments(updatedComments);
+    setComments([...comments, { text: newComment, replies: [] }]);
   };
 
   const addReply = (index) => {
@@ -89,7 +81,7 @@ const Comments = ({ id }) => {
 
       <ul>
         {comments.map((comment, index) => (
-          <li key={index} comment={comment} className="border-b-2 my-[50px]">
+          <li key={index} className="border-b-2 my-[50px]">
             <div className="mb-10 flex flex-row justify-between">
               <p>{userNickname}</p>
               <div>
