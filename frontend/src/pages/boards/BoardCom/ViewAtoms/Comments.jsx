@@ -16,12 +16,14 @@ const Comments = ({ id }) => {
   const [newComment, setNewComment] = useState("");
   const [nickname, setNickname] = useState("");
   const userInfo = useRecoilValue(userState);
+  // const Token = process.env.REACT_APP_TOKEN;
 
   const addComment = (newComment) => {
     setComments([...comments, { text: newComment, replies: [] }]);
   };
 
   const usersId = userInfo?.id || "";
+  const userNickname = userInfo.user.nickname;
 
   const addReply = (index) => {
     if (replyText.trim() === "" || editingReplyIndex !== null) return;
@@ -30,7 +32,13 @@ const Comments = ({ id }) => {
     setComments(updatedComments);
     setReplyText("");
     setReplyIndex(null);
-    fetchUserInformation(id, newComment, addComment, setNickname, userInfo);
+    fetchUserInformation(
+      usersId,
+      newComment,
+      addComment,
+      setNickname,
+      userInfo
+    );
     setNewComment("");
   };
 
@@ -76,6 +84,7 @@ const Comments = ({ id }) => {
   return (
     <div className="mt-[100px]">
       <h2>댓글 목록</h2>
+      {/* <CommentForm addComment={addComment} id={id} comments={comments} /> */}
       {usersId ? (
         <CommentForm addComment={addComment} id={id} comments={comments} />
       ) : (
@@ -93,7 +102,7 @@ const Comments = ({ id }) => {
         {comments.map((comment, index) => (
           <li key={index} className="border-b-2 my-[50px]">
             <div className="mb-10 flex flex-row justify-between">
-              <p>{nickname}</p>
+              <p>{userNickname}</p>
               <div>
                 {usersId ? (
                   <div className="gap-y-2">
@@ -165,7 +174,7 @@ const Comments = ({ id }) => {
                       />
                       <div className="flex flex-row justify-between  w-[100%]">
                         <p>{nickname}</p>
-                        {userInfo ? (
+                        {usersId ? (
                           <button onClick={() => deleteReply(index, idx)}>
                             삭제dd
                           </button>
