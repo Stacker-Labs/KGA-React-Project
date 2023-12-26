@@ -18,11 +18,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+
       - name: Install npm packages
         run: cd frontend && npm ci
+
       - name: Build
         run: cd frontend && npm run build
-      - name: Kill process
-        run: fuser -k 3000/tcp
-      - name: Run background
-        run: RUNNER_TRACKING_ID="" && nohup serve -s frontend/build &
+
+      - name: Install PM2
+        run: npm install pm2@latest -g
+
+      - name: Stop existing PM2 process
+        run: pm2 delete my-app || true
+
+      - name: Start PM2 process
+        run: pm2 start serve --name my-app -f -- -s frontend/build
