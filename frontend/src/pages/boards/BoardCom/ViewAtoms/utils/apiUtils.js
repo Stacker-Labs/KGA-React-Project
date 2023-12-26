@@ -1,9 +1,4 @@
-const fetchUserInformation = async (
-  usersId,
-  newComment,
-  addComment,
-  setNickname
-) => {
+const fetchUserInformation = async (usersId, newComment) => {
   try {
     const response = await fetch(
       `${process.env.REACT_APP_API_SERVER}/boards/${usersId}/comments`,
@@ -21,12 +16,6 @@ const fetchUserInformation = async (
     );
 
     if (response.ok) {
-      const userData = await response.json();
-      console.log(userData);
-      const nickname = userData.user.nickname;
-
-      addComment(newComment);
-      setNickname(nickname);
     } else {
       console.error("Failed to add comment:", response.status);
     }

@@ -12,7 +12,6 @@ const Comments = ({ id }) => {
   const [showReply, setShowReply] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
-  const [nickname, setNickname] = useState("");
   const userInfo = useRecoilValue(userState);
 
   // const initialComments = JSON.parse(localStorage.getItem("comments")) || [];
@@ -30,7 +29,7 @@ const Comments = ({ id }) => {
     setComments(updatedComments);
     setReplyText("");
     setReplyIndex(null);
-    fetchUserInformation(usersId, newComment, addComment, setNickname);
+    fetchUserInformation(usersId, newComment);
     setNewComment("");
   };
 
@@ -151,8 +150,6 @@ const Comments = ({ id }) => {
                         className="transform rotate-180"
                       />
                       <div className="flex flex-row justify-between  w-[100%]">
-                        <p>{nickname}</p>
-
                         <button onClick={() => deleteReply(index, idx)}>
                           삭제dd
                         </button>
