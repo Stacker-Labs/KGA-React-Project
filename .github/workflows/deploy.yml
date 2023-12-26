@@ -31,7 +31,7 @@ jobs:
       - name: Run server in background
         run: |
           cd frontend
-          RUNNER_TRACKING_ID="" nohup serve -s build
+          RUNNER_TRACKING_ID="" nohup serve -s build &
 
       - name: Delay for server start
         run: sleep 10
