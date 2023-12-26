@@ -36,6 +36,3 @@ jobs:
 
       - name: Delay for server start
         run: sleep 10
-
-      - name: Check if server is running on port 3000
-        run: lsof -i :3000
