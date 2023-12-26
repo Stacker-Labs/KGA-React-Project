@@ -74,8 +74,10 @@ const View = () => {
             method: "GET",
             headers: {
               // Authorization: `Bearer ${Token}`,
+
               "Content-Type": "application/json",
             },
+            credentials: "include",
           }
         );
 
