@@ -27,7 +27,8 @@ const Comments = ({ id }) => {
   }, []);
 
   const addComment = (newComment) => {
-    setComments([...comments, { text: newComment, replies: [] }]);
+    const updatedComments = [...comments, { text: newComment, replies: [] }];
+    setComments(updatedComments);
   };
 
   const addReply = (index) => {
@@ -88,7 +89,7 @@ const Comments = ({ id }) => {
 
       <ul>
         {comments.map((comment, index) => (
-          <li key={index} className="border-b-2 my-[50px]">
+          <li key={index} comment={comment} className="border-b-2 my-[50px]">
             <div className="mb-10 flex flex-row justify-between">
               <p>{userNickname}</p>
               <div>
