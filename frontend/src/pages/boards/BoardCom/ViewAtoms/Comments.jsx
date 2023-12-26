@@ -23,13 +23,13 @@ const Comments = ({ id }) => {
   };
 
   const usersId = userInfo?.id || "";
-  const userInId = userInfo.user.id;
-  const userBoardInId = userInfo.id;
+  // const userInId = userInfo.user.id;
+  // const userBoardInId = userInfo.id;
   const userNickname = userInfo.user.nickname;
-  const shouldShowButton = userInId === userBoardInId;
+  // const shouldShowButton = userInId === userBoardInId;
 
-  console.log("BoardId", userBoardInId);
-  console.log("BoardId ==userId", shouldShowButton);
+  // console.log("BoardId", userBoardInId);
+  // console.log("BoardId ==userId", shouldShowButton);
 
   const addReply = (index) => {
     if (replyText.trim() === "" || editingReplyIndex !== null) return;
