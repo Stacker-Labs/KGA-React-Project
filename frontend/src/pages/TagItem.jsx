@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SearchBox from "../components/molecules/SearchBox";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { cn } from "../utils/cn";
 
 const TagItem = () => {
   const param = useParams();
@@ -49,8 +50,16 @@ const TagItem = () => {
 
   return (
     <>
-      <div className="w-7/12 mx-auto py-5 font-serif flex justify-between items-center">
-        <div className="text-3xl">Show tags results for {param.id} </div>
+      <div
+        className={cn(
+          "w-7/12 mx-auto py-5 font-serif flex justify-between",
+          "tablet:w-11/12 tablet:py-7",
+          "mobile:w-full mobile:px-5 mobile:flex-col mobile:justify-start"
+        )}
+      >
+        <div className="text-3xl mobile:text-lg">
+          Show tags results for {param.id}
+        </div>
         {/* <ul className="flex flex-row gap-5">
           <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg ">
             Most Relevant
@@ -62,10 +71,18 @@ const TagItem = () => {
             Oldest
           </li>
         </ul> */}
-        <div className="text-xl ">Total : {searchBoard.length} post</div>
+        <div className="text-xl mobile:text-base">
+          Total : {searchBoard.length} post
+        </div>
       </div>
-      <div className=" w-7/12 mx-auto flex flex-row gap-8">
-        <ul className="w-[30%] flex flex-col gap-2 ">
+      <div
+        className={cn(
+          "w-7/12 mx-auto flex flex-row gap-8 justify-between",
+          "tablet:w-11/12",
+          "mobile:w-full"
+        )}
+      >
+        <ul className="w-[26%] flex flex-col gap-2 note:w-[20%] mobile:hidden">
           <li className="border rounded-lg p-2 hover:border-accent-blue">
             Posts
           </li>
@@ -79,7 +96,7 @@ const TagItem = () => {
             Tags
           </li>
         </ul>
-        <div className=" w-[80%] flex flex-col gap-5 ">
+        <div className=" w-[80%] flex flex-col gap-5 note:w-[70%] mobile:w-[90%] mobile:mx-5">
           <SearchBox searchBoard={searchBoard} />
         </div>
       </div>

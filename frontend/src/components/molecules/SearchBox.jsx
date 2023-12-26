@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { TempUserImg } from "../../images";
+import { cn } from "../../utils/cn";
 
 const SearchBox = ({ searchBoard }) => {
   return (
@@ -8,25 +9,28 @@ const SearchBox = ({ searchBoard }) => {
       {searchBoard && searchBoard.length > 0 ? (
         searchBoard.map((item, index) => {
           return (
-            <div key={index} className="border rounded-md w-[800px] p-8">
+            <div
+              key={index}
+              className={cn("border rounded-md w-full p-8 mobile:p-5")}
+            >
               <div className="flex flex-row">
                 <Link to={`/users/${item.user.id}`}>
                   <img
                     src={TempUserImg}
-                    className="w-[50px] h-[50px] rounded-3xl"
+                    className="w-[50px] h-[50px] rounded-3xl mobile:w-[45px] mobile:h-[45px]"
                     alt=""
                   />
                 </Link>
                 <div className="pl-4">
-                  <p className="text-xl">
+                  <p className="text-xl mobile:text-base">
                     <Link to={`/users/${item.user.id}`}>
                       {item.user.username}
                     </Link>
                   </p>
-                  <p>{item.createdAt}</p>
+                  <p className="mobile:text-base">{item.createdAt}</p>
                 </div>
               </div>
-              <div className="text-2xl py-5">
+              <div className="text-2xl py-5 mobile:text-lg">
                 <Link to={`/boards/${item.id}`}>{item.title}</Link>
               </div>
               <div className="flex flex-row gap-3 items-center">
@@ -40,7 +44,7 @@ const SearchBox = ({ searchBoard }) => {
                   </Link>
                 ))}
               </div>
-              <div className="flex flex-row py-5 gap-12">
+              <div className="flex flex-row py-5 gap-12 mobile:py-3">
                 <div>
                   <Link to={`/boards/${item.id}`}>
                     ❤️ {item.likes.length} Likes

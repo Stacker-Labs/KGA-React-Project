@@ -12,6 +12,7 @@ const fetchUserInformation = async (
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           content: newComment,
           parentCommentId: null,

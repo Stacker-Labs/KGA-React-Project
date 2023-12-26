@@ -34,11 +34,11 @@ import { ResDeleteUserDto } from './dto/res-deleteUser.dto';
 import { ResGetUserBoardsDto } from './dto/res-getUserBoards.dto';
 import { ResCreateFollowDto } from './dto/res-createFollow.dto';
 import { ResDeleteFollowDto } from './dto/res-deleteFollowUser.dto';
-import { loginUnauthorized } from 'src/common/error/swagger/unauthorized';
-import { userNotFound } from 'src/common/error/swagger/notFound';
-import { forbidden } from 'src/common/error/swagger/forbidden';
-import { alreadyProcessedNotAcceptable } from 'src/common/error/swagger/notAcceptable';
-import { followBadRequest } from 'src/common/error/swagger/badRequest';
+import { loginUnauthorized } from '../common/error/swagger/unauthorized';
+import { userNotFound } from '../common/error/swagger/notFound';
+import { forbidden } from '../common/error/swagger/forbidden';
+import { alreadyProcessedNotAcceptable } from '../common/error/swagger/notAcceptable';
+import { followBadRequest } from '../common/error/swagger/badRequest';
 
 @ApiTags('users')
 @Controller('users')

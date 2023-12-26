@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import MUIButton from "../../../components/atoms/Button";
@@ -60,35 +60,49 @@ const View = () => {
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
-  const usersInfo = userInfo?.id || "";
+  const hasPermission = userInfo?.views?.some((view) => view.id === userId);
+  const userId = userInfo?.user?.id || "";
+  const viewContentRef = useRef();
+
+  // const Token = process.env.REACT_APP_TOKEN;
 
   useEffect(() => {
     const getBoard = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const viewCont = document.querySelector(".ViewCont");
-      const result = await response.json();
-      viewCont.innerHTML = result.content;
-      const nickname = result.user.nickname;
-      const commentDate = result.createdAt;
+      if (title === "") {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
+          {
+            method: "GET",
+            headers: {
+              // Authorization: `Bearer ${Token}`,
 
-      console.log("result@@", result);
-      setNickname(nickname);
-      setTitle(result.title);
-      setTags(result.tags);
-      setContent(result.content);
-      setUserBoardDate(commentDate);
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+
+        // const viewCont = document.querySelector(".ViewCont");
+
+        const result = await response.json();
+
+        const nickname = result.user.nickname;
+        const commentDate = result.createdAt;
+
+        console.log("result@@", result);
+        setNickname(nickname);
+        setUserBoardDate(commentDate);
+        setTitle(result.title);
+        setTags(result.tags);
+        setContent(result.content);
+      } else {
+        // viewCont.innerHTML = result.content;
+        viewContentRef.current.innerHTML = content;
+      }
     };
 
     getBoard();
-  }, [params.id]);
+  }, [params.id, loading]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -114,16 +128,18 @@ const View = () => {
                 </h6>
                 <div>
                   <ul>
-                    <li>{tags}</li>
+                    {tags.map((tag, idx) => (
+                      <li key={`tag-${idx}`}>{tag.tag}</li>
+                    ))}
                   </ul>
                 </div>
-                <ViewContent className="ViewCont"></ViewContent>
+                <div ref={viewContentRef}></div>
                 <CommentList id={params.id} />
               </ViewPageMain>
             </IconBox>
           </ViewPageWrap>
           <StyledMUIButton>
-            {usersInfo !== "" && (
+            {hasPermission && (
               <>
                 <MUIButton customType="local">페이지 등록</MUIButton>
                 <Link
@@ -131,7 +147,7 @@ const View = () => {
                     title
                   )}&content=${encodeURIComponent(
                     content
-                  )}&tags=${encodeURIComponent(tags)}`}
+                  )}&tags=${encodeURIComponent(tags.join(","))}`}
                 >
                   <MUIButton customType="social">수정</MUIButton>
                 </Link>

@@ -16,7 +16,8 @@ const SearchBar = ({ handleSearch }) => {
       className={cn(
         "flex items-center justify-center px-2 focus:outline",
         "border border-solid border-gray-300 rounded-lg w-[300px] h-[35px]",
-        "tablet:hidden"
+        "tablet:hidden",
+        "mobile:hidden"
       )}
     >
       <input

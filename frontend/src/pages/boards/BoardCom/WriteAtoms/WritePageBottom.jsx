@@ -17,10 +17,13 @@ const WritePageFoot = styled(Box)`
 `;
 
 const WritePageBottom = ({ handleSave }) => {
+  const onClickHandler = () => {
+    handleSave();
+  };
   return (
     <>
       <WritePageFoot>
-        <button onClick={handleSave}>저장</button>
+        <button onClick={onClickHandler}>저장</button>
       </WritePageFoot>
     </>
   );

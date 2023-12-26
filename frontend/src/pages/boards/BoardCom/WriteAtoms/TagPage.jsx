@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-const TagPage = () => {
+const TagPage = ({ tagList, setTagList }) => {
   const [tagInput, setTagInput] = useState("");
-  const [tagList, setTagList] = useState([]);
 
   const handleTagInputChange = (e) => {
     setTagInput(e.target.value);
@@ -31,7 +30,7 @@ const TagPage = () => {
           <p>#</p>
           <input
             type="text"
-            className="rounded-md w-[150px] px-[5px]"
+            className="rounded-md w-[150px] px-[5px] text-blue-600"
             value={tagInput}
             placeholder="Enter a tag"
             maxLength={20}

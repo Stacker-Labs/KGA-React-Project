@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
@@ -25,10 +25,17 @@ const BoardTitle = styled(Box)`
   height: 100px;
 `;
 
+const darkModeStyles = css`
+  color: white;
+`;
+
 const InputTitle = styled(Input)`
   width: 100%;
   padding: 30px 20px;
+  ${(props) => props.darkMode && darkModeStyles}
 `;
+
+const isDarkMode = true;
 
 const BoardConntent = styled(Box)`
   width: 1100px;
@@ -41,10 +48,11 @@ const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
+  const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
-
-  const userNickname = userInfo?.user?.nickname || "";
+  // const usersInfo = userInfo?.id || "";
+  // const userNickname = userInfo?.user?.nickname || "";
   const userId = userInfo?.user?.id || "";
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -55,42 +63,49 @@ const Write = () => {
   }, []);
 
   const handleTagsChange = useCallback((value) => {
-    setTags(value);
+    setTags(`${tags} ${value}`);
   }, []);
 
   const handleSave = async () => {
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    console.log(title);
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
     }
+    // const Token = process.env.REACT_APP_TOKEN;
 
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
-        // Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         title,
         content,
-        tags,
-        userId,
-        userNickname,
+        tags: tagList.join(" "),
+        // usersInfo,
+
+        // userNickname,
       }),
     });
     const result = await response.json();
-    console.log(result);
-    console.log("닉네임", result.nickname);
-    console.log("닉네임2", result.userNickname);
-    console.log("아이디", result.id);
-    console.log("아이디2", result.userId);
     if (response.ok) {
       navigate(`/boards/${result.id}`);
     }
   };
   return (
     <div className="flex flex-row">
-      <TagPage value={tags} onChange={handleTagsChange} />
+      <TagPage
+        tagList={tagList}
+        setTagList={setTagList}
+        value={tags}
+        onChange={handleTagsChange}
+      />
       <WriteWrap>
         <BoardTitle>
           <InputTitle
@@ -98,6 +113,7 @@ const Write = () => {
             className="boardTitle"
             placeholder="제목을 입력해주세요"
             value={title}
+            darkMode={isDarkMode}
             onChange={handleTitleChange}
           />
         </BoardTitle>

@@ -8,14 +8,16 @@ const CommentForm = ({ id, addComment, comments }) => {
   };
 
   const [newComment, setNewComment] = useState("");
-  const [nickname, setNickname] = useState("");
+  // const [nickname, setNickname] = useState("");
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setNewComment(value);
   };
   const userInfo = useRecoilValue(userState);
-  const Token = userInfo?.token || "";
+  const userId = userInfo?.user?.id;
+  const userNickname = userInfo?.user?.nickname;
+  // const Token = process.env.REACT_APP_TOKEN;
   const fetchUserInformation = async () => {
     try {
       const response = await fetch(
@@ -23,21 +25,23 @@ const CommentForm = ({ id, addComment, comments }) => {
         {
           method: "post",
           headers: {
-            Authorization: `Bearer ${Token}`,
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({
             content: newComment,
             parentCommentId: null,
           }),
         }
       );
-      const userData = await response.json();
-      console.log(userData);
-      const nickname = userData.user.nickname;
 
-      addComment(newComment);
-      setNickname(nickname);
+      if (response.ok) {
+        const result = await response.json();
+
+        console.log("댓글이 성공적으로 작성되었습니다.", result);
+      } else {
+        console.error("서버 응답 에러:", response.status);
+      }
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
@@ -45,10 +49,12 @@ const CommentForm = ({ id, addComment, comments }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Token === "") {
+    if (userId === "") {
       alert("로그인이 필요합니다.");
       return;
     }
+    console.log(userNickname);
+
     fetchUserInformation();
     setNewComment("");
   };
@@ -60,10 +66,11 @@ const CommentForm = ({ id, addComment, comments }) => {
   return (
     <div className="border p-5">
       <div className="flex flex-row justify-between" style={style}>
-        <div>{nickname}</div>
+        <div>{userNickname}</div>
         <div>총 댓글수 {totalComments}</div>
       </div>
-      {Token ? (
+
+      {userId ? (
         <form onSubmit={handleSubmit} className="flex justify-center m-5">
           <textarea
             type="text"
@@ -74,7 +81,7 @@ const CommentForm = ({ id, addComment, comments }) => {
           />
           <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
             <p className="text-white  mx-auto" style={style}>
-              등록
+              등록d
             </p>
           </button>
         </form>

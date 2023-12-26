@@ -11,6 +11,7 @@ import { darkModeState } from "../../recoil/darkmode";
 import { FaRegBell } from "react-icons/fa6";
 import { cn } from "../../utils/cn";
 import { No_Profile } from "../../images";
+import MenuBar from "../molecules/MenuBar";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useRecoilState(userMenuState);
@@ -45,12 +46,13 @@ const Header = () => {
           className={cn(
             "w-[40%] flex flex-row items-center gap-11 px-6",
             "note:flex-row note:w-[45%]",
-            "tablet:flex-col tablet:w-[33%]"
+            "tablet:flex-col tablet:w-[33%]",
+            "mobile:w-[60%]"
           )}
         >
           <Link
             to={"/"}
-            className="tablet:text-3xl font-logo text-4xl text-accent-blue"
+            className="tablet:text-3xl mobile:text-2xl font-logo text-4xl text-accent-blue"
           >
             Stacker-Labs
           </Link>
@@ -60,7 +62,7 @@ const Header = () => {
           className={cn(
             "flex flex-row justify-around items-center",
             "note:w-[30%]",
-            "tablet:gap-4 tablet:p-2 tablet:w-[50%] "
+            "tablet:gap-4 tablet:p-2 tablet:w-[50%]"
           )}
         >
           {user?.role === "ADMIN" && (
@@ -79,27 +81,27 @@ const Header = () => {
           )}
           {user?.id ? (
             <Link to={"/auth/logout"}>
-              <Button variant={"white"} size={"md"}>
+              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
                 Logout
               </Button>
             </Link>
           ) : (
             <Link to={"/auth"}>
-              <Button variant={"white"} size={"md"}>
+              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
                 Login
               </Button>
             </Link>
           )}
           {!user?.id && (
             <Link to={"/auth/register"}>
-              <Button variant={"white"} size={"md"}>
+              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
                 Sign Up
               </Button>
             </Link>
           )}
           <DarkmodeBtn />
           <button>
-            <FaRegBell className="text-2xl dark:text-white" />
+            <FaRegBell className="text-2xl dark:text-white mobile:hidden" />
           </button>
           {user?.id && (
             <img
@@ -109,6 +111,7 @@ const Header = () => {
               alt=""
             />
           )}
+          <MenuBar />
         </div>
       </div>
 

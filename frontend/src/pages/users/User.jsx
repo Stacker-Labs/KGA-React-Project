@@ -7,6 +7,7 @@ import Follower from "./Follower";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
 import { No_Profile } from "../../images";
+import { cn } from "../../utils/cn";
 
 const User = () => {
   const navigate = useNavigate();
@@ -118,6 +119,8 @@ const User = () => {
     }
   };
 
+  const { boards: userBoardArray } = userBoard || { boards: [] };
+
   return (
     <div>
       <div
@@ -204,12 +207,64 @@ const User = () => {
           <div className="" id="post-comment">
             <span className="ml-4 font-logo text-lg">Recent Post</span>
             <InfoBox>
-              <div>
+              {/* <div>
                 <ul>
                   <li>{userBoard?.boards[0]?.title}</li>
                   <li>{userBoard?.boards[0]?.content}</li>
                   <li>{userBoard?.boards[0]?.createdAt}</li>
                 </ul>
+              </div> */}
+              <div
+                // key={index}
+                className={cn(
+                  "border rounded-md w-12/12 p-4",
+                  "note:w-5/6",
+                  "tablet:w-[90%]"
+                )}
+              >
+                <div className="flex flex-row">
+                  <Link to={`/users/${user?.id}`}>
+                    <img
+                      src={user?.image || No_Profile}
+                      className="w-[50px] h-[50px] rounded-3xl"
+                      alt=""
+                    />
+                  </Link>
+                  <div className="pl-4">
+                    <p className="text-xl">
+                      <Link to={`/users/${user?.id}`}>{user?.nickname}</Link>
+                    </p>
+                    <p>{userBoardArray[0]?.createdAt}</p>
+                  </div>
+                </div>
+                <div className="text-2xl py-5">
+                  <Link to={`/boards/${userBoardArray[0]?.id}`}>
+                    {userBoardArray[0]?.title}
+                  </Link>
+                </div>
+                <div className="flex flex-row gap-3 items-center">
+                  {userBoardArray[0]?.tags.map((tagItem, tagIndex) => (
+                    <Link
+                      key={tagIndex}
+                      className="p-1 hover:border rounded-md border-accent-blue"
+                      to={`/tags/${tagItem.tag}`}
+                    >
+                      # {tagItem.tag}
+                    </Link>
+                  ))}
+                </div>
+                <div className="flex flex-row gap-12">
+                  <div>
+                    <Link to={`/boards/${userBoardArray?.id}`}>
+                      ❤️ {userBoardArray?.likes?.length} Likes
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to={`/boards/${userBoardArray.id}`}>
+                      💬 {userBoardArray?.comments} Comment
+                    </Link>
+                  </div>
+                </div>
               </div>
             </InfoBox>
 
@@ -227,13 +282,58 @@ const User = () => {
             <span className="ml-4 font-logo text-lg">
               Posts ({userBoard?.boardLength || 0})
             </span>
-            <InfoBox>
-              {userBoard?.boards.slice(1).map((board, idx) => (
-                <ul key={`board_${idx}`}>
-                  <li>{board.title}</li>
-                  <li>{board.content}</li>
-                  <li>{board.createdAt}</li>
-                </ul>
+            <InfoBox className={`flex flex-col items-center gap-10`}>
+              {userBoardArray?.map((board, idx) => (
+                <div
+                  key={`board_${idx}`}
+                  className={cn(
+                    "border rounded-md w-6/6 p-4",
+                    "note:w-5/6",
+                    "tablet:w-[90%]"
+                  )}
+                >
+                  <div className="flex flex-row">
+                    <Link to={`/users/${user?.id}`}>
+                      <img
+                        src={user?.image || No_Profile}
+                        className="w-[50px] h-[50px] rounded-3xl"
+                        alt=""
+                      />
+                    </Link>
+                    <div className="pl-4">
+                      <p className="text-xl">
+                        <Link to={`/users/${user?.id}`}>{user?.nickname}</Link>
+                      </p>
+                      <p>{board?.createdAt}</p>
+                    </div>
+                  </div>
+                  <div className="text-2xl py-5">
+                    <Link to={`/boards/${board?.id}`}>{board?.title}</Link>
+                  </div>
+                  <div className="flex flex-row gap-3 items-center">
+                    {board?.tags.map((tagItem, tagIndex) => (
+                      <Link
+                        key={tagIndex}
+                        className="p-1 hover:border rounded-md border-accent-blue"
+                        to={`/tags/${tagItem.tag}`}
+                      >
+                        # {tagItem.tag}
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="flex flex-row gap-12">
+                    <div>
+                      <Link to={`/boards/${board?.id}`}>
+                        ❤️ {board?.likes?.length} Likes
+                      </Link>
+                    </div>
+                    <div>
+                      <Link to={`/boards/${board?.id}`}>
+                        💬 {board?.comments} Comment
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               ))}
             </InfoBox>
           </div>
