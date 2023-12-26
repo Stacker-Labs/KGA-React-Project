@@ -80,15 +80,15 @@ const CommentForm = ({ id }) => {
     }
   };
 
-  const totalComments = comments.reduce((total, comment) => {
-    return total + 1 + comment.replies.length;
-  }, 0);
+  // const totalComments = comments.reduce((total, comment) => {
+  //   return total + 1 + comment.replies.length;
+  // }, 0);
 
   return (
     <div className="border p-5">
       <div className="flex flex-row justify-between" style={style}>
         <div>{userNickname}</div>
-        <div>총 댓글수 {totalComments}</div>
+        {/* <div>총 댓글수 {totalComments}</div> */}
       </div>
 
       <form onSubmit={handleSubmit} className="flex justify-center m-5">
