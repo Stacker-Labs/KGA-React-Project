@@ -56,6 +56,7 @@ const CommentForm = ({ id, addComment, comments }) => {
     console.log(userNickname);
 
     fetchUserInformation();
+    addComment(newComment);
     setNewComment("");
   };
 
