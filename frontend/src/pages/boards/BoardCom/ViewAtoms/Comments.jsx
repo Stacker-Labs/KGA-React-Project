@@ -145,23 +145,22 @@ const Comments = ({ id }) => {
             </div>
             {replyIndex === index && (
               <div>
-                {shouldShowButton ? (
-                  <div className="flex flex-row">
-                    <textarea
-                      className="w-[800px] p-[10px] resize-none rounded-md bg-neutral-100"
-                      value={replyText}
-                      onChange={(e) => setReplyText(e.target.value)}
-                      disabled={!!editIndex}
-                    />
-                    <button
-                      className="bg-sky-600 p-[15px] rounded-md"
-                      onClick={() => addReply(index)}
-                      disabled={!!editIndex}
-                    >
-                      <p className="text-white mx-auto">등록dd</p>
-                    </button>
-                  </div>
-                ) : null}
+                <div className="flex flex-row">
+                  <textarea
+                    className="w-[800px] p-[10px] resize-none rounded-md bg-neutral-100"
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    disabled={!!editIndex}
+                  />
+                  <button
+                    className="bg-sky-600 p-[15px] rounded-md"
+                    onClick={() => addReply(index)}
+                    disabled={!!editIndex}
+                  >
+                    <p className="text-white mx-auto">등록dd</p>
+                  </button>
+                </div>
+
                 {comment.replies.map((reply, idx) => (
                   <div key={idx} className="p-[10px]">
                     <div className="flex flex-row">
@@ -171,11 +170,10 @@ const Comments = ({ id }) => {
                       />
                       <div className="flex flex-row justify-between  w-[100%]">
                         <p>{nickname}</p>
-                        {shouldShowButton ? (
-                          <button onClick={() => deleteReply(index, idx)}>
-                            삭제dd
-                          </button>
-                        ) : null}
+
+                        <button onClick={() => deleteReply(index, idx)}>
+                          삭제dd
+                        </button>
                       </div>
                     </div>
                     <div className="bg-slate-50">{reply}</div>

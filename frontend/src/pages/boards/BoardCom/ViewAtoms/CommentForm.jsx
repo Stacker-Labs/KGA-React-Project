@@ -39,6 +39,7 @@ const CommentForm = ({ id, addComment, comments }) => {
         const result = await response.json();
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
+        return result;
       } else {
         console.error("서버 응답 에러:", response.status);
       }
