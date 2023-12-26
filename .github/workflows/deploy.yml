@@ -10,6 +10,8 @@ env:
   REACT_APP_KAKAO_CLIENT_ID: ${{ secrets.REACT_APP_KAKAO_CLIENT_ID }}
   REACT_APP_KAKAO_REDIRECT: ${{ secrets.REACT_APP_KAKAO_REDIRECT }}
   REACT_APP_TINYMCE_API_KEY: ${{ secrets.REACT_APP_TINYMCE_API_KEY }}
+  CI: false
+
 jobs:
   deploy:
     runs-on: ["self-hosted", "Linux", "X64"]
