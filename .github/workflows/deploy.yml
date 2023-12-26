@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+      - name: cd frontend
+        run: cd frontend
       - name: Install npm packages
         run: npm ci
       - name: Build
