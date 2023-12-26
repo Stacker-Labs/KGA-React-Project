@@ -10,6 +10,7 @@ const fetchUserInformation = async (
       {
         method: "post",
         headers: {
+          // Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

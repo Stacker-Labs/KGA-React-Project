@@ -43,8 +43,10 @@ const Modify = () => {
   const [title, setTitle] = useState(viewTitle || "");
   const [content, setContent] = useState(viewContent || "");
   const [tags, setTags] = useState(viewTags || "");
+  const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
-  const userId = userInfo;
+  const userId = userInfo.id;
+  // const Token = process.env.REACT_APP_TOKEN;
 
   const navigate = useNavigate();
   // const postId = "";
@@ -89,11 +91,13 @@ const Modify = () => {
       const response = await fetch(`https://api.subin.kr/boards/${userId}`, {
         method: "PUT",
         headers: {
+          // Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title,
           content,
+          tags: tagList.join(" "),
         }),
       });
       const result = await response.json();
@@ -115,6 +119,7 @@ const Modify = () => {
             type="text"
             className="boardTitle"
             placeholder="제목을 입력해주세요"
+            setTagList={setTagList}
             value={title}
             onChange={handleTitleChange}
           />

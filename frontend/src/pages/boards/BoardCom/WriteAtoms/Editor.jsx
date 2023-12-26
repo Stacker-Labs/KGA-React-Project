@@ -41,7 +41,9 @@ const TinyMCEEditor = ({ value, onChange }) => {
           respondWith.string(() =>
             Promise.reject("See docs to implement AI Assistant")
           ),
-        forced_root_block: false,
+        force_br_newlines: true,
+        force_p_newlines: false,
+        forced_root_block: "",
 
         height: "1000",
         setup: (editor) => {
