@@ -15,7 +15,7 @@ const CommentForm = ({ id, addComment, comments }) => {
     setNewComment(value);
   };
   const userInfo = useRecoilValue(userState);
-  const userId = userInfo?.user?.id || "";
+  const userId = userInfo?.user?.id;
   const userNickname = userInfo?.user?.nickname;
   // const Token = process.env.REACT_APP_TOKEN;
   const fetchUserInformation = async () => {
@@ -31,8 +31,6 @@ const CommentForm = ({ id, addComment, comments }) => {
           body: JSON.stringify({
             content: newComment,
             parentCommentId: null,
-            userId,
-            userNickname,
           }),
         }
       );
