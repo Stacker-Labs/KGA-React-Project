@@ -70,32 +70,30 @@ const CommentForm = ({ id, addComment, comments }) => {
         <div>총 댓글수 {totalComments}</div>
       </div>
 
-      {userId ? (
-        <form onSubmit={handleSubmit} className="flex justify-center m-5">
-          <textarea
-            type="text"
-            value={newComment}
-            onChange={handleInputChange}
-            placeholder="댓글을 입력하세요..."
-            className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
-          />
-          <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
-            <p className="text-white  mx-auto" style={style}>
-              등록d
-            </p>
-          </button>
-        </form>
-      ) : (
-        <div className="p-5 border">
-          로그인이 필요합니다.
-          <Link
-            to="https://stacker-labs.vercel.app/auth"
-            className="text-blue-600"
-          >
-            여기를 클릭하여 로그인하세요.
-          </Link>
-        </div>
-      )}
+      <form onSubmit={handleSubmit} className="flex justify-center m-5">
+        <textarea
+          type="text"
+          value={newComment}
+          onChange={handleInputChange}
+          placeholder="댓글을 입력하세요..."
+          className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
+        />
+        <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
+          <p className="text-white  mx-auto" style={style}>
+            등록d
+          </p>
+        </button>
+      </form>
+
+      {/* <div className="p-5 border">
+        로그인이 필요합니다.
+        <Link
+          to="https://stacker-labs.vercel.app/auth"
+          className="text-blue-600"
+        >
+          여기를 클릭하여 로그인하세요.
+        </Link>
+      </div> */}
     </div>
   );
 };
