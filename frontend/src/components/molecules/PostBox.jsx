@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TempUserImg } from "../../images";
+import { No_Profile } from "../../images";
 import { cn } from "../../utils/cn";
 
 const PostBox = ({ board }) => {
@@ -18,23 +18,13 @@ const PostBox = ({ board }) => {
             )}
           >
             <div className="flex flex-row">
-              {item.user.image == null ? (
-                <Link to={`/users/${item.user.id}`}>
-                  <img
-                    src={TempUserImg}
-                    className="w-[50px] h-[50px] rounded-3xl mobile:w-[45px] mobile:h-[45px]"
-                    alt=""
-                  />
-                </Link>
-              ) : (
-                <Link to={`/users/${item.user.id}`}>
-                  <img
-                    src={item.user.image}
-                    className="w-[50px] h-[50px] rounded-3xl mobile:w-[45px] mobile:h-[45px]"
-                    alt=""
-                  />
-                </Link>
-              )}
+              <Link to={`/users/${item.user.id}`}>
+                <img
+                  src={item.user.image || No_Profile}
+                  className="w-[50px] h-[50px] rounded-3xl mobile:w-[45px] mobile:h-[45px]"
+                  alt=""
+                />
+              </Link>
 
               <div className="pl-4">
                 <p className="text-xl mobile:text-base">

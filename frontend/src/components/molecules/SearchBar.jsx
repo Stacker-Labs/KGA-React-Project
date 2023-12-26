@@ -25,7 +25,7 @@ const SearchBar = ({ handleSearch }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
         type="text"
         placeholder={"Search..."}
-        className="border-none w-[90%] pl-2 dark:bg-zinc-800 focus:outline "
+        className="border-none w-[90%] pl-2 dark:bg-transparent focus:outline "
       />
       <button className="w-[10%]">
         <img src={Search_icon} alt="" className="w-[60%] " />

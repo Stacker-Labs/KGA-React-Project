@@ -11,16 +11,23 @@ import { darkModeState } from "../../recoil/darkmode";
 import { FaRegBell } from "react-icons/fa6";
 import { cn } from "../../utils/cn";
 import { No_Profile } from "../../images";
+import { FaBars } from "react-icons/fa6";
 import MenuBar from "../molecules/MenuBar";
+import { mobileMenuState } from "../../recoil/mobileMenu";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useRecoilState(userMenuState);
   const [{ user }] = useRecoilState(userState);
+  const [mobileMenu, setMobileMenu] = useRecoilState(mobileMenuState);
   const navigate = useNavigate();
   const darkMode = useRecoilValue(darkModeState);
 
   const toggleUserMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const toggleMenu = () => {
+    setMobileMenu(!mobileMenu);
   };
 
   const handleSearch = async (query) => {
@@ -47,12 +54,12 @@ const Header = () => {
             "w-[40%] flex flex-row items-center gap-11 px-6",
             "note:flex-row note:w-[45%]",
             "tablet:flex-col tablet:w-[33%]",
-            "mobile:w-[60%]"
+            "mobile:w-[65%]"
           )}
         >
           <Link
             to={"/"}
-            className="tablet:text-3xl mobile:text-2xl font-logo text-4xl text-accent-blue"
+            className="tablet:text-3xl mobile:text-3xl font-logo text-4xl text-accent-blue"
           >
             Stacker-Labs
           </Link>
@@ -111,7 +118,20 @@ const Header = () => {
               alt=""
             />
           )}
-          <MenuBar />
+          {
+            <FaBars
+              onClick={toggleMenu}
+              className="hidden mobile:inline-block mobile:text-2xl mobile:mx-5"
+            />
+          }
+          {mobileMenu && (
+            <MenuBar
+              user={user}
+              handleSearch={handleSearch}
+              mobileMenu={mobileMenu}
+              setMobileMenu={setMobileMenu}
+            />
+          )}
         </div>
       </div>
 
