@@ -29,7 +29,7 @@ jobs:
         run: pm2 delete my-app || true
 
       - name: Start PM2 process on port 3000
-        run: pm2 start serve --name my-app -f -- -l 3000 -s frontend/build
+        run: pm2 start ecosystem.config.js
 
       - name: Delay for server start
         run: sleep 10
