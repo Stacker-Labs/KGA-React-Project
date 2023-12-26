@@ -54,8 +54,8 @@ const IconBox = styled(Box)`
 const View = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [tags, setTags] = useState("");
+  const [nickname, setNickname] = useState(null);
+  const [tags, setTags] = useState(null);
   const [userBoardDate, setUserBoardDate] = useState("");
   const [loading, setLoading] = useState(true);
   const params = useParams();
@@ -85,15 +85,14 @@ const View = () => {
         // const viewCont = document.querySelector(".ViewCont");
 
         const result = await response.json();
-
-        const nickname = result.user.nickname;
+        const nickname = result.user?.nickname; // 속성에 안전하게 접근
         const commentDate = result.createdAt;
 
         console.log("result@@", result);
         setNickname(nickname);
         setUserBoardDate(commentDate);
         setTitle(result.title);
-        setTags(result.tags);
+        setTags(result.tags || []);
         setContent(result.content);
       } else {
         // viewCont.innerHTML = result.content;
@@ -120,7 +119,7 @@ const View = () => {
         <div className="w-[100%] flex flex-col">
           <ViewPageWrap>
             <IconBox>
-              <HandleScroll />
+              <HandleScroll userId={userId} />
               <ViewPageMain>
                 <ViewTitle>{title}</ViewTitle>
                 <h6>
