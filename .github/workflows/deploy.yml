@@ -18,27 +18,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-
       - name: Install npm packages
         run: cd frontend && npm ci
-
       - name: Build
         run: cd frontend && npm run build
-
-      - name: Stop existing PM2 process
-        run: pm2 delete my-app || true
-
-      - name: Start PM2 process on port 3000
-        run: pm2 start ecosystem.config.js
-
-      - name: Delay for server start
-        run: sleep 10
-
-      - name: Show PM2 Logs
-        run: pm2 logs my-app
-
-      - name: Check PM2 Process Status
-        run: pm2 status
-
-      - name: Verify Port Listening
-        run: lsof -i :3000
+      - name: Kill process
+        run: fuser -k 3000/tcp
+      - name: Run background
+        run: |
+          cd frontend
+          RUNNER_TRACKING_ID="" && nohup serve -s build &
+          echo
+      - name: Port Check
+        run: lsof | grep 3000
