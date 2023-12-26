@@ -32,7 +32,7 @@ jobs:
         run: |
           cd frontend
           RUNNER_TRACKING_ID="" nohup serve -s build > ../serve.log 2>&1 &
-          echo "Server started!"
+          echo "Server started"
 
       - name: Delay for server start
         run: sleep 10
