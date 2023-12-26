@@ -25,4 +25,6 @@ jobs:
       - name: Kill process
         run: fuser -k 3000/tcp
       - name: Run background
-        run: cd frontend && nohup serve -s build &
+        run: |
+          cd frontend
+          RUNNER_TRACKING_ID="" && nohup serve -s build &
