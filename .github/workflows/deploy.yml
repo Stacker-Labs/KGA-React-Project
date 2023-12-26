@@ -19,7 +19,7 @@ jobs:
       - name: Install npm packages
         run: cd frontend && npm ci
       - name: Build
-        run: cd frontend && NODE_OPTIONS="--max_old_space_size=8192" npm run build
+        run: cd frontend && npm run build
       - name: Kill process
         run: fuser -k 3000/tcp
       - name: Run background
