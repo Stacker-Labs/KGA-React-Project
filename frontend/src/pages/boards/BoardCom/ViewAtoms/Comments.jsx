@@ -32,13 +32,7 @@ const Comments = ({ id }) => {
     setComments(updatedComments);
     setReplyText("");
     setReplyIndex(null);
-    fetchUserInformation(
-      usersId,
-      newComment,
-      addComment,
-      setNickname,
-      userInfo
-    );
+    fetchUserInformation(usersId, newComment, addComment, setNickname);
     setNewComment("");
   };
 
