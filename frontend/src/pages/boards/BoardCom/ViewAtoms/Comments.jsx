@@ -84,20 +84,19 @@ const Comments = ({ id }) => {
   return (
     <div className="mt-[100px]">
       <h2>댓글 목록</h2>
-      {/* <CommentForm addComment={addComment} id={id} comments={comments} /> */}
-      {usersId ? (
-        <CommentForm addComment={addComment} id={id} comments={comments} />
-      ) : (
-        <div className="p-5 border">
-          로그인이 필요합니다.
-          <Link
-            to="https://stacker-labs.vercel.app/auth"
-            className="text-blue-600"
-          >
-            여기를 클릭하여 로그인하세요.
-          </Link>
-        </div>
-      )}
+
+      <CommentForm addComment={addComment} id={id} comments={comments} />
+      {/* 
+      <div className="p-5 border">
+        로그인이 필요합니다.
+        <Link
+          to="https://stacker-labs.vercel.app/auth"
+          className="text-blue-600"
+        >
+          여기를 클릭하여 로그인하세요.
+        </Link>
+      </div> */}
+
       <ul>
         {comments.map((comment, index) => (
           <li key={index} className="border-b-2 my-[50px]">
