@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegMessage } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
@@ -38,39 +37,54 @@ const IconFullHeart = styled(FaHeart)`
   color: red;
   cursor: pointer;
 `;
+const ScrollToTopButton = ({ onClick }) => {
+  return (
+    <TopBtn onClick={onClick}>
+      <IconCom />
+    </TopBtn>
+  );
+};
+
+const LikeButton = ({ onClick, isLiked, count }) => {
+  const IconComponent = isLiked ? IconFullHeart : IconHeart;
+
+  return (
+    <HeartBox>
+      <IconComponent onClick={onClick} />
+      <span>{count}</span>
+    </HeartBox>
+  );
+};
 
 const HandleScroll = () => {
   const [showButton, setShowButton] = useState(false);
-  const [clicked, setClicked] = useState(false);
-  const [count, setCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   const userInfo = useRecoilValue(userState);
-  const userId = userInfo?.user.id || "";
-  const userNickname = userInfo?.user.nickname || "";
+  const userId = userInfo?.user?.id || "";
 
   const handleScroll = () => {
-    if (!window.scrollY) return;
-
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
+    if (window.scrollY !== 0) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   };
-  const handleHeartClick = () => {
+
+  const handleLikeClick = () => {
     if (userId) {
-      setClicked((prevClicked) => !prevClicked);
-      setCount((prevCount) => (clicked ? prevCount - 1 : prevCount + 1));
-    } else if (userId === "") {
+      setIsLiked((prev) => !prev);
+      setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+    } else {
       alert("로그인이 필요합니다.");
     }
   };
+
   useEffect(() => {
     const handleShowButton = () => {
-      if ((window.scrollY = window.innerHeight)) {
-        setShowButton(true);
-      } else {
-        setShowButton(false);
-      }
+      setShowButton(window.scrollY > window.innerHeight);
     };
 
     window.addEventListener("scroll", handleShowButton);
@@ -78,21 +92,15 @@ const HandleScroll = () => {
       window.removeEventListener("scroll", handleShowButton);
     };
   }, []);
+
   return (
     <IconStyledWrap>
-      {showButton && (
-        <TopBtn onClick={handleScroll}>
-          <IconCom />
-        </TopBtn>
-      )}
-      <HeartBox>
-        {clicked ? (
-          <IconFullHeart onClick={handleHeartClick} />
-        ) : (
-          <IconHeart onClick={handleHeartClick} />
-        )}
-        <span>{count}</span>
-      </HeartBox>
+      {showButton && <ScrollToTopButton onClick={handleScroll} />}
+      <LikeButton
+        onClick={handleLikeClick}
+        isLiked={isLiked}
+        count={likeCount}
+      />
     </IconStyledWrap>
   );
 };

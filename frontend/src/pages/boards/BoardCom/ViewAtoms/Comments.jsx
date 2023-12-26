@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CommentForm from "./CommentForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { fetchUserInformation } from "./utils/apiUtils";
-import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 const Comments = ({ id }) => {
@@ -12,21 +11,27 @@ const Comments = ({ id }) => {
   const [replyIndex, setReplyIndex] = useState(null);
   const [showReply, setShowReply] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
-  const [editingReplyIndex, setEditingReplyIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [nickname, setNickname] = useState("");
   const userInfo = useRecoilValue(userState);
-  // const Token = process.env.REACT_APP_TOKEN;
+
+  // const initialComments = JSON.parse(localStorage.getItem("comments")) || [];
+  const usersId = userInfo?.id || "";
+  const userNickname = userInfo?.user?.nickname || "";
+
+  useEffect(() => {
+    const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
+    if (storedComments.length > 0) {
+      setComments(storedComments);
+    }
+  }, []);
 
   const addComment = (newComment) => {
     setComments([...comments, { text: newComment, replies: [] }]);
   };
 
-  const usersId = userInfo?.id || "";
-  const userNickname = userInfo.user.nickname;
-
   const addReply = (index) => {
-    if (replyText.trim() === "" || editingReplyIndex !== null) return;
+    if (replyText.trim() === "") return;
     const updatedComments = [...comments];
     updatedComments[index].replies.push(replyText);
     setComments(updatedComments);
