@@ -16,13 +16,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-      - name: cd frontend
-        run: cd frontend
       - name: Install npm packages
-        run: npm ci
+        run: cd frontend && npm ci
       - name: Build
-        run: NODE_OPTIONS="--max_old_space_size=8192" npm run build
+        run: cd frontend && NODE_OPTIONS="--max_old_space_size=8192" npm run build
       - name: Kill process
         run: fuser -k 3000/tcp
       - name: Run background
-        run: RUNNER_TRACKING_ID="" && nohup serve -s build &
+        run: cd frontend && RUNNER_TRACKING_ID="" && nohup serve -s build &
