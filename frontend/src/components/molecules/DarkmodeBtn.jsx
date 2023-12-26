@@ -13,8 +13,12 @@ const DarkmodeBtn = () => {
   return (
     <>
       <button onClick={toggleDarkMode}>
-        <FaMoon className={`text-2xl ${darkMode ? "hidden" : ""}`} />
-        <FaSun className={`text-2xl  ${darkMode ? "" : "hidden"}`} />
+        <FaMoon
+          className={`text-2xl ${darkMode ? "hidden" : ""} mobile:text-2xl`}
+        />
+        <FaSun
+          className={`text-2xl  ${darkMode ? "" : "hidden"} mobile:text-2xl`}
+        />
       </button>
     </>
   );
