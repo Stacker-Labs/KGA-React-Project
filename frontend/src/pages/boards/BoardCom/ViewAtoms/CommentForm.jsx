@@ -39,6 +39,7 @@ const CommentForm = ({ id, addComment, comments }) => {
         const result = await response.json();
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
+        addComment(result);
         return result;
       } else {
         console.error("서버 응답 에러:", response.status);
@@ -48,17 +49,36 @@ const CommentForm = ({ id, addComment, comments }) => {
     }
   };
 
+  // const fetchUserComment = async (boardId, page) => {
+  //   try {
+  //     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards/${boardId}/${page}`);
+  //     if (response.ok) {
+  //       const result = await response.json();
+
+  //       return result;
+  //     } else {
+  //       console.error("서버 응답 에러:", response.status);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching user comments:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (userId === "") {
       alert("로그인이 필요합니다.");
       return;
     }
-    console.log(userNickname);
-
-    fetchUserInformation();
-    addComment(newComment);
-    setNewComment("");
+    try {
+      const result = await fetchUserInformation();
+      setNewComment("");
+      if (result) {
+        console.log("서버 응답 결과:", result);
+      }
+    } catch (error) {
+      console.error("댓글 작성 중 에러:", error);
+    }
   };
 
   const totalComments = comments.reduce((total, comment) => {

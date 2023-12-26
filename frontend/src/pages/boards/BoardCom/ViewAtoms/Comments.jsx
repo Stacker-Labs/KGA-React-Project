@@ -23,13 +23,7 @@ const Comments = ({ id }) => {
   };
 
   const usersId = userInfo?.id || "";
-  // const userInId = userInfo.user.id;
-  // const userBoardInId = userInfo.id;
   const userNickname = userInfo.user.nickname;
-  // const shouldShowButton = userInId === userBoardInId;
-
-  // console.log("BoardId", userBoardInId);
-  // console.log("BoardId ==userId", shouldShowButton);
 
   const addReply = (index) => {
     if (replyText.trim() === "" || editingReplyIndex !== null) return;
@@ -86,16 +80,6 @@ const Comments = ({ id }) => {
       <h2>댓글 목록</h2>
 
       <CommentForm addComment={addComment} id={id} comments={comments} />
-      {/* 
-      <div className="p-5 border">
-        로그인이 필요합니다.
-        <Link
-          to="https://stacker-labs.vercel.app/auth"
-          className="text-blue-600"
-        >
-          여기를 클릭하여 로그인하세요.
-        </Link>
-      </div> */}
 
       <ul>
         {comments.map((comment, index) => (
