@@ -26,6 +26,10 @@ const Comments = ({ id }) => {
   const userInId = userInfo.user.id;
   const userBoardInId = userInfo.board.user.id;
   const userNickname = userInfo.user.nickname;
+  const shouldShowButton = userInId === userBoardInId;
+
+  console.log("BoardId", userBoardInId);
+  console.log("BoardId ==userId", shouldShowButton);
 
   const addReply = (index) => {
     if (replyText.trim() === "" || editingReplyIndex !== null) return;
@@ -99,7 +103,7 @@ const Comments = ({ id }) => {
             <div className="mb-10 flex flex-row justify-between">
               <p>{userNickname}</p>
               <div>
-                {userInId === userBoardInId ? (
+                {shouldShowButton ? (
                   <div className="gap-y-2">
                     <button
                       onClick={() => deleteComment(index)}
@@ -143,7 +147,7 @@ const Comments = ({ id }) => {
             </div>
             {replyIndex === index && (
               <div>
-                {usersId ? (
+                {shouldShowButton ? (
                   <div className="flex flex-row">
                     <textarea
                       className="w-[800px] p-[10px] resize-none rounded-md bg-neutral-100"
@@ -169,7 +173,7 @@ const Comments = ({ id }) => {
                       />
                       <div className="flex flex-row justify-between  w-[100%]">
                         <p>{nickname}</p>
-                        {usersId ? (
+                        {shouldShowButton ? (
                           <button onClick={() => deleteReply(index, idx)}>
                             삭제dd
                           </button>
