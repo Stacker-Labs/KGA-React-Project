@@ -51,8 +51,8 @@ const Write = () => {
   const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
-  const usersInfo = userInfo?.id || "";
-  const userNickname = userInfo?.user?.nickname || "";
+  // const usersInfo = userInfo?.id || "";
+  // const userNickname = userInfo?.user?.nickname || "";
   const userId = userInfo?.user?.id || "";
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -67,6 +67,11 @@ const Write = () => {
   }, []);
 
   const handleSave = async () => {
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    console.log(title);
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
@@ -84,7 +89,7 @@ const Write = () => {
         content,
         tags: tagList.join(" "),
         // usersInfo,
-        // userId,
+
         // userNickname,
       }),
     });
