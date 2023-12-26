@@ -25,11 +25,20 @@ jobs:
       - name: Build
         run: cd frontend && npm run build
 
-      - name: Install PM2
-        run: npm install pm2@latest -g
-
       - name: Stop existing PM2 process
         run: pm2 delete my-app || true
 
-      - name: Start PM2 process
-        run: pm2 start serve --name my-app -f -- -s frontend/build
+      - name: Start PM2 process on port 3000
+        run: pm2 start serve --name my-app -f -- -l 3000 -s frontend/build
+
+      - name: Delay for server start
+        run: sleep 10
+
+      - name: Show PM2 Logs
+        run: pm2 logs my-app
+
+      - name: Check PM2 Process Status
+        run: pm2 status
+
+      - name: Verify Port Listening
+        run: lsof -i :3000
