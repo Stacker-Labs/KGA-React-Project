@@ -83,9 +83,9 @@ const Write = () => {
         title,
         content,
         tags: tagList.join(" "),
-        usersInfo,
-        userId,
-        userNickname,
+        // usersInfo,
+        // userId,
+        // userNickname,
       }),
     });
     const result = await response.json();
