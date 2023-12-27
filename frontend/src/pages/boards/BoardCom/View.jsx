@@ -7,6 +7,7 @@ import { useParams, Link } from "react-router-dom";
 import CommentList from "./ViewAtoms/CommentsList";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/userState";
+import CommentForm from "./ViewAtoms/CommentForm";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
@@ -146,6 +147,7 @@ const View = () => {
                   </ul>
                 </div>
                 <div ref={viewContentRef}></div>
+                <CommentForm id={params.id} />
                 <CommentList id={params.id} />
               </ViewPageMain>
             </IconBox>
