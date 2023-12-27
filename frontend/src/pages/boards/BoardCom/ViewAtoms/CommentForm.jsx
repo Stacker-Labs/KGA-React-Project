@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 const CommentForm = ({ id }) => {
-  const style = {
-    fontFamily: "'Noto Sans KR', sans-serif",
-  };
-
   const [newComment, setNewComment] = useState("");
-  // const [nickname, setNickname] = useState("");
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -80,15 +74,15 @@ const CommentForm = ({ id }) => {
     }
   };
 
-  // const totalComments = comments.reduce((total, comment) => {
-  //   return total + 1 + comment.replies.length;
-  // }, 0);
+  const totalComments = comments.reduce((total, comment) => {
+    return total + 1 + comment.replies.length;
+  }, 0);
 
   return (
     <div className="border p-5">
       <div className="flex flex-row justify-between" style={style}>
         <div>{userNickname}</div>
-        {/* <div>총 댓글수 {totalComments}</div> */}
+        <div>총 댓글수 {totalComments}</div>
       </div>
 
       <form onSubmit={handleSubmit} className="flex justify-center m-5">
