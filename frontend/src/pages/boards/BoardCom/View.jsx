@@ -69,6 +69,7 @@ const View = () => {
   const viewContentRef = useRef();
 
   // const Token = process.env.REACT_APP_TOKEN;
+  // //  Authorization: `Bearer ${Token}`,
   // console.log(Token);
 
   useEffect(() => {
@@ -78,8 +79,6 @@ const View = () => {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${Token}`,
-
             "Content-Type": "application/json",
           },
           credentials: "include",
