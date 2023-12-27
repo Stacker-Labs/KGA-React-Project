@@ -68,8 +68,8 @@ const View = () => {
   const hasPermission = userInfo?.id?.some((view) => view.id === userId);
   const viewContentRef = useRef();
 
-  const Token = process.env.REACT_APP_TOKEN;
-  console.log(Token);
+  // const Token = process.env.REACT_APP_TOKEN;
+  // console.log(Token);
 
   useEffect(() => {
     const getBoard = async () => {
@@ -89,8 +89,8 @@ const View = () => {
       // const viewCont = document.querySelector(".ViewCont");
 
       const result = await response.json();
-      const nickname = result.user?.nickname;
-      const commentDate = result.createdAt;
+      // const nickname = result.user?.nickname;
+      // const commentDate = result.createdAt;
       // const pageComment = result.comments;
 
       console.log("result@@", result);
@@ -105,7 +105,7 @@ const View = () => {
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
         {
           method: "GET",
-          headers: { Authorization: `Bearer ${Token}` },
+          // headers: { Authorization: `Bearer ${Token}` },
           credentials: "include",
         }
       );
