@@ -15,7 +15,7 @@ const CommentList = ({ id, commentList, setCommentList, page }) => {
         `${process.env.REACT_APP_API_SERVER}/boards/${id}/1`,
         {
           method: "GET",
-          headers: { Authorization: `Bearer ${Token}` },
+
           credentials: "include",
         }
       );
