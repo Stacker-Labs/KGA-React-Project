@@ -42,7 +42,6 @@ export class BoardsService {
   // GETCMMT: - Find Board
   async findOne(id: number, username: string) {
     const board = await this.verifiedBoard(id, {
-      comments: true,
       user: true,
       tags: true,
       views: true,
@@ -156,7 +155,10 @@ export class BoardsService {
           id: board.id,
         },
       },
-      relations: { comments },
+      relations: {
+        user: true,
+        comments,
+      },
       order: { id: 'DESC' },
       skip,
       take,
