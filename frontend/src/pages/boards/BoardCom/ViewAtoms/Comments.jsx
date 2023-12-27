@@ -5,7 +5,7 @@ import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { fetchUserInformation } from "./utils/apiUtils";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-const Comments = ({ id }) => {
+const Comments = ({ id, comments: receivedComments }) => {
   const [comments, setComments] = useState([]);
   const [replyText, setReplyText] = useState("");
   const [replyIndex, setReplyIndex] = useState(null);
@@ -79,7 +79,7 @@ const Comments = ({ id }) => {
       <CommentForm id={id} />
 
       <ul>
-        {comments.map((comment, index) => (
+        {receivedComments.map((comment, index) => (
           <li key={index} className="border-b-2 my-[50px]">
             <div className="mb-10 flex flex-row justify-between">
               <p>{userNickname}</p>

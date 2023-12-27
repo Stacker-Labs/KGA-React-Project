@@ -1,10 +1,10 @@
 import React from "react";
 import Comments from "./Comments";
 
-const CommentList = ({ id }) => {
+const CommentList = ({ id, comments }) => {
   return (
     <div>
-      <Comments id={id} />
+      <Comments id={id} comments={comments} />
     </div>
   );
 };
