@@ -157,7 +157,7 @@ export class BoardsService {
         },
       },
       relations: { user: true, comments },
-      order: { id: 'DESC' },
+      order: { createdAt: 'DESC' },
       skip,
       take,
     });
