@@ -58,8 +58,7 @@ const View = () => {
   const [nickname, setNickname] = useState(null);
   const [tags, setTags] = useState(null);
   const [userBoardDate, setUserBoardDate] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [comments, setComments] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id || "";
@@ -93,10 +92,9 @@ const View = () => {
       console.log("result@@", result);
       setNickname(nickname);
       setUserBoardDate(commentDate);
-      setTitle(result.title);
       setTags(result.tags || []);
-      setComments(result.comments);
       setContent(result.content);
+      setTitle(result.title);
     };
 
     if (title === "") {
@@ -104,7 +102,7 @@ const View = () => {
     } else {
       viewContentRef.current.innerHTML = content;
     }
-  }, [params.id, loading, comments]);
+  }, [title]);
 
   // useEffect(() => {
   //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
@@ -116,60 +114,56 @@ const View = () => {
   //   setComments(updatedComments);
   // };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="w-[100%] flex flex-col">
-          <ViewPageWrap>
-            <IconBox>
-              <HandleScroll userId={userId} />
-              <ViewPageMain>
-                <ViewTitle>{title}</ViewTitle>
-                <h6>
-                  {nickname} | {userBoardDate}
-                </h6>
-                <div>
-                  <ul>
-                    {tags.map((tag, idx) => (
-                      <li key={`tag-${idx}`}>{tag.tag}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div ref={viewContentRef}></div>
-                <CommentForm id={params.id} />
-                <CommentList id={params.id} />
-              </ViewPageMain>
-            </IconBox>
-          </ViewPageWrap>
-          <StyledMUIButton>
-            {hasPermission && (
-              <>
-                <MUIButton customType="local">페이지 등록</MUIButton>
-                <Link
-                  to={`/boards/${params.id}/edit?title=${encodeURIComponent(
-                    title
-                  )}&content=${encodeURIComponent(
-                    content
-                  )}&tags=${encodeURIComponent(tags.join(","))}`}
-                >
-                  <MUIButton customType="social">수정</MUIButton>
-                </Link>
-                <MUIButton customType="social">삭제</MUIButton>
-              </>
-            )}
-          </StyledMUIButton>
-        </div>
-      )}
+      <div className="w-[100%] flex flex-col">
+        <ViewPageWrap>
+          <IconBox>
+            <HandleScroll userId={userId} />
+            <ViewPageMain>
+              <ViewTitle>{title}</ViewTitle>
+              <h6>
+                {nickname} | {userBoardDate}
+              </h6>
+              <div>
+                <ul>
+                  {tags.map((tag, idx) => (
+                    <li key={`tag-${idx}`}>{tag.tag}</li>
+                  ))}
+                </ul>
+              </div>
+              <div ref={viewContentRef}></div>
+              <CommentForm id={params.id} />
+              <CommentList id={params.id} />
+            </ViewPageMain>
+          </IconBox>
+        </ViewPageWrap>
+        <StyledMUIButton>
+          {hasPermission && (
+            <>
+              <MUIButton customType="local">페이지 등록</MUIButton>
+              <Link
+                to={`/boards/${params.id}/edit?title=${encodeURIComponent(
+                  title
+                )}&content=${encodeURIComponent(
+                  content
+                )}&tags=${encodeURIComponent(tags.join(","))}`}
+              >
+                <MUIButton customType="social">수정</MUIButton>
+              </Link>
+              <MUIButton customType="social">삭제</MUIButton>
+            </>
+          )}
+        </StyledMUIButton>
+      </div>
     </>
   );
 };
