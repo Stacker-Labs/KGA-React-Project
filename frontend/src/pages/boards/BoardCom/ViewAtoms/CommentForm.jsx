@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-const CommentForm = ({ id }) => {
+const CommentForm = ({ id, updateCommentList }) => {
   const [newComment, setNewComment] = useState("");
 
   const handleInputChange = (e) => {
