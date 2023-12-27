@@ -9,7 +9,7 @@ const Sidebar = () => {
   const darkMode = useRecoilValue(darkModeState);
 
   return (
-    <div className="w-1/6 border-r tablet:w-1/4 note:w-1/5 mobile:hidden">
+    <div className="w-1/6 border-r tablet:w-1/4 mobile:hidden">
       <ul className="flex flex-col p-5 gap-3">
         <NavigationItem to={"/"} text="🌐 Home" />
         <NavigationItem to={"/tags"} text="🏷️ Tags" />

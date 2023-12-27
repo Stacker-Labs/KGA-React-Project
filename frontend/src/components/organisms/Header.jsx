@@ -53,7 +53,7 @@ const Header = () => {
           className={cn(
             "w-[40%] flex flex-row items-center gap-11 px-6",
             "note:flex-row note:w-[45%]",
-            "tablet:flex-col tablet:w-[33%]",
+            "tablet:flex-col tablet:w-[20%]",
             "mobile:w-[65%]"
           )}
         >
@@ -67,9 +67,9 @@ const Header = () => {
         </div>
         <div
           className={cn(
-            "flex flex-row justify-around items-center",
-            "note:w-[30%]",
-            "tablet:gap-4 tablet:p-2 tablet:w-[50%]"
+            "flex flex-row justify-around items-center w-[30%]",
+            "note:w-[35%]",
+            "tablet:w-[50%] tablet:gap-4 tablet:p-2 "
           )}
         >
           {user?.role === "ADMIN" && (
