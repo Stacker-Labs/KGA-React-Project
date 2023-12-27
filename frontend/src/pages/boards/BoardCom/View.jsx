@@ -46,9 +46,10 @@ const IconBox = styled(Box)`
 
 const View = () => {
   const [viewContent, setViewContent] = useState({});
-  const [commentList, setCommetList] = useState([]);
+  const [commentList, setCommentList] = useState([]);
+  const [commentsLength, setCommentsLength] = useState(0);
   const [page, setPage] = useState(1);
-  const [comments, setComments] = useState([]);
+
   // const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
@@ -56,7 +57,7 @@ const View = () => {
   const hasPermission = userInfo?.id?.some((view) => view.id === userId);
   const viewContentRef = useRef();
 
-  // const Token = process.env.REACT_APP_TOKEN;
+  const Token = process.env.REACT_APP_TOKEN;
   // //  Authorization: `Bearer ${Token}`,
   // console.log(Token);
 
@@ -67,30 +68,32 @@ const View = () => {
         {
           method: "GET",
           headers: {
+            Authorization: `Bearer ${Token}`,
             "Content-Type": "application/json",
           },
           credentials: "include",
         }
       );
 
-      // const viewCont = document.querySelector(".ViewCont");
-
       const result = await response.json();
 
-      console.log("result@@", result);
+      // console.log("result@@", result);
+
       setViewContent(result);
 
       const commentResponse = await fetch(
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
         {
           method: "GET",
-          // headers: { Authorization: `Bearer ${Token}` },
+          headers: { Authorization: `Bearer ${Token}` },
           credentials: "include",
         }
       );
       const commentResult = await commentResponse.json();
-      setCommetList(commentResult.boardComments);
+
       setPage(commentResult.nextPage);
+      setCommentsLength(result.commentLength);
+      setCommentList(commentResult.boardComments[0]);
     };
 
     if (!viewContent.title) {
@@ -98,11 +101,7 @@ const View = () => {
     } else {
       viewContentRef.current.innerHTML = viewContent.content;
     }
-  }, [viewContent]);
-
-  const updateCommentList = (newComment) => {
-    setComments([...comments, newComment]);
-  };
+  }, [viewContent, commentList, commentsLength]);
 
   // useEffect(() => {
   //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
@@ -142,8 +141,20 @@ const View = () => {
               </div>
               <div ref={viewContentRef}></div>
             </ViewPageMain>
-            <CommentForm id={params.id} updateCommentList={updateCommentList} />
-            <CommentList id={params.id} commentList={commentList} page={page} />
+            <div>댓글{commentsLength}</div>
+            <CommentForm
+              id={params.id}
+              setCommentList={setCommentList}
+              commentList={commentList}
+              setCommentsLength={setCommentsLength}
+              commentsLength={commentsLength}
+            />
+            <CommentList
+              id={params.id}
+              commentList={commentList}
+              page={page}
+              setCommentList={setCommentList}
+            />
           </IconBox>
         </ViewPageWrap>
 

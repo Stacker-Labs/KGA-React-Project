@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-const CommentForm = ({ id, updateCommentList }) => {
+
+const CommentForm = ({
+  id,
+  setCommentList,
+  commentList,
+  setCommentsLength,
+  commentsLength,
+}) => {
   const [newComment, setNewComment] = useState("");
 
   const handleInputChange = (e) => {
@@ -11,7 +18,7 @@ const CommentForm = ({ id, updateCommentList }) => {
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
   const userNickname = userInfo?.user?.nickname;
-  // const Token = process.env.REACT_APP_TOKEN;
+  const Token = process.env.REACT_APP_TOKEN;
   const fetchUserInformation = async () => {
     try {
       const response = await fetch(
@@ -19,6 +26,7 @@ const CommentForm = ({ id, updateCommentList }) => {
         {
           method: "post",
           headers: {
+            Authorization: `Bearer ${Token}`,
             "Content-Type": "application/json",
           },
           credentials: "include",
@@ -33,7 +41,9 @@ const CommentForm = ({ id, updateCommentList }) => {
         const result = await response.json();
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
-        updateCommentList(result);
+        // console.log("댓글수@@@", result.commentLength);
+        setCommentList([result, ...commentList]);
+        setCommentsLength(commentsLength + 1);
         setNewComment("");
       } else {
         console.error("서버 응답 에러:", response.status);
@@ -52,6 +62,7 @@ const CommentForm = ({ id, updateCommentList }) => {
     try {
       const result = await fetchUserInformation();
       setNewComment("");
+
       if (result) {
         console.log("서버 응답 결과:", result);
         return result;
@@ -65,6 +76,7 @@ const CommentForm = ({ id, updateCommentList }) => {
     <div className="border p-5">
       <div className="flex flex-row justify-between">
         <div>{userNickname}</div>
+        <span></span>
       </div>
 
       <form onSubmit={handleSubmit} className="flex justify-center m-5">
