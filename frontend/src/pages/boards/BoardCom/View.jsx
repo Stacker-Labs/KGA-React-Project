@@ -57,7 +57,7 @@ const View = () => {
   const hasPermission = userInfo?.id?.some((view) => view.id === userId);
   const viewContentRef = useRef();
 
-  const Token = process.env.REACT_APP_TOKEN;
+  // const Token = process.env.REACT_APP_TOKEN;
   // //  Authorization: `Bearer ${Token}`,
   // console.log(Token);
 
@@ -68,7 +68,6 @@ const View = () => {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${Token}`,
             "Content-Type": "application/json",
           },
           credentials: "include",
