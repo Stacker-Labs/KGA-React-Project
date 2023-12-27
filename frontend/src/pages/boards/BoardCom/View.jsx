@@ -84,7 +84,7 @@ const View = () => {
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
         {
           method: "GET",
-          headers: { Authorization: `Bearer ${Token}` },
+
           credentials: "include",
         }
       );
