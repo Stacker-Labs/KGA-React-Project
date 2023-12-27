@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-
+//Authorization: `Bearer ${Token}`,
 const CommentForm = ({
   id,
   setCommentList,
@@ -26,7 +26,6 @@ const CommentForm = ({
         {
           method: "post",
           headers: {
-            Authorization: `Bearer ${Token}`,
             "Content-Type": "application/json",
           },
           credentials: "include",
