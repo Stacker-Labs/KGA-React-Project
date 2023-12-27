@@ -70,41 +70,40 @@ const View = () => {
 
   useEffect(() => {
     const getBoard = async () => {
-      if (title === "") {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
-          {
-            method: "GET",
-            headers: {
-              // Authorization: `Bearer ${Token}`,
+      const response = await fetch(
+        `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
+        {
+          method: "GET",
+          headers: {
+            // Authorization: `Bearer ${Token}`,
 
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
-        // const viewCont = document.querySelector(".ViewCont");
+      // const viewCont = document.querySelector(".ViewCont");
 
-        const result = await response.json();
-        const nickname = result.user?.nickname;
-        const commentDate = result.createdAt;
-        // const pageComment = result.comments;
+      const result = await response.json();
+      const nickname = result.user?.nickname;
+      const commentDate = result.createdAt;
+      // const pageComment = result.comments;
 
-        console.log("result@@", result);
-        setNickname(nickname);
-        setUserBoardDate(commentDate);
-        setTitle(result.title);
-        setTags(result.tags || []);
-        setComments(result.comments);
-        setContent(result.content);
-      } else {
-        // viewCont.innerHTML = result.content;
-        viewContentRef.current.innerHTML = content;
-      }
+      console.log("result@@", result);
+      setNickname(nickname);
+      setUserBoardDate(commentDate);
+      setTitle(result.title);
+      setTags(result.tags || []);
+      setComments(result.comments);
+      setContent(result.content);
     };
 
-    getBoard();
+    if (title === "") {
+      getBoard();
+    } else {
+      viewContentRef.current.innerHTML = content;
+    }
   }, [params.id, loading, comments]);
 
   // useEffect(() => {
