@@ -135,7 +135,7 @@ const Header = () => {
         </div>
       </div>
 
-      {menuOpen && <UserMenu userid={user?.id} />}
+      {menuOpen && <UserMenu user={user} />}
     </>
   );
 };
