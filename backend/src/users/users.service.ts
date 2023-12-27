@@ -61,7 +61,7 @@ export class UsersService {
     const user = await this.verifiedUser(id, {
       followerUsers: true,
       followingUsers: true,
-      comments: true,
+      comments: { board: true },
       rooms: true,
     });
 
