@@ -17,16 +17,16 @@ const User = () => {
   const [followingOpen, setFollowingOpen] = useState(false);
   const [followerOpen, setFollowerOpen] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
-  const {
-    user: { id: globalId },
-  } = useRecoilValue(userState);
+  // const {
+  //   user: { id: globalId },
+  // } = useRecoilValue(userState);
 
-  // const globalId = 1;
+  const globalId = 1;
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async (_id) => {
       try {
-        const host = `${process.env.REACT_APP_API_SERVER}/users/${id}`;
+        const host = `${process.env.REACT_APP_API_SERVER}/users/${_id}`;
         const options = {
           method: "GET",
           headers: {
@@ -35,7 +35,7 @@ const User = () => {
         };
         const response = await fetch(host, options);
         console.log(response);
-        if (response.status === 400) {
+        if (response.status === 400 || response.status === 404) {
           alert("This user does not exist.");
           return navigate("/");
         }
@@ -47,12 +47,6 @@ const User = () => {
       } catch (e) {
         console.log(e);
       }
-    };
-
-    const didIFollow = () => {
-      const idx = user?.followerUsers?.findIndex((e) => globalId === e.id);
-      if (idx === -1) setIsFollowed(false);
-      else setIsFollowed(true);
     };
 
     const fetchUserBoard = async () => {
@@ -75,13 +69,21 @@ const User = () => {
       }
     };
 
-    fetchUserData().then((userExists) => {
-      if (userExists) {
-        fetchUserBoard();
-        didIFollow();
-      }
-    });
-  }, [id]);
+    const didIFollow = () => {
+      const idx = user?.followerUsers?.findIndex((e) => globalId === e.id);
+      if (idx === -1) setIsFollowed(false);
+      else setIsFollowed(true);
+    };
+
+    if (userBoard === null) {
+      fetchUserData(id).then((userExists) => {
+        if (userExists) {
+          fetchUserBoard();
+          didIFollow();
+        }
+      });
+    }
+  }, [id, userBoard]);
 
   const openFollowing = () => {
     setFollowingOpen(true);
@@ -99,8 +101,8 @@ const User = () => {
     setFollowerOpen(false);
   };
 
-  const follow = async () => {
-    const host = `${process.env.REACT_APP_API_SERVER}/users/${user?.id}/following`;
+  const follow = async (id) => {
+    const host = `${process.env.REACT_APP_API_SERVER}/users/${id}/following`;
     const postOptions = {
       method: "post",
       headers: {
@@ -152,7 +154,13 @@ const User = () => {
               </Button>
             </Link>
           ) : (
-            <Button onClick={follow} size={"md"} variant={"blue"}>
+            <Button
+              onClick={() => {
+                follow(user?.id);
+              }}
+              size={"md"}
+              variant={"blue"}
+            >
               {isFollowed ? "Unfollow" : "Follow"}
             </Button>
           )}
@@ -160,11 +168,9 @@ const User = () => {
           <div className="relative">
             <Button
               onMouseEnter={() => {
-                console.log("Mouse In");
                 openFollowing();
               }}
               onMouseLeave={() => {
-                console.log("Mouse Out");
                 closeFollowing();
               }}
               size={"md"}
@@ -185,11 +191,9 @@ const User = () => {
           <div className="relative">
             <Button
               onMouseEnter={() => {
-                console.log("Mouse In");
                 openFollower();
               }}
               onMouseLeave={() => {
-                console.log("Mouse Out");
                 closeFollower();
               }}
               size={"md"}
@@ -212,83 +216,89 @@ const User = () => {
           <h2 className="text-bold text-3xl">{user?.nickname}</h2>
           <p className="text-bold text-xl">{user?.bio}</p>
           <p className="text-bold text-xl">
-            Joined on {new Date(user?.createdAt).toLocaleString()}
+            Joined on {convertDate(user?.createdAt)}
           </p>
         </InfoBox>
 
         <div className="w-[61%] pr-10" id="other-info">
           <div className="" id="post-comment">
-            <span className="ml-4 font-logo text-lg">Recent Post</span>
+            <span className="ml-4 font-logo text-xl">Recent Post</span>
             <InfoBox className={`flex flex-row`}>
-              {/* <div>
-                <ul>
-                  <li>{userBoard?.boards[0]?.title}</li>
-                  <li>{userBoard?.boards[0]?.content}</li>
-                  <li>{userBoard?.boards[0]?.createdAt}</li>
-                </ul>
-              </div> */}
-              <div
-                // key={index}
-                className={cn("rounded-md w-12/12 py-4 px-8")}
-              >
-                <div className="flex flex-row">
-                  <Link to={`/users/${user?.id}`}>
-                    <img
-                      src={user?.image || No_Profile}
-                      className="w-[50px] h-[50px] rounded-3xl"
-                      alt=""
-                    />
-                  </Link>
-                  <div className="pl-4">
-                    <p className="text-xl">
-                      <Link to={`/users/${user?.id}`}>{user?.nickname}</Link>
-                    </p>
-                    <p>{userBoardArray[0]?.createdAt}</p>
-                  </div>
-                </div>
-                <div className="text-2xl py-5">
-                  <Link to={`/boards/${userBoardArray[0]?.id}`}>
-                    {userBoardArray[0]?.title}
-                  </Link>
-                </div>
-                <div className="flex flex-row gap-3 items-center">
-                  {userBoardArray[0]?.tags.map((tagItem, tagIndex) => (
-                    <Link
-                      key={tagIndex}
-                      className="p-1 hover:border rounded-md border-accent-blue"
-                      to={`/tags/${tagItem.tag}`}
-                    >
-                      # {tagItem.tag}
+              {!!userBoard?.boardLength && (
+                <div className={cn("rounded-md w-12/12 py-4 px-8")}>
+                  <div className="flex flex-row">
+                    <Link to={`/users/${user?.id}`}>
+                      <img
+                        src={user?.image || No_Profile}
+                        className="w-[50px] h-[50px] rounded-3xl"
+                        alt=""
+                      />
                     </Link>
-                  ))}
-                </div>
-                <div className="flex flex-row gap-12">
-                  <div>
-                    <Link to={`/boards/${userBoardArray?.id}`}>
-                      ❤️ {userBoardArray?.likes?.length} Likes
+                    <div className="pl-4">
+                      <p className="text-xl">
+                        <Link to={`/users/${user?.id}`}>{user?.nickname}</Link>
+                      </p>
+                      <p>{convertDate(userBoardArray[0]?.createdAt)}</p>
+                    </div>
+                  </div>
+                  <div className="text-2xl py-5">
+                    <Link to={`/boards/${userBoardArray[0]?.id}`}>
+                      {userBoardArray[0]?.title}
                     </Link>
                   </div>
-                  <div>
-                    <Link to={`/boards/${userBoardArray.id}`}>
-                      💬 {userBoardArray?.comments} Comment
-                    </Link>
+                  <div className="flex flex-row gap-3 items-center">
+                    {userBoardArray[0]?.tags.map((tagItem, tagIndex) => (
+                      <Link
+                        key={tagItem}
+                        className="p-1 hover:border rounded-md border-accent-blue"
+                        to={`/tags/${tagItem.tag}`}
+                      >
+                        # {tagItem.tag}
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="flex flex-row gap-12">
+                    <div>
+                      <Link to={`/boards/${userBoardArray?.id}`}>
+                        ❤️ {userBoardArray?.likes?.length} Likes
+                      </Link>
+                    </div>
+                    <div>
+                      <Link to={`/boards/${userBoardArray.id}`}>
+                        💬 {userBoardArray?.comments} Comment
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </InfoBox>
 
-            <span className="ml-4 font-logo text-lg">
+            <span className="ml-4 font-logo text-xl">
               Recent Comments ({user?.comments?.length || 0})
             </span>
-            <InfoBox>
-              {user?.comments?.map((comment, idx) => (
-                <ul key={`comment_${idx}`}>
-                  <li>{comment.content}</li>
-                  <li>{comment.createdAt}</li>
-                </ul>
-              ))}
+            <InfoBox className={`flex flex-col gap-3`}>
+              {user?.comments
+                ?.slice()
+                ?.reverse()
+                ?.map(
+                  (comment, idx) =>
+                    !comment?.deleted && (
+                      <ul key={`comment_${idx}`}>
+                        <Link to={`/boards/${comment?.board?.id}`}>
+                          <span className="text-2xl">{comment?.content}</span>
+                        </Link>
+                        <div className="h-2"></div>
+                        <div className="flex flex-row justify-between">
+                          <li className="sm">{comment?.board?.title}</li>
+                          <li>{convertDate(comment?.createdAt)}</li>
+                        </div>
+                        <div className="h-2"></div>
+                        <li className="w-[100%] h-[1px] bg-[#777]"></li>
+                      </ul>
+                    )
+                )}
             </InfoBox>
-            <span className="ml-4 font-logo text-lg">
+            <span className="ml-4 font-logo text-xl">
               Posts ({userBoard?.boardLength || 0})
             </span>
             <InfoBox className={`flex flex-col items-center gap-10`}>
@@ -316,7 +326,7 @@ const User = () => {
                             {user?.nickname}
                           </Link>
                         </p>
-                        <p>{board?.createdAt}</p>
+                        <p>{convertDate(board?.createdAt)}</p>
                       </div>
                     </div>
                     <div className="text-2xl py-5">
@@ -325,7 +335,7 @@ const User = () => {
                     <div className="flex flex-row gap-3 items-center">
                       {board?.tags.map((tagItem, tagIndex) => (
                         <Link
-                          key={tagIndex}
+                          key={`tagIndex_${tagIndex}`}
                           className="p-1 hover:border rounded-md border-accent-blue"
                           to={`/tags/${tagItem.tag}`}
                         >
@@ -355,6 +365,10 @@ const User = () => {
       </div>
     </div>
   );
+};
+
+const convertDate = (timestamp) => {
+  return new Date(timestamp).toLocaleString();
 };
 
 export default User;
