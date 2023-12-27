@@ -3,7 +3,6 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 const CommentForm = ({ id }) => {
   const [newComment, setNewComment] = useState("");
-  const [commentList, setCommentList] = useState([]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -34,7 +33,8 @@ const CommentForm = ({ id }) => {
         const result = await response.json();
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
-        setCommentList([...commentList, result]);
+        updateCommentList(result);
+        setNewComment("");
       } else {
         console.error("서버 응답 에러:", response.status);
       }
@@ -50,15 +50,11 @@ const CommentForm = ({ id }) => {
       return;
     }
     try {
-      setCommentList([...commentList, { content: newComment }]);
-
-      const response = await fetchUserInformation();
-
-      if (response.ok) {
-        setNewComment("");
-        console.log("서버 응답 결과:", response);
-      } else {
-        console.error("서버 응답 에러:", response.status);
+      const result = await fetchUserInformation();
+      setNewComment("");
+      if (result) {
+        console.log("서버 응답 결과:", result);
+        return result;
       }
     } catch (error) {
       console.error("댓글 작성 중 에러:", error);
@@ -83,16 +79,6 @@ const CommentForm = ({ id }) => {
           <p className="text-white  mx-auto">등록d</p>
         </button>
       </form>
-
-      {/* <div className="p-5 border">
-        로그인이 필요합니다.
-        <Link
-          to="https://stacker-labs.vercel.app/auth"
-          className="text-blue-600"
-        >
-          여기를 클릭하여 로그인하세요.
-        </Link>
-      </div> */}
     </div>
   );
 };

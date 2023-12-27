@@ -5,9 +5,9 @@ import MUIButton from "../../../components/atoms/Button";
 import HandleScroll from "./ViewAtoms/HandleScroll";
 import { useParams, Link } from "react-router-dom";
 import CommentList from "./ViewAtoms/CommentsList";
+import CommentForm from "./ViewAtoms/CommentForm";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/userState";
-import CommentForm from "./ViewAtoms/CommentForm";
 
 const ViewPageWrap = styled(Box)`
   margin: 0;
@@ -48,6 +48,7 @@ const View = () => {
   const [viewContent, setViewContent] = useState({});
   const [commentList, setCommetList] = useState([]);
   const [page, setPage] = useState(1);
+  const [comments, setComments] = useState([]);
   // const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
@@ -99,6 +100,10 @@ const View = () => {
     }
   }, [viewContent]);
 
+  const updateCommentList = (newComment) => {
+    setComments([...comments, newComment]);
+  };
+
   // useEffect(() => {
   //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
   //   setComments(storedComments);
@@ -137,7 +142,7 @@ const View = () => {
               </div>
               <div ref={viewContentRef}></div>
             </ViewPageMain>
-            <CommentForm id={params.id} />
+            <CommentForm id={params.id} updateCommentList={updateCommentList} />
             <CommentList id={params.id} commentList={commentList} page={page} />
           </IconBox>
         </ViewPageWrap>

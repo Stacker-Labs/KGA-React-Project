@@ -166,5 +166,3 @@
 //     </div>
 //   );
 // };
-
-// export default Comments;
