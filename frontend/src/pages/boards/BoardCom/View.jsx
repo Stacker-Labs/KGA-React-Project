@@ -32,14 +32,6 @@ const ViewTitle = styled(Box)`
   width: 100%;
 `;
 
-const ViewContent = styled(Box)`
-  margin-top: 5px;
-  padding: 20px;
-  width: 100%;
-  height: 100%;
-  /* border: 1px solid black; */
-`;
-
 const StyledMUIButton = styled(Box)`
   display: flex;
   justify-content: end;
@@ -54,11 +46,6 @@ const IconBox = styled(Box)`
 
 const View = () => {
   const [viewContent, setViewContent] = useState({});
-  // const [title, setTitle] = useState("");
-  // const [content, setContent] = useState("");
-  // const [nickname, setNickname] = useState("");
-  // const [tags, setTags] = useState([]);
-  // const [userBoardDate, setUserBoardDate] = useState("");
   const [commentList, setCommetList] = useState([]);
   const [page, setPage] = useState(1);
   // const [loading, setLoading] = useState(true);
@@ -88,17 +75,9 @@ const View = () => {
       // const viewCont = document.querySelector(".ViewCont");
 
       const result = await response.json();
-      // const nickname = result.user?.nickname;
-      // const commentDate = result.createdAt;
-      // const pageComment = result.comments;
 
       console.log("result@@", result);
       setViewContent(result);
-      // setNickname(nickname);
-      // setUserBoardDate(commentDate);
-      // setTags(result.tags || []);
-      // setContent(result.content);
-      // setTitle(result.title);
 
       const commentResponse = await fetch(
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
@@ -166,7 +145,6 @@ const View = () => {
         <StyledMUIButton>
           {hasPermission && (
             <>
-              <MUIButton customType="local">페이지 등록</MUIButton>
               <Link
                 to={`/boards/${params.id}/edit?title=${encodeURIComponent(
                   viewContent.title
