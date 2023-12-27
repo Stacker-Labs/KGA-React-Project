@@ -42,7 +42,7 @@ export class UsersService {
       followingUsers: true,
       followerUsers: true,
       comments: true,
-      rooms: true,
+      rooms: { users: true },
     });
 
     const accessToken = this.jwtService.sign(
