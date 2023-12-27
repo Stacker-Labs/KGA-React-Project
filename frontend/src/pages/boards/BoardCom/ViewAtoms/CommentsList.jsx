@@ -1,32 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+// const Token = process.env.REACT_APP_TOKEN;
 
-const CommentList = ({ id }) => {
-  const [commentList, setCommetList] = useState([]);
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    if (page === 1) {
-      const getCommentList = async () => {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${id}/${page}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-        const result = await response.json();
-        setCommetList(result.boardComments);
-        setPage(result.nextPage);
-      };
-
-      getCommentList();
-    }
-  }, [page]);
-
+const CommentList = ({ id, commentList, page }) => {
   return (
-    <div>
-      {commentList.map((comment) => (
-        <div>{comment.content}</div>
+    <div className="flex flex-col justify-center">
+      {commentList[0]?.map((comment, idx) => (
+        <div key={`comment${idx}`} className="border-y-2 p-[10px]">
+          <div>{comment.user.nickname}</div>
+          <div className="p-[5px]"> {comment.content}</div>
+        </div>
       ))}
     </div>
   );

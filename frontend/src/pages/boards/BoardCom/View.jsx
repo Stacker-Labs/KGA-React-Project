@@ -53,11 +53,14 @@ const IconBox = styled(Box)`
 `;
 
 const View = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [nickname, setNickname] = useState(null);
-  const [tags, setTags] = useState(null);
-  const [userBoardDate, setUserBoardDate] = useState("");
+  const [viewContent, setViewContent] = useState({});
+  // const [title, setTitle] = useState("");
+  // const [content, setContent] = useState("");
+  // const [nickname, setNickname] = useState("");
+  // const [tags, setTags] = useState([]);
+  // const [userBoardDate, setUserBoardDate] = useState("");
+  const [commentList, setCommetList] = useState([]);
+  const [page, setPage] = useState(1);
   // const [loading, setLoading] = useState(true);
   const params = useParams();
   const userInfo = useRecoilValue(userState);
@@ -65,7 +68,8 @@ const View = () => {
   const hasPermission = userInfo?.id?.some((view) => view.id === userId);
   const viewContentRef = useRef();
 
-  // const Token = process.env.REACT_APP_TOKEN;
+  const Token = process.env.REACT_APP_TOKEN;
+  console.log(Token);
 
   useEffect(() => {
     const getBoard = async () => {
@@ -74,7 +78,7 @@ const View = () => {
         {
           method: "GET",
           headers: {
-            // Authorization: `Bearer ${Token}`,
+            Authorization: `Bearer ${Token}`,
 
             "Content-Type": "application/json",
           },
@@ -90,19 +94,32 @@ const View = () => {
       // const pageComment = result.comments;
 
       console.log("result@@", result);
-      setNickname(nickname);
-      setUserBoardDate(commentDate);
-      setTags(result.tags || []);
-      setContent(result.content);
-      setTitle(result.title);
+      setViewContent(result);
+      // setNickname(nickname);
+      // setUserBoardDate(commentDate);
+      // setTags(result.tags || []);
+      // setContent(result.content);
+      // setTitle(result.title);
+
+      const commentResponse = await fetch(
+        `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${Token}` },
+          credentials: "include",
+        }
+      );
+      const commentResult = await commentResponse.json();
+      setCommetList(commentResult.boardComments);
+      setPage(commentResult.nextPage);
     };
 
-    if (title === "") {
+    if (!viewContent.title) {
       getBoard();
     } else {
-      viewContentRef.current.innerHTML = content;
+      viewContentRef.current.innerHTML = viewContent.content;
     }
-  }, [title]);
+  }, [viewContent]);
 
   // useEffect(() => {
   //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
@@ -129,33 +146,34 @@ const View = () => {
           <IconBox>
             <HandleScroll userId={userId} />
             <ViewPageMain>
-              <ViewTitle>{title}</ViewTitle>
+              <ViewTitle>{viewContent.title}</ViewTitle>
               <h6>
-                {nickname} | {userBoardDate}
+                {viewContent.user?.nickname} | {viewContent.createdAt}
               </h6>
               <div>
                 <ul>
-                  {tags.map((tag, idx) => (
+                  {viewContent.tags?.map((tag, idx) => (
                     <li key={`tag-${idx}`}>{tag.tag}</li>
                   ))}
                 </ul>
               </div>
               <div ref={viewContentRef}></div>
-              <CommentForm id={params.id} />
-              <CommentList id={params.id} />
             </ViewPageMain>
+            <CommentForm id={params.id} />
+            <CommentList id={params.id} commentList={commentList} page={page} />
           </IconBox>
         </ViewPageWrap>
+
         <StyledMUIButton>
           {hasPermission && (
             <>
               <MUIButton customType="local">페이지 등록</MUIButton>
               <Link
                 to={`/boards/${params.id}/edit?title=${encodeURIComponent(
-                  title
+                  viewContent.title
                 )}&content=${encodeURIComponent(
-                  content
-                )}&tags=${encodeURIComponent(tags.join(","))}`}
+                  viewContent.content
+                )}&tags=${encodeURIComponent(viewContent.tags.join(","))}`}
               >
                 <MUIButton customType="social">수정</MUIButton>
               </Link>
