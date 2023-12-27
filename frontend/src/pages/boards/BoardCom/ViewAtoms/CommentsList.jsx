@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
-const Token = process.env.REACT_APP_TOKEN;
-
+// const Token = process.env.REACT_APP_TOKEN;
+//   Authorization: `Bearer ${Token}`,
 const CommentList = ({ id, commentList, setCommentList, page }) => {
   const handleDelete = async (commentId) => {
     try {
       await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${commentId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
         credentials: "include",
