@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 const CommentForm = ({ id }) => {
   const [newComment, setNewComment] = useState("");
+  const [commentList, setCommentList] = useState([]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -33,7 +34,7 @@ const CommentForm = ({ id }) => {
         const result = await response.json();
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
-        return result;
+        setCommentList([...commentList, result]);
       } else {
         console.error("서버 응답 에러:", response.status);
       }
@@ -41,21 +42,6 @@ const CommentForm = ({ id }) => {
       console.error("Error fetching user information:", error);
     }
   };
-
-  // const fetchUserComment = async (boardId, page) => {
-  //   try {
-  //     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards/${boardId}/${page}`);
-  //     if (response.ok) {
-  //       const result = await response.json();
-
-  //       return result;
-  //     } else {
-  //       console.error("서버 응답 에러:", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user comments:", error);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,6 +54,7 @@ const CommentForm = ({ id }) => {
       setNewComment("");
       if (result) {
         console.log("서버 응답 결과:", result);
+        return result;
       }
     } catch (error) {
       console.error("댓글 작성 중 에러:", error);
