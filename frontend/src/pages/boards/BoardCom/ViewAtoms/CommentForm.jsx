@@ -74,15 +74,10 @@ const CommentForm = ({ id }) => {
     }
   };
 
-  const totalComments = comments.reduce((total, comment) => {
-    return total + 1 + comment.replies.length;
-  }, 0);
-
   return (
     <div className="border p-5">
-      <div className="flex flex-row justify-between" style={style}>
+      <div className="flex flex-row justify-between">
         <div>{userNickname}</div>
-        <div>총 댓글수 {totalComments}</div>
       </div>
 
       <form onSubmit={handleSubmit} className="flex justify-center m-5">
@@ -94,9 +89,7 @@ const CommentForm = ({ id }) => {
           className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
         />
         <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
-          <p className="text-white  mx-auto" style={style}>
-            등록d
-          </p>
+          <p className="text-white  mx-auto">등록d</p>
         </button>
       </form>
 

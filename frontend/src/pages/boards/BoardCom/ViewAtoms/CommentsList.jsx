@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Comments from "./Comments";
 
 const CommentList = ({ id }) => {
   const [commentList, setCommetList] = useState([]);
