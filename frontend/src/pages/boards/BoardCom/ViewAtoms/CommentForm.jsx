@@ -50,11 +50,15 @@ const CommentForm = ({ id }) => {
       return;
     }
     try {
-      const result = await fetchUserInformation();
-      setNewComment("");
-      if (result) {
-        console.log("서버 응답 결과:", result);
-        return result;
+      setCommentList([...commentList, { content: newComment }]);
+
+      const response = await fetchUserInformation();
+
+      if (response.ok) {
+        setNewComment("");
+        console.log("서버 응답 결과:", response);
+      } else {
+        console.error("서버 응답 에러:", response.status);
       }
     } catch (error) {
       console.error("댓글 작성 중 에러:", error);
