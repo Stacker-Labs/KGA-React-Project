@@ -4,7 +4,7 @@ import { cn } from "../../utils/cn";
 
 export const InfoBoxVariants = cva(
   `
-  rounded-md m-5 p-5 shadow-md w-[100%] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30
+  rounded-md m-5 p-5 shadow-lg shadow-[#777] w-[100%] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30
     `,
   {
     variants: {

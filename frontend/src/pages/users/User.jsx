@@ -21,6 +21,8 @@ const User = () => {
     user: { id: globalId },
   } = useRecoilValue(userState);
 
+  // const globalId = 1;
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -47,6 +49,12 @@ const User = () => {
       }
     };
 
+    const didIFollow = () => {
+      const idx = user?.followerUsers?.findIndex((e) => globalId === e.id);
+      if (idx === -1) setIsFollowed(false);
+      else setIsFollowed(true);
+    };
+
     const fetchUserBoard = async () => {
       const page = 1;
       try {
@@ -68,7 +76,10 @@ const User = () => {
     };
 
     fetchUserData().then((userExists) => {
-      if (userExists) fetchUserBoard();
+      if (userExists) {
+        fetchUserBoard();
+        didIFollow();
+      }
     });
   }, [id]);
 
@@ -200,13 +211,15 @@ const User = () => {
         <InfoBox variant={"userinfo"}>
           <h2 className="text-bold text-3xl">{user?.nickname}</h2>
           <p className="text-bold text-xl">{user?.bio}</p>
-          <p className="text-bold text-xl">Joined on {user?.createdAt}</p>
+          <p className="text-bold text-xl">
+            Joined on {new Date(user?.createdAt).toLocaleString()}
+          </p>
         </InfoBox>
 
         <div className="w-[61%] pr-10" id="other-info">
           <div className="" id="post-comment">
             <span className="ml-4 font-logo text-lg">Recent Post</span>
-            <InfoBox>
+            <InfoBox className={`flex flex-row`}>
               {/* <div>
                 <ul>
                   <li>{userBoard?.boards[0]?.title}</li>
@@ -216,11 +229,7 @@ const User = () => {
               </div> */}
               <div
                 // key={index}
-                className={cn(
-                  "border rounded-md w-12/12 p-4",
-                  "note:w-5/6",
-                  "tablet:w-[90%]"
-                )}
+                className={cn("rounded-md w-12/12 py-4 px-8")}
               >
                 <div className="flex flex-row">
                   <Link to={`/users/${user?.id}`}>
@@ -284,56 +293,61 @@ const User = () => {
             </span>
             <InfoBox className={`flex flex-col items-center gap-10`}>
               {userBoardArray?.map((board, idx) => (
-                <div
-                  key={`board_${idx}`}
-                  className={cn(
-                    "border rounded-md w-6/6 p-4",
-                    "note:w-5/6",
-                    "tablet:w-[90%]"
-                  )}
-                >
-                  <div className="flex flex-row">
-                    <Link to={`/users/${user?.id}`}>
-                      <img
-                        src={user?.image || No_Profile}
-                        className="w-[50px] h-[50px] rounded-3xl"
-                        alt=""
-                      />
-                    </Link>
-                    <div className="pl-4">
-                      <p className="text-xl">
-                        <Link to={`/users/${user?.id}`}>{user?.nickname}</Link>
-                      </p>
-                      <p>{board?.createdAt}</p>
+                <>
+                  <div
+                    key={`board_${idx}`}
+                    className={cn(
+                      "rounded-md w-[100%] py-4 px-8",
+                      "note:w-6/6",
+                      "tablet:w-[100%]"
+                    )}
+                  >
+                    <div className="w-[100%] flex flex-row">
+                      <Link to={`/users/${user?.id}`}>
+                        <img
+                          src={user?.image || No_Profile}
+                          className="w-[50px] h-[50px] rounded-3xl"
+                          alt=""
+                        />
+                      </Link>
+                      <div className="pl-4">
+                        <p className="text-xl">
+                          <Link to={`/users/${user?.id}`}>
+                            {user?.nickname}
+                          </Link>
+                        </p>
+                        <p>{board?.createdAt}</p>
+                      </div>
+                    </div>
+                    <div className="text-2xl py-5">
+                      <Link to={`/boards/${board?.id}`}>{board?.title}</Link>
+                    </div>
+                    <div className="flex flex-row gap-3 items-center">
+                      {board?.tags.map((tagItem, tagIndex) => (
+                        <Link
+                          key={tagIndex}
+                          className="p-1 hover:border rounded-md border-accent-blue"
+                          to={`/tags/${tagItem.tag}`}
+                        >
+                          # {tagItem.tag}
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="flex flex-row gap-12">
+                      <div>
+                        <Link to={`/boards/${board?.id}`}>
+                          ❤️ {board?.likes?.length} Likes
+                        </Link>
+                      </div>
+                      <div>
+                        <Link to={`/boards/${board?.id}`}>
+                          💬 {board?.comments} Comment
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-2xl py-5">
-                    <Link to={`/boards/${board?.id}`}>{board?.title}</Link>
-                  </div>
-                  <div className="flex flex-row gap-3 items-center">
-                    {board?.tags.map((tagItem, tagIndex) => (
-                      <Link
-                        key={tagIndex}
-                        className="p-1 hover:border rounded-md border-accent-blue"
-                        to={`/tags/${tagItem.tag}`}
-                      >
-                        # {tagItem.tag}
-                      </Link>
-                    ))}
-                  </div>
-                  <div className="flex flex-row gap-12">
-                    <div>
-                      <Link to={`/boards/${board?.id}`}>
-                        ❤️ {board?.likes?.length} Likes
-                      </Link>
-                    </div>
-                    <div>
-                      <Link to={`/boards/${board?.id}`}>
-                        💬 {board?.comments} Comment
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                  <div className="w-[100%] h-[1px] bg-[#777]"></div>
+                </>
               ))}
             </InfoBox>
           </div>
