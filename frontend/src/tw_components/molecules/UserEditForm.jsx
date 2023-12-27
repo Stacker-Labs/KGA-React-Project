@@ -11,6 +11,7 @@ const RegisterForm = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [bio, setBio] = useState("");
   const [confirmed, setConfirmed] = useState("");
   const [error, setError] = useState("");
 
@@ -97,6 +98,13 @@ const RegisterForm = () => {
         type="text"
         placeholder="Nickname"
       />
+      <textarea
+        cols={50}
+        rows={10}
+        onChange={(e) => setBio(e.target.value)}
+        type="text"
+        placeholder="Bio"
+      />
       <Input
         onChange={(e) => setPassword(e.target.value)}
         required
@@ -110,7 +118,7 @@ const RegisterForm = () => {
         placeholder="Confirm your password"
       />
       <Button variant={"blue"} size={"sign"}>
-        <span className="text-white">Register</span>
+        <span className="text-white">Edit</span>
       </Button>
       {error && <div className="text-lg text-red-600">{error}</div>}
     </form>
