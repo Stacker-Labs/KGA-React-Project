@@ -5,8 +5,8 @@ import { Box } from "@mui/material";
 import { Input } from "@mui/material";
 import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../recoil/userState";
+// import { useRecoilValue } from "recoil";
+// import { userState } from "../../../recoil/userState";
 import TagPage from "./WriteAtoms/TagPage";
 
 const ModifyWrap = styled(Box)`
@@ -45,10 +45,11 @@ const Modify = () => {
   const viewTags = searchParams.get("tags");
   const [title, setTitle] = useState(viewTitle || "");
   const [content, setContent] = useState(viewContent || "");
-  const [tags, setTags] = useState(viewTags || []);
+  const [tags, setTags] = useState(viewTags ? viewTags.split(",") : []);
   const [tagList, setTagList] = useState([]);
-  const userInfo = useRecoilValue(userState);
-  const loggedInUserId = userInfo?.id || "";
+  // const userInfo = useRecoilValue(userState);
+
+  // const loggedInUserId = userInfo?.id || "";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,8 +82,8 @@ const Modify = () => {
     setContent(value);
   };
 
-  const handleTagsChange = (value) => {
-    setTags(value);
+  const handleTagsChange = (e) => {
+    setTags(e.target.value.split(",").map((tag) => tag.trim()));
   };
 
   const handleUpdate = async () => {
@@ -119,8 +120,8 @@ const Modify = () => {
   return (
     <>
       <TagPage
-        tagList={tagList}
-        setTagList={setTagList}
+        tags={tags}
+        setTags={setTags}
         value={tags}
         onChange={handleTagsChange}
       />
