@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// const Token = process.env.REACT_APP_TOKEN;
+const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
 const Comment = ({ comment, id, setCommentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
@@ -10,6 +10,7 @@ const Comment = ({ comment, id, setCommentList }) => {
       await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${commentId}`, {
         method: "DELETE",
         headers: {
+          Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
         credentials: "include",
@@ -41,13 +42,13 @@ const Comment = ({ comment, id, setCommentList }) => {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: JSON.stringify({ content: editedContent }),
       });
       const commentUpdateResponse = await fetch(
         `${process.env.REACT_APP_API_SERVER}/boards/${id}/1`,
         {
           method: "GET",
           credentials: "include",
-          body: JSON.stringify({ content: editedContent }),
         }
       );
       const updatedCommentResult = await commentUpdateResponse.json();
