@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
 import { Input } from "@mui/material";
@@ -36,51 +36,52 @@ const BoardContent = styled(Box)`
 `;
 
 const Modify = () => {
+  const { userId } = useParams();
   const [searchParams] = useSearchParams();
   const viewTitle = searchParams.get("title");
   const viewContent = searchParams.get("content");
   const viewTags = searchParams.get("tags");
   const [title, setTitle] = useState(viewTitle || "");
   const [content, setContent] = useState(viewContent || "");
-  const [tags, setTags] = useState(viewTags || "");
+  const [tags, setTags] = useState(viewTags || []);
   const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
-  const userId = userInfo.id;
-  // const Token = process.env.REACT_APP_TOKEN;
-
+  const loggedInUserId = userInfo?.id || "";
   const navigate = useNavigate();
-  // const postId = "";
-
-  const fetchPost = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_SERVER}/boards/${userId}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setTitle(data.title);
-        setContent(data.content);
-      }
-    } catch (error) {
-      console.error("Error fetching post:", error);
-    }
-  };
 
   useEffect(() => {
-    fetchPost();
-  }, []);
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_SERVER}/boards/${userId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setTitle(data.title);
+          setContent(data.content);
+          setTags(data.tags);
+        }
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+    };
+
+    if (!viewTitle) {
+      fetchPost();
+    }
+  }, [userId, viewTitle]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
 
-  const handleContentChange = useCallback((value) => {
+  const handleContentChange = (value) => {
     setContent(value);
-  }, []);
+  };
 
-  const handleTagsChange = useCallback((value) => {
+  const handleTagsChange = (value) => {
     setTags(value);
-  }, []);
+  };
 
   const handleUpdate = async () => {
     if (!title) {
@@ -88,19 +89,21 @@ const Modify = () => {
       return;
     }
     try {
-      const response = await fetch(`https://api.subin.kr/boards/${userId}`, {
-        method: "PUT",
-        headers: {
-          // Authorization: `Bearer ${Token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          title,
-          content,
-          tags: tagList.join(" "),
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_SERVER}/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            title,
+            content,
+            tags: tagList.join(" "),
+          }),
+        }
+      );
       const result = await response.json();
       console.log(result);
       if (response.ok) {

@@ -9,7 +9,6 @@ const Comment = ({ comment, id, setCommentList }) => {
   const [editedContent, setEditedContent] = useState(comment.content);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
-  console.log("유저 아이디", userId);
 
   const handleDelete = async (commentId) => {
     try {

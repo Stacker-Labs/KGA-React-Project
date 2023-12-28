@@ -51,7 +51,7 @@ const CommentList = ({ id, commentList, setCommentList, page }) => {
       ))}
       <div className="p=[10px] mx-auto w-[40%] flex flex-row justify-between  my-[15px]">
         <button
-          className="rounded-full p-[20px] bg-sky-200 hover:bg-sky-400"
+          className="rounded-full p-[15px] bg-sky-200 hover:bg-sky-400"
           onClick={loadPreviousPage}
           disabled={!hasPreviousPage}
         >
@@ -59,7 +59,7 @@ const CommentList = ({ id, commentList, setCommentList, page }) => {
         </button>
         <div>Page: {currentPage}</div>
         <button
-          className="rounded-full p-[20px] bg-sky-200 hover:bg-sky-400"
+          className="rounded-full p-[15px] bg-sky-200 hover:bg-sky-400"
           onClick={loadNextPage}
           disabled={!hasNextPage}
         >
