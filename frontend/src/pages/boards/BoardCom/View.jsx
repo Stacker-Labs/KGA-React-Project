@@ -54,7 +54,7 @@ const View = () => {
   const params = useParams();
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id || "";
-  const hasPermission = userInfo?.id?.some((view) => view.id === userId);
+  const hasPermission = userId === viewContent.user?.id;
   const viewContentRef = useRef();
 
   // const Token = process.env.REACT_APP_TOKEN;
