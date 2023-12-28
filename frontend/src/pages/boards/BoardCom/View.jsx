@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Box } from "@mui/material";
 import MUIButton from "../../../components/atoms/Button";
 import HandleScroll from "./ViewAtoms/HandleScroll";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import CommentList from "./ViewAtoms/CommentsList";
 import CommentForm from "./ViewAtoms/CommentForm";
 import { useRecoilValue } from "recoil";
@@ -56,6 +56,7 @@ const View = () => {
   const userId = userInfo?.user?.id || "";
   const hasPermission = userId === viewContent.user?.id;
   const viewContentRef = useRef();
+  const navigate = useNavigate();
 
   // const Token = process.env.REACT_APP_TOKEN;
   // //  Authorization: `Bearer ${Token}`,
