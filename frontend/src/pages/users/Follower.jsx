@@ -23,7 +23,7 @@ const Follower = ({ className, opener, closer, user }) => {
                 <Link to={`/users/${target?.id}`}>
                   <span className="text-xl">{target?.nickname}</span>
                 </Link>
-                <Button onClick={"follow"} size={"md"} variant={"blue"}>
+                <Button size={"md"} variant={"blue"}>
                   {false ? "Unfollow" : "Follow"}
                 </Button>
               </div>
