@@ -77,6 +77,7 @@ const Chatting = ({ roomId, nickname, image }) => {
     <div
       className={cn(
         "relative bg-blue-500 w-full h-[700px] rounded-md",
+        "shadow-lg shadow-[#777]",
         "note:h-[485px]"
       )}
     >

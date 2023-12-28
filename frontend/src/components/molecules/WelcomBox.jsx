@@ -6,10 +6,11 @@ const WelcomBox = () => {
   return (
     <div
       className={cn(
-        "rounded-2xl bg-accent-blue w-4/6 p-16",
+        "rounded-2xl bg-accent-blue w-4/6 p-12",
+        "shadow-lg shadow-[#777]",
         "note:p-12 note:w-5/6",
         "tablet:w-[90%] tablet:p-5",
-        "mobile:w-5/6 p-4"
+        "mobile:w-5/6 mobile:p-4"
       )}
     >
       <p className="tablet:text-3xl mobile:text-2xl font-logo text-5xl text-white py-4">

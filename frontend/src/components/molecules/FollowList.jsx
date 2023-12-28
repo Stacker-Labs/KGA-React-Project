@@ -19,6 +19,7 @@ const FollowList = ({ toChatting }) => {
     <div
       className={cn(
         "bg-blue-500 relative w-full h-[700px] rounded-md",
+        "shadow-lg shadow-[#777]",
         "note:h-[485px]"
       )}
     >

@@ -12,7 +12,10 @@ const SearchBox = ({ searchBoard }) => {
           return (
             <div
               key={index}
-              className={cn("border rounded-md w-full p-8 mobile:p-5")}
+              className={cn(
+                "w-full p-8 rounded-md m-3 shadow-lg shadow-[#777] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30",
+                "mobile:p-5"
+              )}
             >
               <div className="flex flex-row">
                 <Link to={`/users/${item.user.id}`}>
@@ -25,7 +28,7 @@ const SearchBox = ({ searchBoard }) => {
                 <div className="pl-4">
                   <p className="text-xl mobile:text-base">
                     <Link to={`/users/${item.user.id}`}>
-                      {item.user.username}
+                      {item.user.nickname}
                     </Link>
                   </p>
                   <p className="mobile:text-base">
