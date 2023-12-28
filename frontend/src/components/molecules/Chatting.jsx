@@ -24,7 +24,8 @@ const Chatting = ({ roomId, nickname, image }) => {
         try {
           console.log(roomId);
           const response = await axios.get(
-            `${process.env.REACT_APP_API_SERVER}/room/${roomId}`
+            `${process.env.REACT_APP_API_SERVER}/room/${roomId}`,
+            { withCredentials: true }
           );
           console.log(`${process.env.REACT_APP_API_SERVER}/room/${roomId}`);
           const result = response.data;
