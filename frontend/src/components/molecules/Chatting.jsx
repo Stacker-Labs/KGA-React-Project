@@ -24,21 +24,17 @@ const Chatting = ({ roomId, nickname, image }) => {
       if (!chatLoad) {
         const getChats = async () => {
           try {
-            console.log(roomId);
             const response = await axios.get(
               `${process.env.REACT_APP_API_SERVER}/room/${roomId}`,
               { withCredentials: true }
             );
-            console.log(`${process.env.REACT_APP_API_SERVER}/room/${roomId}`);
             const result = response.data;
-            console.log(result);
-            console.log(socket);
-
             // 지난대화 내용이 보여져야햠!
             result.forEach((chat) => {
               const chatDiv = document.createElement("div");
               chatDiv.innerText = `${chat.content}`;
-              chatDiv.className = user.id ? "text-right p-1" : "text-left p-1";
+              chatDiv.className =
+                user.id === chat.user.id ? "text-right p-1" : "text-left p-1";
               chatRef.current.appendChild(chatDiv);
             });
             setChatLoad(true);
@@ -56,7 +52,8 @@ const Chatting = ({ roomId, nickname, image }) => {
       // 현재 대화내용
       const chatDiv = document.createElement("div");
       chatDiv.innerText = `${chat.content}`;
-      chatDiv.className = user.id ? "text-right p-1" : "text-left p-1";
+      chatDiv.className =
+        user.id === chat.user.id ? "text-right p-1" : "text-left p-1";
       chatRef.current.appendChild(chatDiv);
     }
   }, [chat]);
@@ -69,7 +66,9 @@ const Chatting = ({ roomId, nickname, image }) => {
       content: inputRef.current.value,
     });
     setChat({
-      user: "my message",
+      user: {
+        id: user.id,
+      },
       content: inputRef.current.value,
     });
   };
@@ -81,16 +80,15 @@ const Chatting = ({ roomId, nickname, image }) => {
         "note:h-[485px]"
       )}
     >
-      <div className="flex flex-col gap-3 p-5">
+      <div className="flex flex-col gap-3 p-5 h-[700px] overflow-hidden">
         <div className="flex flex-row items-center text-xl pb-2 gap-3">
           <div>
             <img src={image} className="w-[50px] h-[50px] rounded-3xl" alt="" />
           </div>
           <div>{nickname}</div>
         </div>
-
-        <div className="absolute bottom-0 right-0 w-full p-4">
-          <div ref={chatRef} className="text-lg p-3 "></div>
+        <div className="absolute bottom-0 right-0 w-full p-4 overflow-y-auto">
+          <div ref={chatRef} className="text-lg p-3 w-full"></div>
           <input
             placeholder="chat..."
             ref={inputRef}
@@ -99,9 +97,8 @@ const Chatting = ({ roomId, nickname, image }) => {
                 sendMessage();
               }
             }}
-            className="text-black w-3/4 h-[35px] rounded-md px-2 outline-none border-none"
+            className="w-full text-black h-[35px] rounded-md px-2 outline-none border-none"
           />
-          <button className="w-1/4">send</button>
         </div>
       </div>
     </div>
