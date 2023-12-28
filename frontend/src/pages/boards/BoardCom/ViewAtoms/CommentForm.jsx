@@ -59,6 +59,23 @@ const CommentForm = ({
       alert("로그인이 필요합니다.");
       return;
     }
+
+    if (newComment.trim() === "") {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+
+    const forbiddenWords = ["병신", "비속어1", "비속어2", "강수빈"];
+    const lowerCaseComment = newComment.toLowerCase();
+
+    const foundForbiddenWord = forbiddenWords.some((word) =>
+      lowerCaseComment.includes(word.toLowerCase())
+    );
+    if (foundForbiddenWord) {
+      alert("비속어는 사용할 수 없습니다.");
+      return;
+    }
+
     try {
       const result = await fetchUserInformation();
       setNewComment("");
@@ -85,10 +102,13 @@ const CommentForm = ({
           value={newComment}
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요..."
-          className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100"
+          className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100 text-black"
         />
-        <button type="submit" className="bg-sky-600	p-[15px] rounded-md">
-          <p className="text-white  mx-auto">등록d</p>
+        <button
+          type="submit"
+          className="bg-sky-600	p-[15px] rounded-md  hover:bg-sky-400"
+        >
+          <p className="text-white  mx-auto">등록</p>
         </button>
       </form>
     </div>
