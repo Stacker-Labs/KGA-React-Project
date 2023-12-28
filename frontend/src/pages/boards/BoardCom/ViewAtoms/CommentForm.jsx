@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 //Authorization: `Bearer ${Token}`,
+// const Token = process.env.REACT_APP_TOKEN;
 const CommentForm = ({
   id,
   setCommentList,
@@ -18,7 +19,7 @@ const CommentForm = ({
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
   const userNickname = userInfo?.user?.nickname;
-  const Token = process.env.REACT_APP_TOKEN;
+
   const fetchUserInformation = async () => {
     try {
       const response = await fetch(
