@@ -105,7 +105,8 @@ const View = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("title", viewContent.title);
     queryParams.set("content", viewContent.content);
-    queryParams.set("tags", viewContent.tags.join(","));
+    const tagsString = viewContent.tags.map((tag) => tag.tag).join(",");
+    queryParams.set("tags", tagsString);
     const editURL = `/boards/${params.id}/edit?${queryParams.toString()}`;
     return editURL;
   };
