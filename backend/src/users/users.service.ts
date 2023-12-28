@@ -168,16 +168,13 @@ export class UsersService {
       throw new NotAcceptableException('이미 팔로우 한 사용자입니다.');
     }
 
-    const room = await this.roomRepository.find({
-      where: { users: { id } },
+    const room = await this.roomRepository.findOne({
+      select: { users: true },
+      where: { users: [{ id }, { username }] },
       relations: { users: true },
     });
 
-    const roomWithTargetUser = room.filter(
-      (room) => room.users[1].id === targetUser.id,
-    );
-
-    if (!roomWithTargetUser.length) {
+    if (!room || room?.users.length < 2) {
       await this.roomRepository.save({ users: [user, targetUser] });
     }
 
@@ -210,15 +207,14 @@ export class UsersService {
 
     followingUsers.splice(isFollowingUser, 1);
 
-    const room = await this.roomRepository.find({
-      where: { users: { id } },
+    const room = await this.roomRepository.findOne({
+      select: { users: true },
+      where: { users: [{ id }, { username }] },
       relations: { users: true },
     });
 
-    const roomWithTargetUser = room.filter((room) => room.users[1].id === id);
-
-    if (!roomWithTargetUser.length) {
-      await this.roomRepository.delete(roomWithTargetUser[0].id);
+    if (room?.users.length === 2) {
+      await this.roomRepository.delete(room.id);
     }
 
     await this.userRepository.save({ id: user.id, followingUsers });
