@@ -15,11 +15,12 @@ const ModifyWrap = styled(Box)`
   align-items: center;
   margin: 5px;
   position: relative;
+  border-radius: 20px;
   height: 1200px;
 `;
 
 const BoardTitle = styled(Box)`
-  background-color: #ece0e0;
+  background-color: #ffffff;
   margin: 0 auto;
   width: 1100px;
   height: 100px;
@@ -108,7 +109,6 @@ const Modify = () => {
       const result = await response.json();
       console.log(result);
       if (response.ok) {
-        console.log("파람스아이디 값", params.id);
         navigate(`/boards/${params.id}`);
       }
     } catch (error) {

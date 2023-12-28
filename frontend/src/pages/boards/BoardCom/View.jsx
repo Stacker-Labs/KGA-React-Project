@@ -111,6 +111,33 @@ const View = () => {
     return editURL;
   };
 
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm("Are you sure you want to delete?");
+      if (!confirmed) return;
+      const response = await fetch(
+        `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        alert("Post has been deleted.");
+        navigate("/");
+      } else {
+        // 오류 처리
+        console.error("Failed to delete");
+      }
+    } catch (error) {
+      console.error("Error deleting:", error);
+    }
+  };
+
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setLoading(false);
@@ -162,7 +189,9 @@ const View = () => {
               <Link to={constructEditURL()}>
                 <MUIButton customType="social">수정</MUIButton>
               </Link>
-              <MUIButton customType="social">삭제</MUIButton>
+              <MUIButton customType="social" onClick={handleDelete}>
+                삭제
+              </MUIButton>
             </>
           )}
         </StyledMUIButton>

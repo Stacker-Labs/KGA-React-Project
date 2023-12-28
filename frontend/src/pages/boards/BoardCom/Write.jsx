@@ -19,20 +19,14 @@ const WriteWrap = styled(Box)`
 `;
 
 const BoardTitle = styled(Box)`
-  /* border: 1px solid #414040; */
   margin: 0 auto;
   width: 1100px;
   height: 100px;
 `;
 
-const darkModeStyles = css`
-  color: white;
-`;
-
 const InputTitle = styled(Input)`
   width: 100%;
   padding: 30px 20px;
-  ${(props) => props.darkMode && darkModeStyles}
 `;
 
 const isDarkMode = true;
