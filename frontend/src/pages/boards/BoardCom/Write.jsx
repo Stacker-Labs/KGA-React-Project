@@ -74,12 +74,11 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    const Token = process.env.REACT_APP_TOKEN;
+    // const Token = process.env.REACT_APP_TOKEN;
 
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
-        Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
       credentials: "include",
