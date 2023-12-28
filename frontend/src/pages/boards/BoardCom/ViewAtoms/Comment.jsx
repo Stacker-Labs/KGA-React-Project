@@ -67,7 +67,9 @@ const Comment = ({ comment, id, setCommentList }) => {
   return (
     <div className="border-y-2 p-[10px]">
       <div className="mb-10 flex flex-row justify-between">
-        <p>{comment?.user?.nickname}</p>
+        <p className="font-style: italic text-base">
+          {comment?.user?.nickname}
+        </p>
         {!comment.deleted && userId === comment.user.id && (
           <div className="gap-2">
             <button

@@ -92,7 +92,7 @@ const CommentForm = ({
   return (
     <div className="border p-5">
       <div className="flex flex-row justify-between">
-        <div>{userNickname}</div>
+        <div className="font-style: italic text-base">{userNickname}</div>
         <span></span>
       </div>
 
