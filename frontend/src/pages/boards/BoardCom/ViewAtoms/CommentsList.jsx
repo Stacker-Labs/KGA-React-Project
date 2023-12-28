@@ -49,13 +49,21 @@ const CommentList = ({ id, commentList, setCommentList, page }) => {
           setCommentList={setCommentList}
         />
       ))}
-      <div className="p=[10px] w-[100%] flex flex-row justify-between">
-        <button onClick={loadPreviousPage} disabled={!hasPreviousPage}>
-          Previous
+      <div className="p=[10px] w-[40%] flex flex-row justify-between items-center my-[15px]">
+        <button
+          className="rounded-full bg-sky-200 hover:bg-sky-400"
+          onClick={loadPreviousPage}
+          disabled={!hasPreviousPage}
+        >
+          ❮
         </button>
         <div>Page: {currentPage}</div>
-        <button onClick={loadNextPage} disabled={!hasNextPage}>
-          Next
+        <button
+          className="rounded-full bg-sky-200 hover:bg-sky-400"
+          onClick={loadNextPage}
+          disabled={!hasNextPage}
+        >
+          ❯
         </button>
       </div>
     </div>
