@@ -9,7 +9,7 @@ const TagBox = ({ tags, linkTo }) => {
     <div
       className={cn(
         // "flex flex-row w-10/12 mx-auto gap-5 flex-wrap font-serif",
-        "flex flex-row w-full gap-5 flex-wrap font-serif px-36",
+        "flex flex-row w-full gap-5 flex-wrap px-36",
         // "note:w-full my-auto p-5"
         "tablet:px-5 mx-3",
         "mobile:px-5"
@@ -20,13 +20,20 @@ const TagBox = ({ tags, linkTo }) => {
           return (
             <ul
               key={index}
-              className="border rounded-lg w-[23%] tablet:w-[30%] mobile:w-[93%]"
+              className={cn(
+                "rounded-lg w-[23%] tablet:w-[30%] mobile:w-[93%]",
+                "shadow-lg shadow-[#777] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30"
+              )}
             >
               <li className="p-5 text-lg font-bold ">{item.tag}</li>
               <li className="px-5 py-1">Total Post : {item.boardsLength}</li>
               <li className="flex flex-row p-5 justify-between items-center">
                 <Link to={linkTo(item.tag)}>
-                  <Button variant={"blue"} size={"md"}>
+                  <Button
+                    variant={"blue"}
+                    size={"md"}
+                    className="shadow-md shadow-[#777]"
+                  >
                     <span className="text-white ">SHOW</span>
                   </Button>
                 </Link>

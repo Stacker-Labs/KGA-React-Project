@@ -57,7 +57,7 @@ const Search = () => {
     <>
       <div
         className={cn(
-          "w-7/12 mx-auto py-5 font-serif flex justify-between",
+          "w-5/12 mx-auto py-5 flex justify-between",
           "tablet:w-11/12 tablet:py-7",
           "mobile:w-full mobile:px-5 mobile:flex-col mobile:justify-start"
         )}
@@ -82,26 +82,12 @@ const Search = () => {
       </div>
       <div
         className={cn(
-          "w-7/12 mx-auto flex flex-row gap-8 justify-between",
+          "w-5/12 mx-auto flex flex-row gap-8 justify-between",
           "tablet:w-11/12",
           "mobile:w-full"
         )}
       >
-        <ul className="w-[26%] flex flex-col gap-2 note:w-[20%] mobile:hidden">
-          <li className="border rounded-lg p-2 hover:border-accent-blue">
-            Posts
-          </li>
-          <li className="border rounded-lg p-2 hover:border-accent-blue">
-            Tags
-          </li>
-          <li className="border rounded-lg p-2 hover:border-accent-blue">
-            Posts
-          </li>
-          <li className="border rounded-lg p-2 hover:border-accent-blue">
-            Tags
-          </li>
-        </ul>
-        <div className="w-[80%] flex flex-col gap-5 note:w-[70%] mobile:w-[90%] mobile:mx-5">
+        <div className="w-full mx-auto flex flex-col gap-5 mobile:mx-5">
           <SearchBox searchBoard={searchBoard} />
         </div>
       </div>
