@@ -59,6 +59,7 @@ const Write = () => {
   }, []);
 
   const handleSave = async () => {
+    const confirmed = window.confirm("Would you like to register?");
     if (!userId) {
       alert("로그인이 필요합니다.");
       return;
@@ -68,7 +69,7 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    // const Token = process.env.REACT_APP_TOKEN;
+    if (!confirmed) return;
 
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
