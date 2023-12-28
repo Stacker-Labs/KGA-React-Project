@@ -13,7 +13,9 @@ const User = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState(null);
-  const [userBoard, setUserBoard] = useState(null);
+  const [userBoardArray, setUserBoardArray] = useState([]);
+  const [userBoardLength, setUserBoardLength] = useState(0);
+  const [userBoardPage, setUserBoardPage] = useState(1);
   const [followingOpen, setFollowingOpen] = useState(false);
   const [followerOpen, setFollowerOpen] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
@@ -50,9 +52,8 @@ const User = () => {
     };
 
     const fetchUserBoard = async () => {
-      const page = 1;
       try {
-        const host = `${process.env.REACT_APP_API_SERVER}/users/${id}/${page}`;
+        const host = `${process.env.REACT_APP_API_SERVER}/users/${id}/1`;
         const options = {
           method: "GET",
           headers: {
@@ -63,7 +64,9 @@ const User = () => {
         console.log(response);
         const data = await response.json();
         console.log(data);
-        setUserBoard(data);
+        setUserBoardArray(data.boards);
+        setUserBoardLength(data.boardLength);
+        setUserBoardPage(data.nextPage);
       } catch (e) {
         console.log(e);
       }
@@ -76,15 +79,46 @@ const User = () => {
       else setIsFollowed(true);
     };
 
-    if (userBoard === null) {
-      fetchUserData(id).then((userExists) => {
-        if (userExists) {
-          fetchUserBoard();
-          didIFollow();
+    fetchUserData(id).then((userExists) => {
+      if (userExists) {
+        fetchUserBoard();
+        didIFollow();
+      }
+    });
+  }, [id]);
+
+  useEffect(() => {
+    const scroll = async () => {
+      try {
+        const height = document.documentElement.scrollTop + window.innerHeight;
+        const scrollPosition = document.documentElement.scrollHeight;
+        if (height >= scrollPosition * 0.8) {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_SERVER}/users/${id}/${userBoardPage}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const result = await response.json();
+          console.log(result);
+          setUserBoardArray([...userBoardArray, ...result.boards]);
+          setUserBoardPage(result.nextPage);
         }
-      });
-    }
-  }, [id, userBoard, user]);
+      } catch (error) {
+        console.log(`error :`, error);
+      }
+    };
+
+    if (userBoardPage) document.onscroll = scroll;
+
+    return () => {
+      document.onscroll = null;
+    };
+  }, [userBoardPage]);
 
   const openFollowing = () => {
     setFollowingOpen(true);
@@ -132,8 +166,6 @@ const User = () => {
       setIsFollowed(false);
     }
   };
-
-  const { boards: userBoardArray } = userBoard || { boards: [] };
 
   return (
     <div>
@@ -226,7 +258,7 @@ const User = () => {
           <div className="" id="post-comment">
             <span className="ml-4 font-logo text-xl">Recent Post</span>
             <InfoBox className={`flex flex-row`}>
-              {!!userBoard?.boardLength && (
+              {!!userBoardLength && (
                 <div className={cn("rounded-md w-12/12 py-4 px-8")}>
                   <div className="flex flex-row">
                     <Link to={`/users/${user?.id}`}>
@@ -251,7 +283,7 @@ const User = () => {
                   <div className="flex flex-row gap-3 items-center">
                     {userBoardArray[0]?.tags.map((tagItem, tagIndex) => (
                       <Link
-                        key={tagItem}
+                        key={`tag_${tagIndex}`}
                         className="p-1 hover:border rounded-md border-accent-blue"
                         to={`/tags/${tagItem.tag}`}
                       >
@@ -301,7 +333,7 @@ const User = () => {
                 )}
             </InfoBox>
             <span className="ml-4 font-logo text-xl">
-              Posts ({userBoard?.boardLength || 0})
+              Posts ({userBoardLength})
             </span>
             <InfoBox className={`flex flex-col items-center gap-10`}>
               {userBoardArray?.map((board, idx) => (
