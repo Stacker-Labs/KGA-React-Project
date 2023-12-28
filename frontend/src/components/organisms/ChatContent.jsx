@@ -1,16 +1,30 @@
 import React, { useState } from "react";
 import { cn } from "../../utils/cn";
 import { FaRegPaperPlane } from "react-icons/fa6";
-import Chat from "../molecules/Chat";
+import FollowList from "../molecules/FollowList";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
+import Chatting from "../molecules/Chatting";
 
 const ChatContent = () => {
   const { user } = useRecoilValue(userState);
-  const [chatBtn, setChatBtn] = useState(false);
+  const [followListOpen, setFollowListOpen] = useState(false);
+  const [chattingOpen, setChattingOpen] = useState(false);
+  const [roomId, setRoomID] = useState(null);
+  const [nickname, setNickname] = useState(null);
+  const [image, setImage] = useState(null);
 
-  const chatBtnClick = () => {
-    setChatBtn(!chatBtn);
+  const toFollowList = () => {
+    setFollowListOpen(!followListOpen);
+    setChattingOpen(false);
+  };
+
+  const toChatting = ({ roomId, nickname, image }) => {
+    setRoomID(roomId);
+    setNickname(nickname);
+    setImage(image);
+    setChattingOpen(!chattingOpen);
+    setFollowListOpen(false);
   };
 
   return (
@@ -20,25 +34,32 @@ const ChatContent = () => {
         "tablet:hidden mobile:hidden"
       )}
     >
-      {user?.id && chatBtn && <Chat />}
+      {user?.id &&
+        (followListOpen ? <FollowList toChatting={toChatting} /> : null)}
+      {user?.id &&
+        (chattingOpen ? (
+          <Chatting roomId={roomId} image={image} nickname={nickname} />
+        ) : null)}
+
       <div
         className={cn(
           "fixed flex justify-center items-center",
           "bottom-10 right-10 w-[50px] h-[50px] rounded-3xl bg-accent-blue"
         )}
       >
-        {chatBtn ? (
-          // 채팅 버튼이 눌린 경우 X로 바뀌며 ChatContent를 닫을 수 있는 버튼
+        {followListOpen || chattingOpen ? (
           <div
-            onClick={chatBtnClick}
+            onClick={() => {
+              setChattingOpen(false);
+              setFollowListOpen(false);
+            }}
             className="text-white text-xl cursor-pointer"
           >
             X
           </div>
         ) : (
-          // 채팅 버튼이 안 눌린 경우 FaRegPaperPlane으로 표시
           <FaRegPaperPlane
-            onClick={chatBtnClick}
+            onClick={toFollowList}
             className="text-white text-xl cursor-pointer"
           />
         )}
