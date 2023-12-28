@@ -19,6 +19,7 @@ const ModifyWrap = styled(Box)`
 `;
 
 const BoardTitle = styled(Box)`
+  background-color: #ece0e0;
   margin: 0 auto;
   width: 1100px;
   height: 100px;
@@ -90,7 +91,7 @@ const Modify = () => {
     }
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_SERVER}/${params.id}`,
+        `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`,
         {
           method: "PUT",
           headers: {
@@ -107,6 +108,7 @@ const Modify = () => {
       const result = await response.json();
       console.log(result);
       if (response.ok) {
+        console.log("파람스아이디 값", params.id);
         navigate(`/boards/${params.id}`);
       }
     } catch (error) {
