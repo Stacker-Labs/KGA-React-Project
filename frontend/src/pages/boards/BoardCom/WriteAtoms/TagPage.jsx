@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 const TagPage = ({ tagList, setTagList }) => {
   const [tagInput, setTagInput] = useState("");
-  // const [tagList, setTagList] = useState(value || []);
 
   const handleTagInputChange = (e) => {
     setTagInput(e.target.value);
@@ -11,7 +10,6 @@ const TagPage = ({ tagList, setTagList }) => {
   const handleTagButtonClick = () => {
     if (tagInput && tagList.length < 3) {
       setTagList([...tagList, tagInput]);
-      // onChange([...tagList, tagInput]);
       setTagInput("");
     }
   };
@@ -21,7 +19,6 @@ const TagPage = ({ tagList, setTagList }) => {
       (_, index) => index !== indexToRemove
     );
     setTagList(updatedTagList);
-    // onChange(updatedTagList);
   };
   return (
     <div className="flex flex-col items-center w-[20%] ">
