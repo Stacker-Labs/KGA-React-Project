@@ -101,6 +101,15 @@ const View = () => {
     }
   }, [viewContent, commentList, commentsLength]);
 
+  const constructEditURL = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("title", viewContent.title);
+    queryParams.set("content", viewContent.content);
+    queryParams.set("tags", viewContent.tags.join(","));
+    const editURL = `/boards/${params.id}/edit?${queryParams.toString()}`;
+    return editURL;
+  };
+
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setLoading(false);
@@ -149,13 +158,7 @@ const View = () => {
         <StyledMUIButton>
           {hasPermission && (
             <>
-              <Link
-                to={`/boards/${params.id}/edit?title=${encodeURIComponent(
-                  viewContent.title
-                )}&content=${encodeURIComponent(
-                  viewContent.content
-                )}&tags=${encodeURIComponent(viewContent.tags.join(","))}`}
-              >
+              <Link to={constructEditURL()}>
                 <MUIButton customType="social">수정</MUIButton>
               </Link>
               <MUIButton customType="social">삭제</MUIButton>
