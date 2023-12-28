@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../../recoil/userState";
+
 const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
 const Comment = ({ comment, id, setCommentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
+  const userInfo = useRecoilValue(userState);
+  const userId = userInfo?.user?.id;
+  console.log("유저 아이디", userId);
 
   const handleDelete = async (commentId) => {
     try {
@@ -62,7 +68,7 @@ const Comment = ({ comment, id, setCommentList }) => {
     <div className="border-y-2 p-[10px]">
       <div className="mb-10 flex flex-row justify-between">
         <p>{comment?.user?.nickname}</p>
-        {!comment.deleted && (
+        {!comment.deleted && userId === comment.user.id && (
           <div className="gap-2">
             <button
               className="border-4 p-[5px] bg-slate-600 text-white text-xs"
