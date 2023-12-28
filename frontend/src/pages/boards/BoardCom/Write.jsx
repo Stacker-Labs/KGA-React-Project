@@ -51,8 +51,6 @@ const Write = () => {
   const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
-  // const usersInfo = userInfo?.id || "";
-  // const userNickname = userInfo?.user?.nickname || "";
   const userId = userInfo?.user?.id || "";
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -76,11 +74,12 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    // const Token = process.env.REACT_APP_TOKEN;
+    const Token = process.env.REACT_APP_TOKEN;
 
     const response = await fetch(`${process.env.REACT_APP_API_SERVER}/boards`, {
       method: "post",
       headers: {
+        Authorization: `Bearer ${Token}`,
         "Content-Type": "application/json",
       },
       credentials: "include",
@@ -88,9 +87,6 @@ const Write = () => {
         title,
         content,
         tags: tagList.join(" "),
-        // usersInfo,
-
-        // userNickname,
       }),
     });
     const result = await response.json();

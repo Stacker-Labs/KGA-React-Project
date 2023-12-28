@@ -103,16 +103,6 @@ const View = () => {
   }, [viewContent, commentList, commentsLength]);
 
   // useEffect(() => {
-  //   const storedComments = JSON.parse(localStorage.getItem("comments")) || [];
-  //   setComments(storedComments);
-  // }, [params.id, loading]);
-
-  // const addNewComment = (newComment) => {
-  //   const updatedComments = [...comments, newComment];
-  //   setComments(updatedComments);
-  // };
-
-  // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setLoading(false);
   //   }, 2000);

@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 
-const ReplyComments = ({
-  userId,
-  comments,
-  setComments,
-  index,
-  replyIndex,
-}) => {
+const ReplyComments = ({ comments, setComments, index, replyIndex }) => {
   const [replyText, setReplyText] = useState("");
 
   const handleReplySubmit = () => {
