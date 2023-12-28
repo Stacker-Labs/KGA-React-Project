@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Box } from "@mui/material";
@@ -36,7 +36,7 @@ const BoardContent = styled(Box)`
 `;
 
 const Modify = () => {
-  const { userId } = useParams();
+  const params = useParams();
   const [searchParams] = useSearchParams();
   const viewTitle = searchParams.get("title");
   const viewContent = searchParams.get("content");
@@ -53,13 +53,13 @@ const Modify = () => {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${userId}`
+          `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`
         );
         if (response.ok) {
           const data = await response.json();
           setTitle(data.title);
           setContent(data.content);
-          setTags(data.tags);
+          setTags([]);
         }
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -69,7 +69,7 @@ const Modify = () => {
     if (!viewTitle) {
       fetchPost();
     }
-  }, [userId, viewTitle]);
+  }, [params.id, viewTitle]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -90,7 +90,7 @@ const Modify = () => {
     }
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_SERVER}/${userId}`,
+        `${process.env.REACT_APP_API_SERVER}/${params.id}`,
         {
           method: "PUT",
           headers: {
@@ -107,7 +107,7 @@ const Modify = () => {
       const result = await response.json();
       console.log(result);
       if (response.ok) {
-        navigate(`/boards/${userId}`);
+        navigate(`/boards/${params.id}`);
       }
     } catch (error) {
       console.error("Error updating post:", error);
@@ -116,7 +116,12 @@ const Modify = () => {
 
   return (
     <>
-      <TagPage value={tags} onChange={handleTagsChange} />
+      <TagPage
+        tagList={tagList}
+        setTagList={setTagList}
+        value={tags}
+        onChange={handleTagsChange}
+      />
       <ModifyWrap>
         <BoardTitle>
           <InputTitle
