@@ -84,7 +84,6 @@ const View = () => {
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
         {
           method: "GET",
-
           credentials: "include",
         }
       );
