@@ -17,11 +17,11 @@ const User = () => {
   const [followingOpen, setFollowingOpen] = useState(false);
   const [followerOpen, setFollowerOpen] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
-  const {
-    user: { id: globalId },
-  } = useRecoilValue(userState);
+  // const {
+  //   user: { id: globalId },
+  // } = useRecoilValue(userState);
 
-  // const globalId = 1;
+  const globalId = 25;
 
   useEffect(() => {
     const fetchUserData = async (_id) => {
@@ -71,6 +71,7 @@ const User = () => {
 
     const didIFollow = () => {
       const idx = user?.followerUsers?.findIndex((e) => globalId === e.id);
+      console.log("DID I FOLLOW INDEX " + idx);
       if (idx === -1) setIsFollowed(false);
       else setIsFollowed(true);
     };
@@ -83,7 +84,7 @@ const User = () => {
         }
       });
     }
-  }, [id, userBoard]);
+  }, [id, userBoard, user]);
 
   const openFollowing = () => {
     setFollowingOpen(true);
@@ -101,8 +102,8 @@ const User = () => {
     setFollowerOpen(false);
   };
 
-  const follow = async (id) => {
-    const host = `${process.env.REACT_APP_API_SERVER}/users/${id}/following`;
+  const follow = async (_id) => {
+    const host = `${process.env.REACT_APP_API_SERVER}/users/${_id}/following`;
     const postOptions = {
       method: "post",
       headers: {
@@ -207,6 +208,7 @@ const User = () => {
                 closer={closeFollower}
                 className={`absolute`}
                 user={user}
+                // isFollowed={isFollowed}
               />
             )}
           </div>
