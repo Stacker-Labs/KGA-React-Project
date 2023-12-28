@@ -14,6 +14,7 @@ import { BadRequestException } from '@nestjs/common';
 import { UserModel } from '../users/entities/user.entity';
 
 @WebSocketGateway({
+  secure: true,
   namespace: /room\/*/,
   cors: {
     credentials: true,
