@@ -73,7 +73,7 @@ const Comment = ({ comment, id, setCommentList }) => {
             {updateMode ? (
               <button
                 className="border-4 p-[5px] text-xs"
-                onClick={handleUpdate}
+                onClick={() => handleUpdate(comment.id)}
               >
                 저장
               </button>
