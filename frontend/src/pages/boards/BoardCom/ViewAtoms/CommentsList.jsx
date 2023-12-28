@@ -53,9 +53,7 @@ const CommentList = ({ id, commentList, setCommentList, page }) => {
         <button onClick={loadPreviousPage} disabled={!hasPreviousPage}>
           Previous
         </button>
-        <div>
-          Page: {currentPage} / {totalPages}
-        </div>
+        <div>Page: {currentPage}</div>
         <button onClick={loadNextPage} disabled={!hasNextPage}>
           Next
         </button>
