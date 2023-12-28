@@ -190,9 +190,12 @@ const View = () => {
               <Link to={constructEditURL()}>
                 <MUIButton customType="social">수정</MUIButton>
               </Link>
-              <MUIButton customType="social" onClick={handleDelete}>
+              <button
+                className="bg-white text-black hover:text-white hover:bg-blue-600"
+                onClick={handleDelete}
+              >
                 삭제
-              </MUIButton>
+              </button>
             </>
           )}
         </StyledMUIButton>
