@@ -11,6 +11,7 @@ const Chatting = ({ roomId, nickname, image }) => {
   const chatRef = useRef(null);
   const [socket, setSocket] = useState(null);
   const [chat, setChat] = useState(null);
+  const [chatLoad, setChatLoad] = useState(false);
 
   useEffect(() => {
     if (!socket) {
@@ -20,36 +21,42 @@ const Chatting = ({ roomId, nickname, image }) => {
         setChat(data);
       });
 
-      const getChats = async () => {
-        try {
-          console.log(roomId);
-          const response = await axios.get(
-            `${process.env.REACT_APP_API_SERVER}/room/${roomId}`,
-            { withCredentials: true }
-          );
-          console.log(`${process.env.REACT_APP_API_SERVER}/room/${roomId}`);
-          const result = response.data;
-          console.log(result);
+      if (!chatLoad) {
+        const getChats = async () => {
+          try {
+            console.log(roomId);
+            const response = await axios.get(
+              `${process.env.REACT_APP_API_SERVER}/room/${roomId}`,
+              { withCredentials: true }
+            );
+            console.log(`${process.env.REACT_APP_API_SERVER}/room/${roomId}`);
+            const result = response.data;
+            console.log(result);
+            console.log(socket);
 
-          // 지난대화 내용이 보여져야햠!
-          result.forEach((chat) => {
-            const chatDiv = document.createElement("div");
-            chatDiv.innerText = `${chat.content}`;
-            chatRef.current.appendChild(chatDiv);
-          });
-        } catch (error) {
-          console.log(`error :`, error);
-        }
-      };
-      getChats();
+            // 지난대화 내용이 보여져야햠!
+            result.forEach((chat) => {
+              const chatDiv = document.createElement("div");
+              chatDiv.innerText = `${chat.content}`;
+              chatDiv.className = user.id ? "text-right p-1" : "text-left p-1";
+              chatRef.current.appendChild(chatDiv);
+            });
+            setChatLoad(true);
+          } catch (error) {
+            console.log(`error :`, error);
+          }
+        };
+        getChats();
+      }
     }
-  }, [socket]);
+  }, [socket, chatLoad]);
 
   useEffect(() => {
     if (chat) {
       // 현재 대화내용
       const chatDiv = document.createElement("div");
       chatDiv.innerText = `${chat.content}`;
+      chatDiv.className = user.id ? "text-right p-1" : "text-left p-1";
       chatRef.current.appendChild(chatDiv);
     }
   }, [chat]);
@@ -83,18 +90,18 @@ const Chatting = ({ roomId, nickname, image }) => {
         </div>
 
         <div className="absolute bottom-0 right-0 w-full p-4">
-          <div
-            ref={chatRef}
-            className="absolute bottom-[65px] right-5 bg-slate-400 rounded-lg text-lg p-3"
-          ></div>
+          <div ref={chatRef} className="text-lg p-3 "></div>
           <input
             placeholder="chat..."
             ref={inputRef}
-            className="text-black w-3/4 h-[35px] rounded-md px-2"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessage();
+              }
+            }}
+            className="text-black w-3/4 h-[35px] rounded-md px-2 outline-none border-none"
           />
-          <button onClick={sendMessage} className="w-1/4">
-            send
-          </button>
+          <button className="w-1/4">send</button>
         </div>
       </div>
     </div>
