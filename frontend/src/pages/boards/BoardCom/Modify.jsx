@@ -59,7 +59,7 @@ const Modify = () => {
           const data = await response.json();
           setTitle(data.title);
           setContent(data.content);
-          setTags([]);
+          setTags(data.tags);
         }
       } catch (error) {
         console.error("Error fetching post:", error);
