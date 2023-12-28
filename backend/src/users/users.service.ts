@@ -168,11 +168,11 @@ export class UsersService {
       throw new NotAcceptableException('이미 팔로우 한 사용자입니다.');
     }
 
-    const followerUsers = user.followerUsers ? [...user.followerUsers] : [];
-    const isFollowerUser = followerUsers.findIndex(
-      (follower) => follower.id === id,
-    );
-    if (isFollowerUser === -1) {
+    const room = await this.roomRepository.findOne({
+      where: { users: [{ id }, { username }] },
+      relations: { users: true },
+    });
+    if (!room) {
       await this.roomRepository.save({ users: [user, targetUser] });
     }
 
@@ -211,7 +211,7 @@ export class UsersService {
     );
     if (isFollowerUser === -1) {
       const room = await this.roomRepository.findOne({
-        where: { users: { id } },
+        where: { users: [{ id }, { username }] },
         relations: { users: true },
       });
 
