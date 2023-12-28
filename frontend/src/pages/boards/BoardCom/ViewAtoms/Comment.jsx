@@ -10,7 +10,6 @@ const Comment = ({ comment, id, setCommentList }) => {
       await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${commentId}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${Token}`,
           "Content-Type": "application/json",
         },
         credentials: "include",
