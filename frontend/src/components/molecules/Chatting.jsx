@@ -14,7 +14,7 @@ const Chatting = ({ roomId, nickname, image }) => {
 
   useEffect(() => {
     if (!socket) {
-      setSocket(io(`ws://api.subin.kr/room/${roomId}`));
+      setSocket(io(`wss://api.subin.kr/room/${roomId}`));
     } else {
       socket.on(`${roomId}`, (data) => {
         setChat(data);
