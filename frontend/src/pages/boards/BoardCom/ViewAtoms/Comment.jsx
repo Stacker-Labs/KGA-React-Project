@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-import CommentForm from "./CommentForm";
-import CommentsList from "./CommentsList";
+// import CommentForm from "./CommentForm";
+// import CommentsList from "./CommentsList";
 // import { useParams } from "react-router-dom";
 
 // const Token = process.env.REACT_APP_TOKEN;
@@ -10,10 +10,10 @@ import CommentsList from "./CommentsList";
 const Comment = ({ comment, id, setCommentList, commentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
-  const [replyMode, setReplyMode] = useState(false);
-  const [replyContent, setReplyContent] = useState("");
-  const [replyCommentList, setReplyCommentList] = useState([]);
-  const [page, setPage] = useState(1);
+  // const [replyMode, setReplyMode] = useState(false);
+  // const [replyContent, setReplyContent] = useState("");
+  // const [replyCommentList, setReplyCommentList] = useState([]);
+  // const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
   // const params = useParams();
@@ -21,9 +21,9 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
   const handleUpdateMode = () => {
     setUpdateMode(!updateMode);
   };
-  const handleReplyMode = () => {
-    setReplyMode(!replyMode);
-  };
+  // const handleReplyMode = () => {
+  //   setReplyMode(!replyMode);
+  // };
 
   const handleDelete = async (commentId) => {
     try {
@@ -73,53 +73,53 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
       console.error("댓글 수정중 에러:", error);
     }
   };
-  useEffect(() => {
-    const handleReply = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${id}/comments`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ content: replyContent }),
-          }
-        );
+  // useEffect(() => {
+  //   const handleReply = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.REACT_APP_API_SERVER}/boards/${id}/comments`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           credentials: "include",
+  //           body: JSON.stringify({ content: replyContent }),
+  //         }
+  //       );
 
-        if (response.ok) {
-          const commentResponse = await fetch(
-            `${process.env.REACT_APP_API_SERVER}/boards/${id}/${page}`,
-            {
-              method: "GET",
-              credentials: "include",
-            }
-          );
+  //       if (response.ok) {
+  //         const commentResponse = await fetch(
+  //           `${process.env.REACT_APP_API_SERVER}/boards/${id}/${page}`,
+  //           {
+  //             method: "GET",
+  //             credentials: "include",
+  //           }
+  //         );
 
-          const commentResult = await commentResponse.json();
+  //         const commentResult = await commentResponse.json();
 
-          setReplyCommentList(commentResult.boardComments[0]);
-          setReplyMode(false);
-          setReplyContent("");
-        } else {
-          console.error("Failed to post reply");
-        }
-      } catch (error) {
-        console.error("Error replying:", error);
-      }
-    };
-    if (id !== "undefined") {
-      handleReply();
-    }
-  }, [
-    replyContent,
-    id,
-    page,
-    setReplyCommentList,
-    setReplyMode,
-    setReplyContent,
-  ]);
+  //         setReplyCommentList(commentResult.boardComments[0]);
+  //         setReplyMode(false);
+  //         setReplyContent("");
+  //       } else {
+  //         console.error("Failed to post reply");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error replying:", error);
+  //     }
+  //   };
+  //   if (id !== "undefined") {
+  //     handleReply();
+  //   }
+  // }, [
+  //   replyContent,
+  //   id,
+  //   page,
+  //   setReplyCommentList,
+  //   setReplyMode,
+  //   setReplyContent,
+  // ]);
 
   return (
     <div className="border-y-2 p-[10px]">
@@ -162,11 +162,11 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
       ) : (
         <div className="p-[5px]"> {comment.content}</div>
       )}
-      <div className="border-y-2 p-[10px]">
+      {/* <div className="border-y-2 p-[10px]">
         {replyMode ? (
           <div className="w-[90%] h-[100%] my-[5px] flex flex-col ">
             <button onClick={handleReplyMode}>댓글 닫기</button>
-            {/* <div className="my-[5px]">
+            <div className="my-[5px]">
               <CommentForm
                 id={id}
                 replyCommentList={replyCommentList}
@@ -180,12 +180,12 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
                 // commentList={commentList}
                 page={page}
               />
-            </div> */}
+            </div>
           </div>
         ) : (
           <button onClick={handleReplyMode}>댓글</button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
