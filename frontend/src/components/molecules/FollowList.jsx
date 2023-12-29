@@ -18,9 +18,9 @@ const FollowList = ({ toChatting }) => {
   return (
     <div
       className={cn(
-        "bg-blue-500 relative w-full h-[700px] rounded-md",
+        "fixed bottom-24 right-10 bg-accent-blue text-white w-[380px] h-[700px] rounded-md",
         "shadow-lg shadow-[#777]",
-        "note:h-[485px]"
+        "note:w-[290px] note:h-[485px]"
       )}
     >
       <div className="flex flex-col gap-3 p-5">

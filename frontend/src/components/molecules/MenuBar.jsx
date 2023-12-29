@@ -39,18 +39,18 @@ const MenuBar = ({ user, handleSearch, mobileMenu, setMobileMenu }) => {
     >
       <span
         onClick={closeMenu}
-        className="block h-[50px] p-5 text-right text-xl"
+        className="block h-[50px] p-5 text-right text-xl cursor-pointer"
       >
         X
       </span>
-      <ul className="flex flex-col p-7 gap-4">
+      <ul className="flex flex-col p-3 gap-4">
         <NavigationItem to={"/"} text="🌐 Home" />
         <NavigationItem to={"/tags"} text="🏷️ Tags" />
         <li>
           <form
             onSubmit={handleSubmit}
             className={cn(
-              "flex items-center justify-center border rounded-lg h-[40px] focus:outline"
+              "flex items-center justify-center border rounded-lg h-[40px] outline-none"
             )}
           >
             <input
@@ -58,14 +58,14 @@ const MenuBar = ({ user, handleSearch, mobileMenu, setMobileMenu }) => {
               onChange={(e) => setSearchQuery(e.target.value)}
               type="text"
               placeholder={"Search..."}
-              className="border-none w-[90%] pl-3 focus:outline dark:bg-transparent"
+              className="border-none w-[90%] pl-3 outline-none dark:bg-transparent"
             />
             <button className="w-[10%]">
               <img src={Search_icon} alt="" className="w-[60%] " />
             </button>
           </form>
         </li>
-        <li className="flex flex-wrap justify-between gap-5 ">
+        <li className="flex flex-row flex-wrap gap-3 justify-between">
           {user?.id && (
             <Link to={"/boards"}>
               <Button variant={"white"} size={"md"}>
@@ -109,7 +109,7 @@ const MenuBar = ({ user, handleSearch, mobileMenu, setMobileMenu }) => {
           )}
         </li>
       </ul>
-      <div className="fixed bottom-7 right-8">
+      <div className="fixed bottom-7 right-4">
         <div className="flex flex-row gap-10 justify-center py-7">
           <a
             href="https://github.com/Stacker-Labs/KGA-React-Project"

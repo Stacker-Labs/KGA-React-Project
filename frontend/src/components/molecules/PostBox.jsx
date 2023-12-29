@@ -41,7 +41,7 @@ const PostBox = ({ board }) => {
             <div className="text-2xl py-5 mobile:text-lg">
               <Link to={`/boards/${item.id}`}>{item.title}</Link>
             </div>
-            <div className="flex flex-row gap-3 items-center">
+            <div className="flex flex-row gap-3 items-center flex-wrap">
               {item.tags.map((tagItem, tagIndex) => (
                 <Link
                   key={tagIndex}
@@ -52,7 +52,7 @@ const PostBox = ({ board }) => {
                 </Link>
               ))}
             </div>
-            <div className="flex flex-row py-5 gap-12">
+            <div className="flex flex-row py-5 gap-12 flex-wrap mobile:gap-5">
               <div>
                 <Link to={`/boards/${item.id}`}>
                   ❤️ {item.likes.length} Likes
