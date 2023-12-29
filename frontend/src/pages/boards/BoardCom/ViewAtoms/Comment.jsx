@@ -7,7 +7,7 @@ import CommentForm from "../ViewAtoms/CommentForm";
 
 // const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
-const Comment = ({ comment, id, setCommentList }) => {
+const Comment = ({ comment, id, setCommentList, page }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
@@ -74,18 +74,21 @@ const Comment = ({ comment, id, setCommentList }) => {
     }
   };
   useEffect(() => {
-    const handleReply = async (id) => {
+    const handleReply = async () => {
       try {
-        await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ content: replyContent }),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_SERVER}/comments/${id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ content: replyContent }),
+          }
+        );
 
-        const fetchNewReplyList = async () => {
+        if (response.ok) {
           const commentResponse = await fetch(
             `${process.env.REACT_APP_API_SERVER}/boards/${id}/${page}`,
             {
@@ -93,20 +96,30 @@ const Comment = ({ comment, id, setCommentList }) => {
               credentials: "include",
             }
           );
+
           const commentResult = await commentResponse.json();
-          setPage(commentResult.nextPage);
+
           setReplyCommentList(commentResult.boardComments[0]);
           setReplyMode(false);
           setReplyContent("");
-        };
-
-        fetchNewReplyList();
+        } else {
+          console.error("Failed to post reply");
+        }
       } catch (error) {
         console.error("Error replying:", error);
       }
     };
-    handleReply();
-  }, [replyContent, page]);
+    if (id) {
+      handleReply();
+    }
+  }, [
+    replyContent,
+    id,
+    page,
+    setReplyCommentList,
+    setReplyMode,
+    setReplyContent,
+  ]);
 
   return (
     <div className="border-y-2 p-[10px]">
