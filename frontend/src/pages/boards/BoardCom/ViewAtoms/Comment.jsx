@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
+import CommentList from "../ViewAtoms/CommentsList";
+import CommentForm from "../ViewAtoms/CommentForm";
+import { useParams } from "react-router-dom";
 
-const Token = process.env.REACT_APP_TOKEN;
+// const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
 const Comment = ({ comment, id, setCommentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
+  const [replyMode, setReplyMode] = useState(false);
+  const [replyContent, setReplyContent] = useState("");
+  const [replyCommentList, setReplyCommentList] = useState([]);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
+  const params = useParams();
 
   const handleDelete = async (commentId) => {
     try {
@@ -63,9 +70,45 @@ const Comment = ({ comment, id, setCommentList }) => {
     }
   };
 
+  const handleReplyMode = () => {
+    setReplyMode(!replyMode);
+  };
+  useEffect(() => {
+    const handleReply = async () => {
+      try {
+        await fetch(
+          `${process.env.REACT_APP_API_SERVER}/comments/${params.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ content: replyContent }),
+          }
+        );
+
+        const commentResponse = await fetch(
+          `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/1`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const commentResult = await commentResponse.json();
+        setReplyCommentList(commentResult.boardComments[0]);
+        setReplyMode(false);
+        setReplyContent("");
+      } catch (error) {
+        console.error("Error replying:", error);
+      }
+    };
+    handleReply();
+  }, [replyCommentList]);
+
   return (
     <div className="border-y-2 p-[10px]">
-      <div className="mb-10 flex flex-row justify-between">
+      <div className="mb-5 flex flex-row justify-between">
         <p className="font-style: italic text-base">
           {comment?.user?.nickname}
         </p>
@@ -104,6 +147,24 @@ const Comment = ({ comment, id, setCommentList }) => {
       ) : (
         <div className="p-[5px]"> {comment.content}</div>
       )}
+      <div className="border-y-2 p-[10px]">
+        {replyMode ? (
+          <div>
+            <CommentForm
+              id={params.id}
+              replyCommentList={replyCommentList}
+              setReplyCommentList={setReplyCommentList}
+            />
+            <CommentList
+              id={params.id}
+              replyCommentList={replyCommentList}
+              setReplyCommentList={setReplyCommentList}
+            />
+          </div>
+        ) : (
+          <button onClick={handleReplyMode}>대댓글</button>
+        )}
+      </div>
     </div>
   );
 };
