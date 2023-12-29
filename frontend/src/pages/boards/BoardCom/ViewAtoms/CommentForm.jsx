@@ -42,6 +42,7 @@ const CommentForm = ({
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
         console.log("댓글수@@@", result.commentLength);
+
         setCommentList([result, ...commentList]);
         setCommentsLength(commentsLength + 1);
         setNewComment("");
@@ -80,7 +81,6 @@ const CommentForm = ({
       if (result) {
         console.log("서버 응답 결과:", result);
         return result;
-        // fetchComments();
       }
     } catch (error) {
       console.error("댓글 작성 중 에러:", error);

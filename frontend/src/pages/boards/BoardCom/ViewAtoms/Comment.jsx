@@ -176,8 +176,8 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
                 id={id}
                 replyCommentList={replyCommentList}
                 setReplyCommentList={setReplyCommentList}
-                setCommentList={setCommentList}
-                commentList={commentList}
+                // setCommentList={setCommentList}
+                // commentList={commentList}
                 page={page}
               />
             </div>
