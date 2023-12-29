@@ -79,9 +79,7 @@ const View = () => {
       const result = await response.json();
 
       // console.log("result@@", result);
-      const likeBtn = result.likes.findIndex((item) => {
-        item.id === userId;
-      });
+      const likeBtn = result.likes.findIndex((item) => item.id === userId);
 
       setViewContent(result);
       if (likeBtn !== -1) {
