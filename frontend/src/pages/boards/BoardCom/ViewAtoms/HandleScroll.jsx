@@ -45,13 +45,13 @@ const ScrollToTopButton = ({ onClick }) => {
   );
 };
 
-const LikeButton = ({ onClick, isLiked, count }) => {
+const LikeButton = ({ onClick, isLiked, likeCount }) => {
   const IconComponent = isLiked ? IconFullHeart : IconHeart;
 
   return (
     <HeartBox>
       <IconComponent onClick={onClick} />
-      <span>{count}</span>
+      <span>{likeCount}</span>
     </HeartBox>
   );
 };
@@ -91,8 +91,12 @@ const HandleScroll = ({ postId }) => {
           const updatedLikeData = await response.json();
           setLikeCount(updatedLikeData.likes.length);
           setIsLiked(!isLiked);
+          console.log(postId);
+          console.log(updatedLikeData);
         } else {
           console.error("좋아요 상태 전환 실패");
+          console.log(postId);
+          console.log(updatedLikeData);
         }
       } catch (error) {
         console.error("좋아요 상태 전환 중 에러:", error);
