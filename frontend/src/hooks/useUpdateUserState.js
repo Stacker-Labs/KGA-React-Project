@@ -11,8 +11,8 @@ export const useUpdateUserState = () => {
     try {
       const response = await axios.get(host);
       //   console.log(response);
-      setUserData(response.data.user);
-      //   console.log(response.data.user);
+      setUserData(response.data);
+      //   console.log(response.data);
     } catch (e) {
       console.log(e);
     }

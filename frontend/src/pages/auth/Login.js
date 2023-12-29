@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../tw_components/atoms/Buttons";
-import Input from "../../tw_components/atoms/Inputs";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
 import { Link } from "react-router-dom";
