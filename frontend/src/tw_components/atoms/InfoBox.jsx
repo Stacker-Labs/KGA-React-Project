@@ -10,7 +10,7 @@ export const InfoBoxVariants = cva(
     variants: {
       variant: {
         userinfo:
-          "m-0 w-7/12 flex flex-col justify-around items-center gap-y-5",
+          "m-0 w-7/12 flex flex-col text-center justify-around items-center gap-y-5",
       },
       size: {
         default: "",
