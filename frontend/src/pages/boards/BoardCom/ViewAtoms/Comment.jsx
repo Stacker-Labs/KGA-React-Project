@@ -109,7 +109,7 @@ const Comment = ({ comment, id, setCommentList, page }) => {
         console.error("Error replying:", error);
       }
     };
-    if (id) {
+    if (id !== undefined) {
       handleReply();
     }
   }, [
