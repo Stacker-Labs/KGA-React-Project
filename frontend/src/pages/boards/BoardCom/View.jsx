@@ -48,6 +48,7 @@ const View = () => {
   const [viewContent, setViewContent] = useState({});
   const [commentList, setCommentList] = useState([]);
   const [commentsLength, setCommentsLength] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
   const [page, setPage] = useState(1);
 
   // const [loading, setLoading] = useState(true);
@@ -78,8 +79,14 @@ const View = () => {
       const result = await response.json();
 
       // console.log("result@@", result);
+      const likeBtn = result.likes.findIndex((item) => {
+        item.id === userId;
+      });
 
       setViewContent(result);
+      if (likeBtn !== -1) {
+        setIsLiked(true);
+      }
 
       const commentResponse = await fetch(
         `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/${page}`,
@@ -152,7 +159,12 @@ const View = () => {
       <div className="w-[100%] flex flex-col">
         <ViewPageWrap>
           <IconBox>
-            <HandleScroll userId={userId} postId={params.id} />
+            <HandleScroll
+              userId={userId}
+              postId={params.id}
+              isLiked={isLiked}
+              setIsLiked={setIsLiked}
+            />
             <ViewPageMain>
               <ViewTitle>{viewContent.title}</ViewTitle>
               <h6>
