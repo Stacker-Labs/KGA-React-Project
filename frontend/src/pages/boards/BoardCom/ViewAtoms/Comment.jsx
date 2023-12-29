@@ -166,7 +166,7 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
         {replyMode ? (
           <div className="w-[90%] h-[100%] my-[5px] flex flex-col ">
             <button onClick={handleReplyMode}>댓글 닫기</button>
-            <div className="my-[5px]">
+            {/* <div className="my-[5px]">
               <CommentForm
                 id={id}
                 replyCommentList={replyCommentList}
@@ -180,7 +180,7 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
                 // commentList={commentList}
                 page={page}
               />
-            </div>
+            </div> */}
           </div>
         ) : (
           <button onClick={handleReplyMode}>댓글</button>
