@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
-import CommentList from "../ViewAtoms/CommentsList";
-import CommentForm from "../ViewAtoms/CommentForm";
+import CommentForm from "./CommentForm";
+import CommenstList from "./CommentsList";
 // import { useParams } from "react-router-dom";
 
 // const Token = process.env.REACT_APP_TOKEN;
@@ -109,7 +109,7 @@ const Comment = ({ comment, id, setCommentList, page }) => {
         console.error("Error replying:", error);
       }
     };
-    if (id !== undefined) {
+    if (id !== "undefined") {
       handleReply();
     }
   }, [
@@ -172,7 +172,7 @@ const Comment = ({ comment, id, setCommentList, page }) => {
                 replyCommentList={replyCommentList}
                 setReplyCommentList={setReplyCommentList}
               />
-              <CommentList
+              <CommenstList
                 id={id}
                 replyCommentList={replyCommentList}
                 setReplyCommentList={setReplyCommentList}
