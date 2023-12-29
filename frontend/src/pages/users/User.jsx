@@ -23,8 +23,6 @@ const User = () => {
     user: { id: globalId },
   } = useRecoilValue(userState);
 
-  // const globalId = 25;
-
   useEffect(() => {
     const fetchUserData = async (_id) => {
       try {

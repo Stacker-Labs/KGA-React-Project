@@ -11,6 +11,7 @@ const RegisterForm = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [bio, setBio] = useState("");
   const [confirmed, setConfirmed] = useState("");
   const [error, setError] = useState("");
 
@@ -52,7 +53,7 @@ const RegisterForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(
-          new RegisterRequest({ id, password, nickname, image: imageUrl })
+          new RegisterRequest({ id, password, nickname, bio, image: imageUrl })
         ),
       });
       const result = await response.json();
