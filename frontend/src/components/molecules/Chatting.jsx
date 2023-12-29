@@ -12,6 +12,7 @@ const Chatting = ({ roomId, nickname, image }) => {
   const [socket, setSocket] = useState(null);
   const [chat, setChat] = useState(null);
   const [chatLoad, setChatLoad] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     if (!socket) {
@@ -63,14 +64,15 @@ const Chatting = ({ roomId, nickname, image }) => {
       user: {
         id: user.id,
       },
-      content: inputRef.current.value,
+      content: inputValue,
     });
     setChat({
       user: {
         id: user.id,
       },
-      content: inputRef.current.value,
+      content: inputValue,
     });
+    setInputValue("");
   };
 
   return (
@@ -93,6 +95,8 @@ const Chatting = ({ roomId, nickname, image }) => {
           <input
             placeholder="chat..."
             ref={inputRef}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 sendMessage();

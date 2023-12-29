@@ -11,12 +11,7 @@ const MainAdmin = () => {
     const userListData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_SERVER}/admin`,
-          {
-            headers: {
-              Authorization: "Bearer ${accessToken}",
-            },
-          }
+          `${process.env.REACT_APP_API_SERVER}/admin`
         );
         setUserList(response.data);
       } catch (error) {
