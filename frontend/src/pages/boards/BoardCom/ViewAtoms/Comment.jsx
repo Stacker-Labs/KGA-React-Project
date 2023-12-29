@@ -13,7 +13,7 @@ const Comment = ({ comment, id, setCommentList, page }) => {
   const [replyMode, setReplyMode] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [replyCommentList, setReplyCommentList] = useState([]);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
   // const params = useParams();
