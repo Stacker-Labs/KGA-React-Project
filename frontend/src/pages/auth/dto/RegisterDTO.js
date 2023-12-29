@@ -10,7 +10,7 @@ export class RegisterRequest {
     this.password = data.password;
     this.nickname = data.nickname;
     this.bio = data.bio;
-    this.image = data.image;
+    this.image = data.imageLink;
   }
 }
 export class RegisterResponse {}
