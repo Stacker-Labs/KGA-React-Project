@@ -152,7 +152,7 @@ const View = () => {
       <div className="w-[100%] flex flex-col">
         <ViewPageWrap>
           <IconBox>
-            <HandleScroll userId={userId} />
+            <HandleScroll userId={userId} postId={params.id} />
             <ViewPageMain>
               <ViewTitle>{viewContent.title}</ViewTitle>
               <h6>
