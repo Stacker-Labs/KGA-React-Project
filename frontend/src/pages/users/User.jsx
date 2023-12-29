@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
 import { No_Profile } from "../../images";
 import { cn } from "../../utils/cn";
+import { useUpdateUserState } from "../../hooks/useUpdateUserState";
 
 const User = () => {
   const navigate = useNavigate();
@@ -19,11 +20,12 @@ const User = () => {
   const [followingOpen, setFollowingOpen] = useState(false);
   const [followerOpen, setFollowerOpen] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
+  const updateUser = useUpdateUserState();
   const {
     user: { id: globalId },
   } = useRecoilValue(userState);
 
-  // const globalId = 25;
+  // const globalId = 98;
 
   useEffect(() => {
     const fetchUserData = async (_id) => {
@@ -168,6 +170,8 @@ const User = () => {
       console.log(result);
       setIsFollowed(false);
     }
+
+    updateUser(globalId);
   };
 
   return (

@@ -3,6 +3,7 @@ import Input from "../atoms/Inputs";
 import Button from "../atoms/Buttons";
 import { useNavigate } from "react-router-dom";
 import { UserEditRequest } from "../../pages/users/dto/UserEditDTO";
+import { useUpdateUserState } from "../../hooks/useUpdateUserState";
 
 const UserEditForm = ({ userid }) => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const UserEditForm = ({ userid }) => {
   const [provider, setProvider] = useState("");
   const [confirmed, setConfirmed] = useState("");
   const [error, setError] = useState("");
+  const updateUser = useUpdateUserState();
 
   useEffect(() => {
     const initUpdateForm = async () => {
@@ -59,9 +61,9 @@ const UserEditForm = ({ userid }) => {
           body: file,
         });
         const data = await response.json();
-        console.log(data.url);
+        console.log(data.link);
 
-        return data.url;
+        return data.link;
       } catch (error) {
         console.error("Error uploading image:", error);
         throw error;
@@ -84,7 +86,11 @@ const UserEditForm = ({ userid }) => {
       const result = await response.json();
       console.log(result);
       // reset form?
-      if (result) navigate("/");
+      if (result) {
+        updateUser(userid);
+        alert(`Your info has been updated.`);
+        navigate(`/users/${userid}`);
+      }
       // toastify
     } catch (e) {
       console.log(e);

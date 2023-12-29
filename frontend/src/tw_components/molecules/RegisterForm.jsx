@@ -35,9 +35,9 @@ const RegisterForm = () => {
           body: file,
         });
         const data = await response.json();
-        console.log(data.url);
+        console.log(data.link);
 
-        return data.url;
+        return data.link;
       } catch (error) {
         console.error("Error uploading image:", error);
         throw error;
