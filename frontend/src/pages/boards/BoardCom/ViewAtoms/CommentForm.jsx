@@ -41,7 +41,7 @@ const CommentForm = ({
         const result = await response.json();
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
-        // console.log("댓글수@@@", result.commentLength);
+        console.log("댓글수@@@", result.commentLength);
         setCommentList([result, ...commentList]);
         setCommentsLength(commentsLength + 1);
         setNewComment("");
@@ -59,15 +59,12 @@ const CommentForm = ({
       alert("로그인이 필요합니다.");
       return;
     }
-
     if (newComment.trim() === "") {
       alert("댓글을 입력하세요.");
       return;
     }
-
     const forbiddenWords = ["병신", "비속어1", "비속어2", "강수빈"];
     const lowerCaseComment = newComment.toLowerCase();
-
     const foundForbiddenWord = forbiddenWords.some((word) =>
       lowerCaseComment.includes(word.toLowerCase())
     );
@@ -83,6 +80,7 @@ const CommentForm = ({
       if (result) {
         console.log("서버 응답 결과:", result);
         return result;
+        // fetchComments();
       }
     } catch (error) {
       console.error("댓글 작성 중 에러:", error);
