@@ -23,6 +23,8 @@ const User = () => {
     user: { id: globalId },
   } = useRecoilValue(userState);
 
+  // const globalId = 25;
+
   useEffect(() => {
     const fetchUserData = async (_id) => {
       try {
@@ -70,6 +72,14 @@ const User = () => {
       }
     };
 
+    fetchUserData(id).then((userExists) => {
+      if (userExists) {
+        fetchUserBoard();
+      }
+    });
+  }, [id]);
+
+  useEffect(() => {
     const didIFollow = () => {
       const idx = user?.followerUsers?.findIndex((e) => globalId === e.id);
       console.log("DID I FOLLOW INDEX " + idx);
@@ -77,13 +87,8 @@ const User = () => {
       else setIsFollowed(true);
     };
 
-    fetchUserData(id).then((userExists) => {
-      if (userExists) {
-        fetchUserBoard();
-        didIFollow();
-      }
-    });
-  }, [id]);
+    didIFollow();
+  }, [user]);
 
   useEffect(() => {
     const scroll = async () => {

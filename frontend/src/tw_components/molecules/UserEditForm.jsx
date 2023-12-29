@@ -79,6 +79,7 @@ const UserEditForm = ({ userid }) => {
         body: JSON.stringify(
           new UserEditRequest({ password, nickname, bio, image: imageUrl })
         ),
+        credentials: "include",
       });
       const result = await response.json();
       console.log(result);
