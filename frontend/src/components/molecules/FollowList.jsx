@@ -11,7 +11,6 @@ const FollowList = ({ toChatting }) => {
   const room = user.rooms;
 
   const chatOn = (roomId, nickname, image) => {
-    console.log(roomId, nickname, image);
     toChatting({ roomId, nickname, image });
   };
 
