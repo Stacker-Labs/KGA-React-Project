@@ -74,22 +74,19 @@ const Comment = ({ comment, id, setCommentList }) => {
     setReplyMode(!replyMode);
   };
   useEffect(() => {
-    const handleReply = async () => {
+    const handleReply = async (id) => {
       try {
-        await fetch(
-          `${process.env.REACT_APP_API_SERVER}/comments/${params.id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ content: replyContent }),
-          }
-        );
+        await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ content: replyContent }),
+        });
 
         const commentResponse = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${params.id}/1`,
+          `${process.env.REACT_APP_API_SERVER}/boards/${id}/1`,
           {
             method: "GET",
             credentials: "include",
@@ -151,12 +148,12 @@ const Comment = ({ comment, id, setCommentList }) => {
         {replyMode ? (
           <div>
             <CommentForm
-              id={params.id}
+              id={id}
               replyCommentList={replyCommentList}
               setReplyCommentList={setReplyCommentList}
             />
             <CommentList
-              id={params.id}
+              id={id}
               replyCommentList={replyCommentList}
               setReplyCommentList={setReplyCommentList}
             />
