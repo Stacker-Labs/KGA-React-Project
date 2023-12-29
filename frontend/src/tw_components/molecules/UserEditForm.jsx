@@ -89,7 +89,7 @@ const UserEditForm = ({ userid }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmed) {
+    if ((provider === 'LOCAL') && (password !== confirmed)) {
       setError("Passwords do not match!");
       return;
     }
