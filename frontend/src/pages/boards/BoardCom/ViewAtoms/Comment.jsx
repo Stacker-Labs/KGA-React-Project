@@ -7,7 +7,7 @@ import CommentsList from "./CommentsList";
 
 // const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
-const Comment = ({ comment, id, setCommentList }) => {
+const Comment = ({ comment, id, setCommentList, commentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
@@ -177,6 +177,7 @@ const Comment = ({ comment, id, setCommentList }) => {
                 replyCommentList={replyCommentList}
                 setReplyCommentList={setReplyCommentList}
                 setCommentList={setCommentList}
+                commentList={commentList}
                 page={page}
               />
             </div>
