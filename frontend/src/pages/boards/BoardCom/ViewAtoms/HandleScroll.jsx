@@ -95,8 +95,6 @@ const HandleScroll = ({ postId }) => {
           console.log(updatedLikeData);
         } else {
           console.error("좋아요 상태 전환 실패");
-          console.log(postId);
-          console.log(updatedLikeData);
         }
       } catch (error) {
         console.error("좋아요 상태 전환 중 에러:", error);
