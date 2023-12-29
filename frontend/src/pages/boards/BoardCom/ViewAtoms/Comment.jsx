@@ -73,12 +73,11 @@ const Comment = ({ comment, id, setCommentList }) => {
       console.error("댓글 수정중 에러:", error);
     }
   };
-
   useEffect(() => {
     const handleReply = async (id) => {
       try {
-        await fetch(`${process.env.REACT_APP_API_SERVER}/boards/${id}`, {
-          method: "GET",
+        await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${id}`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -86,24 +85,28 @@ const Comment = ({ comment, id, setCommentList }) => {
           body: JSON.stringify({ content: replyContent }),
         });
 
-        const commentResponse = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${id}/1`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-        const commentResult = await commentResponse.json();
-        setPage(commentResult.nextPage);
-        setReplyCommentList(commentResult.boardComments[0]);
-        setReplyMode(false);
-        setReplyContent("");
+        const fetchNewReplyList = async () => {
+          const commentResponse = await fetch(
+            `${process.env.REACT_APP_API_SERVER}/boards/${id}/${page}`,
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+          const commentResult = await commentResponse.json();
+          setPage(commentResult.nextPage);
+          setReplyCommentList(commentResult.boardComments[0]);
+          setReplyMode(false);
+          setReplyContent("");
+        };
+
+        fetchNewReplyList();
       } catch (error) {
         console.error("Error replying:", error);
       }
     };
     handleReply();
-  }, [replyCommentList]);
+  }, [replyContent, page]);
 
   return (
     <div className="border-y-2 p-[10px]">
