@@ -77,7 +77,7 @@ const Comment = ({ comment, id, setCommentList, page }) => {
     const handleReply = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/comments/${id}`,
+          `${process.env.REACT_APP_API_SERVER}/boards/${id}/comments`,
           {
             method: "POST",
             headers: {
