@@ -60,17 +60,6 @@ const TagItem = () => {
         <div className="text-3xl mobile:text-lg">
           Show tags results for {param.id}
         </div>
-        {/* <ul className="flex flex-row gap-5">
-          <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg ">
-            Most Relevant
-          </li>
-          <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg">
-            Newest
-          </li>
-          <li className="p-2 hover:bg-accent-blue hover:text-white hover:rounded-lg">
-            Oldest
-          </li>
-        </ul> */}
         <div className="text-xl mobile:text-base">
           Total : {searchBoard.length} post
         </div>

@@ -12,7 +12,7 @@ const PostBox = ({ board }) => {
           <div
             key={index}
             className={cn(
-              "w-4/6 rounded-md m-3 p-8 shadow-lg shadow-[#777] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30",
+              "w-4/6 rounded-md m-3 p-8 shadow-md shadow-[#777] bg-indigo-100 dark:bg-gray-600 dark:bg-opacity-30",
               "note:w-5/6",
               "tablet:w-[90%]",
               "mobile:w-5/6 mobile:p-4 mobile:text-md"
