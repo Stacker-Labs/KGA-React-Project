@@ -90,9 +90,7 @@ const HandleScroll = ({ postId }) => {
         if (response.ok) {
           const updatedLikeData = await response.json();
           setLikeCount(updatedLikeData.likes.length);
-          setIsLiked(
-            updatedLikeData.likes[0].some((like) => like.id === userId)
-          );
+          setIsLiked(updatedLikeData.likes.some((like) => like.id === userId));
           console.log(userId);
           console.log(updatedLikeData);
         } else {
