@@ -155,67 +155,11 @@ const UserEditForm = ({ userid }) => {
           />
         )}
         <Button variant={"blue"} size={"sign"}>
-          <span className="text-white">Register</span>
+          <span className="text-white">Edit</span>
         </Button>
         {error && <div className="text-lg text-red-600">{error}</div>}
       </form>
     </div>
-    // <form
-    //   onSubmit={handleSubmit}
-    //   encType="multipart/form-data"
-    //   className="flex flex-col gap-y-3 items-center"
-    // >
-    //   <div className="relative self-start flex flex-col items-center px-3 mx-1">
-    //     <label
-    //       htmlFor="image"
-    //       className="-top-6 left-4 absolute self-start text-lg text-gray-500"
-    //     >
-    //       Profile Picture
-    //     </label>
-    //     <Input
-    //       onChange={(e) => setImage(e.target.files[0])}
-    //       type="file"
-    //       name="image"
-    //       id="image"
-    //     />
-    //   </div>
-    //   <Input
-    //     onChange={(e) => setNickname(e.target.value)}
-    //     required
-    //     type="text"
-    //     placeholder="Nickname"
-    //     value={nickname}
-    //   />
-    // <textarea
-    //   cols={49}
-    //   rows={10}
-    //   onChange={(e) => setBio(e.target.value)}
-    //   type="text"
-    //   placeholder="Bio"
-    //   className="rounded-xl p-2 text-accent-blue resize-none"
-    //   value={bio}
-    // />
-    // {provider === "LOCAL" && (
-    //   <Input
-    //     onChange={(e) => setPassword(e.target.value)}
-    //     required
-    //     type="password"
-    //     placeholder="Password"
-    //   />
-    // )}
-    // {provider === "LOCAL" && (
-    //   <Input
-    //     onChange={(e) => setConfirmed(e.target.value)}
-    //     required
-    //     type="password"
-    //     placeholder="Confirm your password"
-    //   />
-    // )}
-    //   <Button variant={"blue"} size={"sign"}>
-    //     <span className="text-white">Edit</span>
-    //   </Button>
-    //   {error && <div className="text-lg text-red-600">{error}</div>}
-    // </form>
   );
 };
 
