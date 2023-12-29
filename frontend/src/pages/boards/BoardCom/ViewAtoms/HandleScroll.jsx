@@ -56,7 +56,7 @@ const LikeButton = ({ onClick, isLiked, count }) => {
   );
 };
 
-const HandleScroll = () => {
+const HandleScroll = ({ postId }) => {
   const [showButton, setShowButton] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -73,10 +73,30 @@ const HandleScroll = () => {
     }
   };
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
     if (userId) {
-      setIsLiked((prev) => !prev);
-      setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_SERVER}/${postId}/like`,
+          {
+            method: isLiked ? "DELETE" : "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+
+        if (response.ok) {
+          const updatedLikeData = await response.json();
+          setLikeCount(updatedLikeData.likes.length);
+          setIsLiked(!isLiked);
+        } else {
+          console.error("좋아요 상태 전환 실패");
+        }
+      } catch (error) {
+        console.error("좋아요 상태 전환 중 에러:", error);
+      }
     } else {
       alert("로그인이 필요합니다.");
     }
@@ -97,6 +117,7 @@ const HandleScroll = () => {
     <IconStyledWrap>
       {showButton && <ScrollToTopButton onClick={handleScroll} />}
       <LikeButton
+        postId={postId}
         onClick={handleLikeClick}
         isLiked={isLiked}
         count={likeCount}
