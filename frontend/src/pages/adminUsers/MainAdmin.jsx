@@ -23,6 +23,24 @@ const MainAdmin = () => {
     userListData();
   }, []);
 
+  const deleteUser = async (id) => {
+    const confirmDelete = window.confirm(`${id}번의 유저를 삭제합니다.`);
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_SERVER}/users/${id}`,
+          { withCredentials: true }
+        );
+        console.log(response);
+        setUserList((prevUserList) =>
+          prevUserList.filter((user) => user.id !== id)
+        );
+      } catch (error) {
+        console.log(`error :`, error);
+      }
+    }
+  };
+
   return (
     <div className={cn("w-10/12 mx-auto py-5", "tablet:w-full px-5")}>
       <div className="flex justify-between items-center py-5">
@@ -68,7 +86,14 @@ const MainAdmin = () => {
                 <td>
                   <DateTime dateString={item.createdAt} />
                 </td>
-                <td>❌</td>
+                <td
+                  onClick={() => {
+                    deleteUser(item.id);
+                  }}
+                  className="cursor-pointer"
+                >
+                  ❌
+                </td>
               </tr>
             );
           })}
