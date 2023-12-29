@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 import CommentList from "../ViewAtoms/CommentsList";
 import CommentForm from "../ViewAtoms/CommentForm";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 // const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
@@ -13,9 +13,17 @@ const Comment = ({ comment, id, setCommentList }) => {
   const [replyMode, setReplyMode] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [replyCommentList, setReplyCommentList] = useState([]);
+  const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
-  const params = useParams();
+  // const params = useParams();
+
+  const handleUpdateMode = () => {
+    setUpdateMode(!updateMode);
+  };
+  const handleReplyMode = () => {
+    setReplyMode(!replyMode);
+  };
 
   const handleDelete = async (commentId) => {
     try {
@@ -39,10 +47,6 @@ const Comment = ({ comment, id, setCommentList }) => {
     } catch (error) {
       console.error("댓글 삭제 중 에러:", error);
     }
-  };
-
-  const handleUpdateMode = () => {
-    setUpdateMode(!updateMode);
   };
 
   const handleUpdate = async (commentId) => {
@@ -70,14 +74,11 @@ const Comment = ({ comment, id, setCommentList }) => {
     }
   };
 
-  const handleReplyMode = () => {
-    setReplyMode(!replyMode);
-  };
   useEffect(() => {
     const handleReply = async (id) => {
       try {
-        await fetch(`${process.env.REACT_APP_API_SERVER}/comments/${id}`, {
-          method: "POST",
+        await fetch(`${process.env.REACT_APP_API_SERVER}/boards/${id}`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -93,6 +94,7 @@ const Comment = ({ comment, id, setCommentList }) => {
           }
         );
         const commentResult = await commentResponse.json();
+        setPage(commentResult.nextPage);
         setReplyCommentList(commentResult.boardComments[0]);
         setReplyMode(false);
         setReplyContent("");
@@ -146,17 +148,21 @@ const Comment = ({ comment, id, setCommentList }) => {
       )}
       <div className="border-y-2 p-[10px]">
         {replyMode ? (
-          <div>
-            <CommentForm
-              id={id}
-              replyCommentList={replyCommentList}
-              setReplyCommentList={setReplyCommentList}
-            />
-            <CommentList
-              id={id}
-              replyCommentList={replyCommentList}
-              setReplyCommentList={setReplyCommentList}
-            />
+          <div className="w-[90%] h-[100%] my-[5px] flex flex-col ">
+            <button onClick={handleReplyMode}>대댓글 닫기</button>
+            <div className="my-[5px]">
+              <CommentForm
+                id={id}
+                replyCommentList={replyCommentList}
+                setReplyCommentList={setReplyCommentList}
+              />
+              <CommentList
+                id={id}
+                replyCommentList={replyCommentList}
+                setReplyCommentList={setReplyCommentList}
+                page={page}
+              />
+            </div>
           </div>
         ) : (
           <button onClick={handleReplyMode}>대댓글</button>
