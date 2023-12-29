@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 import CommentForm from "./CommentForm";
-import CommenstList from "./CommentsList";
+import CommentsList from "./CommentsList";
 // import { useParams } from "react-router-dom";
 
 // const Token = process.env.REACT_APP_TOKEN;
@@ -172,7 +172,7 @@ const Comment = ({ comment, id, setCommentList, page }) => {
                 replyCommentList={replyCommentList}
                 setReplyCommentList={setReplyCommentList}
               />
-              <CommenstList
+              <CommentsList
                 id={id}
                 replyCommentList={replyCommentList}
                 setReplyCommentList={setReplyCommentList}
