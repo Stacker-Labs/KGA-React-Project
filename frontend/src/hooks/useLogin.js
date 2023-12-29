@@ -37,14 +37,17 @@ const useLogin = () => {
         const usersReponse = await fetch(usersHost, usersOptions);
         const usersData = await usersReponse.json();
 
-        if (usersData.message) {
+        if (usersData.message === "Access token is in cookie now.") {
           setUser(usersData);
-          console.log(user);
+          alert(`Welcome, ${usersData.user.nickname}!`);
+          navigate("/");
+        } else if (usersData.statusCode === 401) {
+          alert("Invalid user data.");
+        } else if (usersData.statusCode === 400) {
+          alert("This user doesn't exist.");
         } else {
-          console.log(usersData.message + "Cannot retrieve usersData.");
+          alert("Server Error!");
         }
-
-        navigate("/");
       } else {
         console.log(loginData.message + "Cannot fetch user cookie.");
       }

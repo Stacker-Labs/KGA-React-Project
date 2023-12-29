@@ -36,7 +36,7 @@ const Login = () => {
   const user = useRecoilValue(userState);
 
   useEffect(() => {
-    console.log(user);
+    console.log("recoil value", user);
   }, []);
   // onclick handler for GitHub
   const github = () => {

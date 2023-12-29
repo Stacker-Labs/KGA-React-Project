@@ -18,11 +18,12 @@ const Logout = () => {
         credentials: "include",
       });
       const result = await response.json();
-      console.log(result);
+      console.log("logout result", result);
     };
 
     logout();
     resetUserState();
+    alert("You've been logged out.");
     navigate("/");
   });
 

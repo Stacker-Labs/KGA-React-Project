@@ -11,7 +11,9 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    await login("login", bodyContent);
+    const response = await login("login", bodyContent);
+
+    console.log(response);
   };
 
   return (
