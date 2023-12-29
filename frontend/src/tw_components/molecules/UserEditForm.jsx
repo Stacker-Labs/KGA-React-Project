@@ -4,11 +4,12 @@ import Button from "../atoms/Buttons";
 import { useNavigate } from "react-router-dom";
 import { UserEditRequest } from "../../pages/users/dto/UserEditDTO";
 import { useUpdateUserState } from "../../hooks/useUpdateUserState";
+import { No_Profile } from "../../images";
 
 const UserEditForm = ({ userid }) => {
   const navigate = useNavigate();
 
-  const [image, setImage] = useState("");
+  const [imageLink, setImageLink] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [bio, setBio] = useState("");
@@ -28,7 +29,7 @@ const UserEditForm = ({ userid }) => {
         });
         const { user: result } = await response.json();
         console.log("this is the result", result);
-        setImage(result.image);
+        setImageLink(result.image);
         setPassword(result.password);
         setNickname(result.nickname);
         setBio(result.bio);
@@ -41,55 +42,43 @@ const UserEditForm = ({ userid }) => {
     initUpdateForm();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (provider === "LOCAL" && password !== confirmed) {
-      setError("Passwords do not match!");
-      return;
-    }
-
-    setError("");
-
-    const uploadImageToS3 = async (file) => {
-      try {
-        const response = await fetch("https://api.subin.kr/image", {
-          method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data", // or appropriate content type
-          },
-          body: file,
-        });
-        const data = await response.json();
-        console.log(data.link);
-
-        return data.link;
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        throw error;
-      }
-    };
+  const uploadImageToS3 = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
 
     try {
-      const imageUrl = await uploadImageToS3(image);
+      const response = await fetch("https://api.subin.kr/image", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log("does data contain link?", data);
+      setImageLink(data.link);
+      return data.link;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw error;
+    }
+  };
 
+  const update = async () => {
+    try {
       const response = await fetch(`https://api.subin.kr/users/${userid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          new UserEditRequest({ password, nickname, bio, image: imageUrl })
-        ),
         credentials: "include",
+        body: JSON.stringify(
+          new UserEditRequest({ password, nickname, bio, imageLink })
+        ),
       });
       const result = await response.json();
-      console.log(result);
+      console.log("is registered?", result);
       // reset form?
       if (result) {
         updateUser();
-        alert(`Your info has been updated.`);
-        navigate(`/users/${userid}`);
+        navigate("/");
       }
       // toastify
     } catch (e) {
@@ -97,63 +86,136 @@ const UserEditForm = ({ userid }) => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmed) {
+      setError("Passwords do not match!");
+      return;
+    }
+
+    setError("");
+
+    update();
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      encType="multipart/form-data"
-      className="flex flex-col gap-y-3 items-center"
-    >
-      <div className="relative self-start flex flex-col items-center px-3 mx-1">
-        <label
-          htmlFor="image"
-          className="-top-6 left-4 absolute self-start text-lg text-gray-500"
-        >
-          Profile Picture
-        </label>
+    <div className="flex flex-col items-center">
+      <form
+        className="flex flex-row w-[90%] justify-between"
+        encType="multipart/form-data"
+      >
         <Input
-          onChange={(e) => setImage(e.target.files[0])}
+          onChange={async (e) => {
+            await uploadImageToS3(e.target.files[0]);
+          }}
           type="file"
-          name="image"
-          id="image"
+          name="file"
+          className={`w-[60%]`}
         />
-      </div>
-      <Input
-        onChange={(e) => setNickname(e.target.value)}
-        required
-        type="text"
-        placeholder="Nickname"
-        value={nickname}
-      />
-      <textarea
-        cols={49}
-        rows={10}
-        onChange={(e) => setBio(e.target.value)}
-        type="text"
-        placeholder="Bio"
-        className="rounded-xl p-2 text-accent-blue resize-none"
-        value={bio}
-      />
-      {provider === "LOCAL" && (
+        <div className="w-[120px]">
+          <img src={imageLink || No_Profile} className="rounded-full" />
+        </div>
+      </form>
+
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-y-3 items-center"
+      >
         <Input
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setNickname(e.target.value)}
           required
-          type="password"
-          placeholder="Password"
+          type="text"
+          placeholder="Nickname"
+          value={nickname}
         />
-      )}
-      {provider === "LOCAL" && (
-        <Input
-          onChange={(e) => setConfirmed(e.target.value)}
-          required
-          type="password"
-          placeholder="Confirm your password"
+        <textarea
+          cols={49}
+          rows={10}
+          onChange={(e) => setBio(e.target.value)}
+          type="text"
+          placeholder="Bio"
+          className="rounded-xl p-2 text-accent-blue resize-none"
+          value={bio}
         />
-      )}
-      <Button variant={"blue"} size={"sign"}>
-        <span className="text-white">Edit</span>
-      </Button>
-      {error && <div className="text-lg text-red-600">{error}</div>}
-    </form>
+        {provider === "LOCAL" && (
+          <Input
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            type="password"
+            placeholder="Password"
+          />
+        )}
+        {provider === "LOCAL" && (
+          <Input
+            onChange={(e) => setConfirmed(e.target.value)}
+            required
+            type="password"
+            placeholder="Confirm your password"
+          />
+        )}
+        <Button variant={"blue"} size={"sign"}>
+          <span className="text-white">Register</span>
+        </Button>
+        {error && <div className="text-lg text-red-600">{error}</div>}
+      </form>
+    </div>
+    // <form
+    //   onSubmit={handleSubmit}
+    //   encType="multipart/form-data"
+    //   className="flex flex-col gap-y-3 items-center"
+    // >
+    //   <div className="relative self-start flex flex-col items-center px-3 mx-1">
+    //     <label
+    //       htmlFor="image"
+    //       className="-top-6 left-4 absolute self-start text-lg text-gray-500"
+    //     >
+    //       Profile Picture
+    //     </label>
+    //     <Input
+    //       onChange={(e) => setImage(e.target.files[0])}
+    //       type="file"
+    //       name="image"
+    //       id="image"
+    //     />
+    //   </div>
+    //   <Input
+    //     onChange={(e) => setNickname(e.target.value)}
+    //     required
+    //     type="text"
+    //     placeholder="Nickname"
+    //     value={nickname}
+    //   />
+    // <textarea
+    //   cols={49}
+    //   rows={10}
+    //   onChange={(e) => setBio(e.target.value)}
+    //   type="text"
+    //   placeholder="Bio"
+    //   className="rounded-xl p-2 text-accent-blue resize-none"
+    //   value={bio}
+    // />
+    // {provider === "LOCAL" && (
+    //   <Input
+    //     onChange={(e) => setPassword(e.target.value)}
+    //     required
+    //     type="password"
+    //     placeholder="Password"
+    //   />
+    // )}
+    // {provider === "LOCAL" && (
+    //   <Input
+    //     onChange={(e) => setConfirmed(e.target.value)}
+    //     required
+    //     type="password"
+    //     placeholder="Confirm your password"
+    //   />
+    // )}
+    //   <Button variant={"blue"} size={"sign"}>
+    //     <span className="text-white">Edit</span>
+    //   </Button>
+    //   {error && <div className="text-lg text-red-600">{error}</div>}
+    // </form>
   );
 };
 

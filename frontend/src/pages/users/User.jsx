@@ -41,7 +41,7 @@ const User = () => {
         console.log(response);
         if (response.status === 400 || response.status === 404) {
           alert("This user does not exist.");
-          return navigate("/");
+          return navigate(`/users/${id}`);
         }
         const { user: data } = await response.json();
         console.log(data);
@@ -255,7 +255,7 @@ const User = () => {
 
         <InfoBox variant={"userinfo"}>
           <h2 className="text-bold text-3xl">{user?.nickname}</h2>
-          <p className="text-bold text-xl">{user?.bio}</p>
+          <p className="w-[100%] break-words">{user?.bio}</p>
           <p className="text-bold text-xl">
             Joined on {convertDate(user?.createdAt)}
           </p>
