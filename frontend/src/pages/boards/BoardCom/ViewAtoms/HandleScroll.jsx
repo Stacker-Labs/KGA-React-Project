@@ -64,6 +64,13 @@ const HandleScroll = ({ postId }) => {
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id || "";
 
+  useEffect(() => {
+    const storedLikeStatus = localStorage.getItem(`liked_${postId}`);
+    if (storedLikeStatus) {
+      setIsLiked(JSON.parse(storedLikeStatus));
+    }
+  }, [postId]);
+
   const handleScroll = () => {
     if (window.scrollY !== 0) {
       window.scrollTo({
@@ -91,6 +98,7 @@ const HandleScroll = ({ postId }) => {
           const updatedLikeData = await response.json();
           setLikeCount(updatedLikeData.likes.length);
           setIsLiked(updatedLikeData.likes.some((like) => like.id === userId));
+          localStorage.setItem(`liked_${postId}`, JSON.stringify(isLiked));
           console.log(userId);
           console.log(updatedLikeData);
         } else {
