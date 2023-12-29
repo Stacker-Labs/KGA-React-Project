@@ -13,7 +13,6 @@ const Sidebar = () => {
       <ul className="flex flex-col p-5 gap-3">
         <NavigationItem to={"/"} text="🌐 Home" />
         <NavigationItem to={"/tags"} text="🏷️ Tags" />
-        <NavigationItem to={"/"} text="❔ FAQ" />
       </ul>
       <div className="flex flex-row gap-10 justify-center py-5">
         <a

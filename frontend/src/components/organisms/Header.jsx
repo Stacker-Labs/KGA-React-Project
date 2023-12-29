@@ -51,14 +51,17 @@ const Header = () => {
         <div
           className={cn(
             "w-[40%] flex flex-row items-center gap-11 px-6",
-            "note:flex-row note:w-[45%]",
-            "tablet:flex-col tablet:w-[20%]",
-            "mobile:w-[65%]"
+            "note:flex-row w-[50%]",
+            "tablet:w-[35%] tablet:flex-col ",
+            "mobile:p-1 mobile:w-[53%]"
           )}
         >
           <Link
             to={"/"}
-            className="tablet:text-3xl mobile:text-3xl font-logo text-4xl text-accent-blue"
+            className={cn(
+              "font-logo text-4xl text-accent-blue",
+              "tablet:text-3xl mobile:text-2xl mobile:ml-1"
+            )}
           >
             Stacker-Labs
           </Link>
@@ -66,21 +69,21 @@ const Header = () => {
         </div>
         <div
           className={cn(
-            "flex flex-row justify-around items-center w-[30%]",
-            "note:w-[35%]",
-            "tablet:w-[50%] tablet:gap-4 tablet:p-2 "
+            "flex flex-row justify-around items-center w-[40%]",
+            "tablet:w-[70%] tablet:gap-4 tablet:p-2",
+            "mobile:w-[45%] mobile:p-1"
           )}
         >
           {user?.role === "ADMIN" && (
             <Link to={"/admin"}>
-              <Button variant={"white"} size={"md"}>
+              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
                 Admin
               </Button>
             </Link>
           )}
           {user?.id && (
             <Link to={"/boards"}>
-              <Button variant={"white"} size={"md"}>
+              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
                 Create Post
               </Button>
             </Link>
@@ -109,7 +112,7 @@ const Header = () => {
           {user?.id && (
             <img
               onClick={toggleUserMenu}
-              className="w-[40px] h-[40px] rounded-3xl cursor-pointer"
+              className="w-[40px] h-[40px] rounded-3xl cursor-pointer mobile:hidden"
               src={user?.image || No_Profile}
               alt=""
             />
@@ -117,7 +120,7 @@ const Header = () => {
           {
             <FaBars
               onClick={toggleMenu}
-              className="hidden mobile:inline-block mobile:text-2xl mobile:mx-5"
+              className="hidden mobile:inline-block mobile:text-xl"
             />
           }
           {mobileMenu && (

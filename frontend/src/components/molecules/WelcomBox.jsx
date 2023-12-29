@@ -8,15 +8,15 @@ const WelcomBox = () => {
       className={cn(
         "rounded-2xl bg-accent-blue w-4/6 p-12",
         "shadow-lg shadow-[#777]",
-        "note:p-12 note:w-5/6",
+        "note:w-5/6",
         "tablet:w-[90%] tablet:p-5",
         "mobile:w-5/6 mobile:p-4"
       )}
     >
-      <p className="tablet:text-3xl mobile:text-2xl font-logo text-5xl text-white py-4">
+      <p className="tablet:text-3xl mobile:text-xl mobile:py-2 font-logo text-5xl text-white py-4">
         stacker-labs
       </p>
-      <p className="tablet:text-3xl mobile:text-2xl font-logo text-4xl text-white py-4">
+      <p className="tablet:text-3xl mobile:text-xl mobile:py-2 font-logo text-4xl text-white py-4">
         You’re now a part of the community!
       </p>
       <br />

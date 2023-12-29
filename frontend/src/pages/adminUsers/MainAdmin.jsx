@@ -11,7 +11,8 @@ const MainAdmin = () => {
     const userListData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_SERVER}/admin`
+          `${process.env.REACT_APP_API_SERVER}/admin`,
+          { withCredentials: true }
         );
         setUserList(response.data);
       } catch (error) {
