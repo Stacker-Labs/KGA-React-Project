@@ -11,7 +11,6 @@ const CommentForm = ({
   commentsLength,
 }) => {
   const [newComment, setNewComment] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -66,7 +65,6 @@ const CommentForm = ({
       return;
     }
 
-    if (isSubmitting) return;
     const forbiddenWords = ["병신", "비속어1", "비속어2", "강수빈"];
     const lowerCaseComment = newComment.toLowerCase();
     const foundForbiddenWord = forbiddenWords.some((word) =>
@@ -78,7 +76,6 @@ const CommentForm = ({
     }
 
     try {
-      setIsSubmitting(true);
       const result = await fetchUserInformation();
       setNewComment("");
 
@@ -109,7 +106,6 @@ const CommentForm = ({
         <button
           type="submit"
           className="bg-sky-600	p-[15px] rounded-md  hover:bg-sky-400"
-          disabled={isSubmitting}
         >
           <p className="text-white  mx-auto">등록</p>
         </button>
