@@ -8,7 +8,6 @@ import { userMenuState } from "../../recoil/userMenuState";
 import { userState } from "../../recoil/userState";
 import DarkmodeBtn from "../molecules/DarkmodeBtn";
 import { darkModeState } from "../../recoil/darkmode";
-import { FaRegBell } from "react-icons/fa6";
 import { cn } from "../../utils/cn";
 import { No_Profile } from "../../images";
 import { FaBars } from "react-icons/fa6";
@@ -107,9 +106,6 @@ const Header = () => {
             </Link>
           )}
           <DarkmodeBtn />
-          <button>
-            <FaRegBell className="text-2xl dark:text-white mobile:hidden" />
-          </button>
           {user?.id && (
             <img
               onClick={toggleUserMenu}
