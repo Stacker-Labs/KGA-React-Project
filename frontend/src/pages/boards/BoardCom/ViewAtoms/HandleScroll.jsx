@@ -77,7 +77,7 @@ const HandleScroll = ({ postId }) => {
     if (userId) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/${postId}/likes`,
+          `${process.env.REACT_APP_API_SERVER}/boards/${postId}/likes`,
           {
             method: isLiked ? "DELETE" : "POST",
             headers: {
