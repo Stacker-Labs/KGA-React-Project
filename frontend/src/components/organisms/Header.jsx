@@ -88,26 +88,40 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          {user?.id ? (
-            <Link to={"/auth/logout"}>
-              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
-                Logout
-              </Button>
-            </Link>
-          ) : (
-            <Link to={"/auth"}>
-              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
-                Login
-              </Button>
-            </Link>
-          )}
-          {!user?.id && (
-            <Link to={"/auth/register"}>
-              <Button variant={"white"} size={"md"} className={"mobile:hidden"}>
-                Sign Up
-              </Button>
-            </Link>
-          )}
+          <div className="flex flex-row justify-between gap-20">
+            {user?.id ? (
+              <Link to={"/auth/logout"}>
+                <Button
+                  variant={"white"}
+                  size={"md"}
+                  className={"mobile:hidden"}
+                >
+                  Logout
+                </Button>
+              </Link>
+            ) : (
+              <Link to={"/auth"}>
+                <Button
+                  variant={"white"}
+                  size={"md"}
+                  className={"mobile:hidden"}
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
+            {!user?.id && (
+              <Link to={"/auth/register"}>
+                <Button
+                  variant={"white"}
+                  size={"md"}
+                  className={"mobile:hidden"}
+                >
+                  Sign Up
+                </Button>
+              </Link>
+            )}
+          </div>
           <DarkmodeBtn />
           {user?.id && (
             <img
