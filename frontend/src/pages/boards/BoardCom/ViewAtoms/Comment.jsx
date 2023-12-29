@@ -7,13 +7,13 @@ import CommentsList from "./CommentsList";
 
 // const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
-const Comment = ({ comment, id, setCommentList, page }) => {
+const Comment = ({ comment, id, setCommentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [replyCommentList, setReplyCommentList] = useState([]);
-  // const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
   // const params = useParams();
