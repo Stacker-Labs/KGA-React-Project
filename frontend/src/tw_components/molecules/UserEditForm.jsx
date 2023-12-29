@@ -1,24 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../atoms/Inputs";
 import Button from "../atoms/Buttons";
-import { RegisterRequest } from "../../pages/auth/dto/RegisterDTO";
 import { useNavigate } from "react-router-dom";
+import { UserEditRequest } from "../../pages/users/dto/UserEditDTO";
 
-const RegisterForm = () => {
+const UserEditForm = ({ userid }) => {
   const navigate = useNavigate();
 
   const [image, setImage] = useState("");
-  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [bio, setBio] = useState("");
+  const [provider, setProvider] = useState("");
   const [confirmed, setConfirmed] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const initUpdateForm = async () => {
+      try {
+        const response = await fetch(`https://api.subin.kr/users/${userid}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const { user: result } = await response.json();
+        console.log("this is the result", result);
+        setImage(result.image);
+        setPassword(result.password);
+        setNickname(result.nickname);
+        setBio(result.bio);
+        setProvider(result.provider);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    initUpdateForm();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmed) {
+    if (provider === "LOCAL" && password !== confirmed) {
       setError("Passwords do not match!");
       return;
     }
@@ -47,13 +71,13 @@ const RegisterForm = () => {
     try {
       const imageUrl = await uploadImageToS3(image);
 
-      const response = await fetch("https://api.subin.kr/auth/register", {
-        method: "POST",
+      const response = await fetch(`https://api.subin.kr/users/${userid}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(
-          new RegisterRequest({ id, password, nickname, image: imageUrl })
+          new UserEditRequest({ password, nickname, bio, image: imageUrl })
         ),
       });
       const result = await response.json();
@@ -87,36 +111,37 @@ const RegisterForm = () => {
         />
       </div>
       <Input
-        onChange={(e) => setId(e.target.value)}
-        required
-        type="text"
-        placeholder="ID"
-      />
-      <Input
         onChange={(e) => setNickname(e.target.value)}
         required
         type="text"
         placeholder="Nickname"
+        value={nickname}
       />
       <textarea
-        cols={50}
+        cols={49}
         rows={10}
         onChange={(e) => setBio(e.target.value)}
         type="text"
         placeholder="Bio"
+        className="rounded-xl p-2 text-accent-blue resize-none"
+        value={bio}
       />
-      <Input
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        type="password"
-        placeholder="Password"
-      />
-      <Input
-        onChange={(e) => setConfirmed(e.target.value)}
-        required
-        type="password"
-        placeholder="Confirm your password"
-      />
+      {provider === "LOCAL" && (
+        <Input
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          type="password"
+          placeholder="Password"
+        />
+      )}
+      {provider === "LOCAL" && (
+        <Input
+          onChange={(e) => setConfirmed(e.target.value)}
+          required
+          type="password"
+          placeholder="Confirm your password"
+        />
+      )}
       <Button variant={"blue"} size={"sign"}>
         <span className="text-white">Edit</span>
       </Button>
@@ -125,4 +150,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default UserEditForm;

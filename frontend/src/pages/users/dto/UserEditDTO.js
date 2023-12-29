@@ -1,12 +1,10 @@
-export class RegisterRequest {
-  username;
+export class UserEditRequest {
   password;
   nickname;
   bio;
   image;
 
   constructor(data) {
-    this.username = data.id;
     this.password = data.password;
     this.nickname = data.nickname;
     this.bio = data.bio;

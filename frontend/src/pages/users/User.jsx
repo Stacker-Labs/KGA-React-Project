@@ -19,11 +19,11 @@ const User = () => {
   const [followingOpen, setFollowingOpen] = useState(false);
   const [followerOpen, setFollowerOpen] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false);
-  const {
-    user: { id: globalId },
-  } = useRecoilValue(userState);
+  // const {
+  //   user: { id: globalId },
+  // } = useRecoilValue(userState);
 
-  // const globalId = 25;
+  const globalId = 25;
 
   useEffect(() => {
     const fetchUserData = async (_id) => {
