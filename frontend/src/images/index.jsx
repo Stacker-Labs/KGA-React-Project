@@ -4,6 +4,7 @@ import Notion_icon from "./notion.png";
 import Js_icon from "./js_icon.png";
 import Notion_white from "./notion-logo-white.png";
 import No_Profile from "./blank-profile-picture.webp";
+import Not_Found from "./404.jpg";
 
 export {
   Search_icon,
@@ -12,4 +13,5 @@ export {
   Js_icon,
   Notion_white,
   No_Profile,
+  Not_Found,
 };

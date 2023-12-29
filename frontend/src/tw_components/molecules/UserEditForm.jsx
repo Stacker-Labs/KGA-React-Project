@@ -87,7 +87,7 @@ const UserEditForm = ({ userid }) => {
       console.log(result);
       // reset form?
       if (result) {
-        updateUser(userid);
+        updateUser();
         alert(`Your info has been updated.`);
         navigate(`/users/${userid}`);
       }

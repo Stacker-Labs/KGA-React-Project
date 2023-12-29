@@ -171,7 +171,7 @@ const User = () => {
       setIsFollowed(false);
     }
 
-    updateUser(globalId);
+    updateUser();
   };
 
   return (

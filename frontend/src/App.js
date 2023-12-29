@@ -21,6 +21,7 @@ import Logout from "./pages/auth/Logout";
 import { useRecoilValue } from "recoil";
 import { darkModeState } from "./recoil/darkmode";
 import { useEffect } from "react";
+import NotFound from "./pages/NotFound";
 
 function App() {
   useResetMenu();
@@ -59,6 +60,7 @@ function App() {
             <Route path="logout" element={<Logout />} />
           </Route>
           <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </>
