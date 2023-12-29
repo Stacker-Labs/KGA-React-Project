@@ -91,9 +91,9 @@ const HandleScroll = ({ postId }) => {
           const updatedLikeData = await response.json();
           setLikeCount(updatedLikeData.likes.length);
           setIsLiked(
-            updatedLikeData.likes.some((like) => like.userId === userId)
+            updatedLikeData.likes[0].some((like) => like.id === userId)
           );
-          console.log(postId);
+          console.log(userId);
           console.log(updatedLikeData);
         } else {
           console.error("좋아요 상태 전환 실패");
