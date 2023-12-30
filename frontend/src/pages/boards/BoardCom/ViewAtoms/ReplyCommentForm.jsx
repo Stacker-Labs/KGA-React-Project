@@ -90,7 +90,9 @@ const ReplyCommentForm = ({
   return (
     <div className="">
       <div className="flex flex-row justify-between">
-        <div className="font-style: italic text-base">{userNickname}</div>
+        <div className="font-style: italic text-base mx-[auto]">
+          {userNickname}
+        </div>
         <span></span>
       </div>
 

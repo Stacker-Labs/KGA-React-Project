@@ -11,7 +11,7 @@ const ReplyCommentList = ({ replyCommentList }) => {
       {replyCommentList?.map((replyComment, idx) => (
         <div
           key={`reply-comment-${idx}`}
-          className="p-[5px] flex flex-row bg-slate-50"
+          className="p-[5px] flex flex-row bg-slate-50 text-current"
         >
           <SlActionUndo className="text-sm mx-[5px] rotate-180" />
           <div className="font-style: italic text-base ">{userNickname} :</div>
