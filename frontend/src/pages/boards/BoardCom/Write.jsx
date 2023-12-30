@@ -1,44 +1,12 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { Box } from "@mui/material";
-import { Input } from "@mui/material";
-import WritePageBottom from "./WriteAtoms/WritePageBottom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/userState";
 import TagPage from "./WriteAtoms/TagPage";
-
-const WriteWrap = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 5px;
-  position: relative;
-  height: 1200px;
-`;
-
-const BoardTitle = styled(Box)`
-  margin: 0 auto;
-  width: 1100px;
-  height: 100px;
-`;
-
-const InputTitle = styled(Input)`
-  width: 100%;
-  padding: 30px 20px;
-  background-color: white;
-  border-radius: 10px;
-`;
-
-const isDarkMode = true;
-
-const BoardConntent = styled(Box)`
-  width: 1100px;
-  margin: 0 auto;
-  /* border: 1px solid black; */
-  height: 800px;
-`;
+import { cn } from "../../../utils/cn";
+import Button from "../../../tw_components/atoms/Buttons";
+import { darkModeState } from "../../../recoil/darkmode";
 
 const Write = () => {
   const [title, setTitle] = useState("");
@@ -48,6 +16,8 @@ const Write = () => {
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
   const userId = userInfo?.user?.id || "";
+  const darkMode = useRecoilValue(darkModeState);
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -91,31 +61,39 @@ const Write = () => {
     }
   };
   return (
-    <div className="flex flex-row">
+    <div
+      className={cn(
+        "flex flex-col w-full px-40 gap-3 py-5",
+        darkMode ? "dark" : ""
+      )}
+    >
+      <div className="border-b outline-none ">
+        <input
+          type="text"
+          placeholder="New post title here..."
+          value={title}
+          onChange={handleTitleChange}
+          className="border-none w-full pl-3 dark:bg-transparent outline-none p-3 tex-xl"
+        />
+      </div>
       <TagPage
         tagList={tagList}
         setTagList={setTagList}
         value={tags}
         onChange={handleTagsChange}
       />
-      <WriteWrap>
-        <BoardTitle>
-          <InputTitle
-            type="text"
-            className="boardTitle"
-            placeholder="제목을 입력해주세요"
-            value={title}
-            darkMode={isDarkMode}
-            onChange={handleTitleChange}
-          />
-        </BoardTitle>
+      <div>
+        <TinyMCEEditor value={content} onChange={handleContentChange} />
+      </div>
 
-        <BoardConntent>
-          <TinyMCEEditor value={content} onChange={handleContentChange} />
-        </BoardConntent>
-
-        <WritePageBottom handleSave={handleSave} disabled={!title} />
-      </WriteWrap>
+      <Button
+        variant={"blue"}
+        size={"md"}
+        onClick={handleSave}
+        disabled={!title}
+      >
+        Publish
+      </Button>
     </div>
   );
 };
