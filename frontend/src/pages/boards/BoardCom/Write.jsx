@@ -28,6 +28,7 @@ const InputTitle = styled(Input)`
   width: 100%;
   padding: 30px 20px;
   background-color: white;
+  border-radius: 10px;
 `;
 
 const isDarkMode = true;
