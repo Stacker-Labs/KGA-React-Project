@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Comment from "./Comment";
 
-const CommentList = ({ id, commentList, setCommentList, page }) => {
+const CommentList = ({ id, commentList, setCommentList }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
