@@ -9,10 +9,7 @@ const ReplyCommentList = ({ replyCommentList }) => {
   return (
     <div className="flex flex-col justify-center">
       {replyCommentList?.map((replyComment, idx) => (
-        <div
-          key={`reply-comment-${idx}`}
-          className="p-[5px] flex flex-row bg-slate-50"
-        >
+        <div key={`reply-comment-${idx}`} className="p-[5px] flex flex-row ">
           <SlActionUndo className="text-sm mx-[5px] rotate-180" />
           <div className="font-style: italic text-base  text-black">
             {userNickname} :
