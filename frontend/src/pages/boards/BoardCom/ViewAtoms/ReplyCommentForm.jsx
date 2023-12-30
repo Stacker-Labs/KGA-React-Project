@@ -96,13 +96,16 @@ const ReplyCommentForm = ({
         <span></span>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex justify-center m-5">
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center m-5 bg-neutral-100 text-black"
+      >
         <textarea
           type="text"
           value={newReplyComment}
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요..."
-          className="w-[500px]  p-[10px] resize-none rounded-md bg-neutral-100 text-black"
+          className="w-[500px]  p-[10px] resize-none rounded-md "
         />
         <button
           type="submit"
