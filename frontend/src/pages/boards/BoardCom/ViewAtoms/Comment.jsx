@@ -11,7 +11,7 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
-  // const [replyContent, setReplyContent] = useState("");
+  const [replyContent, setReplyContent] = useState("");
   const [replyCommentList, setReplyCommentList] = useState([]);
   const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
@@ -168,16 +168,18 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
             <div className="w-[90%] h-[100%] my-[5px] flex flex-col ">
               <button onClick={handleReplyMode}>댓글 닫기</button>
               <div className="my-[5px]">
+                <ReplyCommentForm
+                  id={id}
+                  replyCommentList={replyCommentList}
+                  setReplyCommentList={setReplyCommentList}
+                  replyContent={replyContent}
+                  onChangeReply={(e) => setReplyContent(e.target.value)}
+                />
                 <ReplyCommentList
                   id={id}
                   replyCommentList={replyCommentList}
                   setReplyCommentList={setReplyCommentList}
                   page={page}
-                />
-                <ReplyCommentForm
-                  id={id}
-                  replyCommentList={replyCommentList}
-                  setReplyCommentList={setReplyCommentList}
                 />
               </div>
             </div>

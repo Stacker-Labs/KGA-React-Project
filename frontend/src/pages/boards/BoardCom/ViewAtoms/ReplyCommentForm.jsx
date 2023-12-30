@@ -8,7 +8,6 @@ const ReplyCommentForm = ({
   replyCommentList,
   setReplyCommentsLength,
   replyCommentsLength,
-  parentCommentId,
 }) => {
   const [newReplyComment, setNewReplyComment] = useState("");
 
@@ -32,7 +31,7 @@ const ReplyCommentForm = ({
           credentials: "include",
           body: JSON.stringify({
             content: newReplyComment,
-            parentCommentId: parentCommentId,
+            parentCommentId: null,
           }),
         }
       );
@@ -40,7 +39,7 @@ const ReplyCommentForm = ({
       if (response.ok) {
         const result = await response.json();
 
-        console.log("댓글이 성공적으로 작성되었습니다.", result);
+        console.log("대댓글이 성공적으로 작성되었습니다.", result);
         // console.log("댓글수@@@", result.commentLength);
         setReplyCommentList([result, ...replyCommentList]);
         setReplyCommentsLength(replyCommentsLength + 1);
@@ -102,11 +101,11 @@ const ReplyCommentForm = ({
           value={newReplyComment}
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요..."
-          className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100 text-black"
+          className="w-[500px]  p-[10px] resize-none rounded-md bg-neutral-100 text-black"
         />
         <button
           type="submit"
-          className="bg-sky-600	p-[15px] rounded-md  hover:bg-sky-400"
+          className="bg-sky-600	p-[10px] rounded-md  hover:bg-sky-400"
         >
           <p className="text-white  mx-auto">등록</p>
         </button>

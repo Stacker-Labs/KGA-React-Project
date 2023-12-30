@@ -6,7 +6,7 @@ const ReplyCommentList = ({
   setReplyCommentList,
   page,
 }) => {
-  const [currentPage, setCurrentPage] = useState(page);
+  const [currentPage, setCurrentPage] = useState(1);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
 
