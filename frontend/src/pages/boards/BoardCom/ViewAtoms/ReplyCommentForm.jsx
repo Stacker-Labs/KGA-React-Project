@@ -8,6 +8,7 @@ const ReplyCommentForm = ({
   replyCommentList,
   setReplyCommentsLength,
   replyCommentsLength,
+  parentCommentId,
 }) => {
   const [newReplyComment, setNewReplyComment] = useState("");
 
@@ -31,7 +32,7 @@ const ReplyCommentForm = ({
           credentials: "include",
           body: JSON.stringify({
             content: newReplyComment,
-            parentCommentId: null,
+            parentCommentId: parentCommentId,
           }),
         }
       );

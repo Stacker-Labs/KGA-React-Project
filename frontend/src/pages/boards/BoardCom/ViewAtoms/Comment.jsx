@@ -173,6 +173,7 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
                   replyCommentList={replyCommentList}
                   setReplyCommentList={setReplyCommentList}
                   replyContent={replyContent}
+                  parentCommentId={comment.id}
                   onChangeReply={(e) => setReplyContent(e.target.value)}
                 />
                 <ReplyCommentList
