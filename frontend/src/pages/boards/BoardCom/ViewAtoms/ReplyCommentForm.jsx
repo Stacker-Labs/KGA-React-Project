@@ -10,7 +10,9 @@ const ReplyCommentForm = ({
   parentCommentId,
 }) => {
   const [newReplyComment, setNewReplyComment] = useState("");
-  const [replyCommentList, setReplyCommentList] = useState(userCommentList);
+  const [replyCommentList, setReplyCommentList] = useState([
+    ...userCommentList,
+  ]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
