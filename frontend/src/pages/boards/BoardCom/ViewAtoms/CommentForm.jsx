@@ -43,7 +43,10 @@ const CommentForm = ({
         console.log("댓글이 성공적으로 작성되었습니다.", result);
         console.log("댓글수@@@", result.commentLength);
 
-        setCommentList([result, ...commentList]);
+        setCommentList([
+          { ...result, parentComment: null, user: null, comments: [] },
+          ...commentList,
+        ]);
         setCommentsLength(commentsLength + 1);
         setNewComment("");
       } else {
