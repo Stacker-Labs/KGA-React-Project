@@ -45,6 +45,7 @@ const ReplyCommentForm = ({
         console.log("대댓글이 성공적으로 작성되었습니다.", result);
         // console.log("댓글수@@@", result.commentLength);
         setReplyCommentList([result, ...replyCommentList]);
+
         setReplyCommentsLength(replyCommentsLength + 1);
         setNewReplyComment("");
       } else {
@@ -54,6 +55,7 @@ const ReplyCommentForm = ({
       console.error("Error fetching user information:", error);
     }
   };
+  console.log(replyCommentList);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
