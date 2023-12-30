@@ -4,13 +4,13 @@ import { userState } from "../../../../recoil/userState";
 
 const ReplyCommentForm = ({
   id,
-  setReplyCommentList,
-  replyCommentList,
+  userCommentList,
   setReplyCommentsLength,
   replyCommentsLength,
   parentCommentId,
 }) => {
   const [newReplyComment, setNewReplyComment] = useState("");
+  const [replyCommentList, setReplyCommentList] = useState(userCommentList);
 
   const handleInputChange = (e) => {
     const value = e.target.value;

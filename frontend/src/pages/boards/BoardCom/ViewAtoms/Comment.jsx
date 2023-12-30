@@ -12,7 +12,7 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
   const [replyContent, setReplyContent] = useState("");
-  const [replyCommentList, setReplyCommentList] = useState([]);
+
   const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
@@ -170,18 +170,12 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
               <div className="my-[5px]">
                 <ReplyCommentForm
                   id={id}
-                  replyCommentList={replyCommentList}
-                  setReplyCommentList={setReplyCommentList}
+                  userCommentList={comment.comments}
                   replyContent={replyContent}
                   parentCommentId={comment.id}
                   onChangeReply={(e) => setReplyContent(e.target.value)}
                 />
-                <ReplyCommentList
-                  id={id}
-                  replyCommentList={replyCommentList}
-                  setReplyCommentList={setReplyCommentList}
-                  page={page}
-                />
+                <ReplyCommentList replyCommentList={comment.comments} />
               </div>
             </div>
           ) : (
