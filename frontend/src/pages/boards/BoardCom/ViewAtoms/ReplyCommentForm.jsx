@@ -4,16 +4,17 @@ import { userState } from "../../../../recoil/userState";
 
 const ReplyCommentForm = ({
   id,
-  setCommentList,
-  commentList,
-  setCommentsLength,
-  commentsLength,
+  setReplyCommentList,
+  replyCommentList,
+  setReplyCommentsLength,
+  replyCommentsLength,
+  parentCommentId,
 }) => {
-  const [newComment, setNewComment] = useState("");
+  const [newReplyComment, setNewReplyComment] = useState("");
 
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setNewComment(value);
+    setNewReplyComment(value);
   };
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
@@ -30,8 +31,8 @@ const ReplyCommentForm = ({
           },
           credentials: "include",
           body: JSON.stringify({
-            content: newComment,
-            parentCommentId: null,
+            content: newReplyComment,
+            parentCommentId: parentCommentId,
           }),
         }
       );
@@ -41,9 +42,9 @@ const ReplyCommentForm = ({
 
         console.log("댓글이 성공적으로 작성되었습니다.", result);
         // console.log("댓글수@@@", result.commentLength);
-        setCommentList([result, ...commentList]);
-        setCommentsLength(commentsLength + 1);
-        setNewComment("");
+        setReplyCommentList([result, ...replyCommentList]);
+        setReplyCommentsLength(replyCommentsLength + 1);
+        setNewReplyComment("");
       } else {
         console.error("서버 응답 에러:", response.status);
       }
@@ -59,13 +60,13 @@ const ReplyCommentForm = ({
       return;
     }
 
-    if (newComment.trim() === "") {
+    if (newReplyComment.trim() === "") {
       alert("댓글을 입력하세요.");
       return;
     }
 
     const forbiddenWords = ["병신", "비속어1", "비속어2", "강수빈"];
-    const lowerCaseComment = newComment.toLowerCase();
+    const lowerCaseComment = newReplyComment.toLowerCase();
 
     const foundForbiddenWord = forbiddenWords.some((word) =>
       lowerCaseComment.includes(word.toLowerCase())
@@ -77,7 +78,7 @@ const ReplyCommentForm = ({
 
     try {
       const result = await fetchUserInformation();
-      setNewComment("");
+      setNewReplyComment("");
 
       if (result) {
         console.log("서버 응답 결과:", result);
@@ -98,7 +99,7 @@ const ReplyCommentForm = ({
       <form onSubmit={handleSubmit} className="flex justify-center m-5">
         <textarea
           type="text"
-          value={newComment}
+          value={newReplyComment}
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요..."
           className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100 text-black"

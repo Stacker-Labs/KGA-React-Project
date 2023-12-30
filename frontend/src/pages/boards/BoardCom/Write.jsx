@@ -27,6 +27,7 @@ const BoardTitle = styled(Box)`
 const InputTitle = styled(Input)`
   width: 100%;
   padding: 30px 20px;
+  color: ${(props) => (props.darkMode ? "white" : "black")};
 `;
 
 const isDarkMode = true;
