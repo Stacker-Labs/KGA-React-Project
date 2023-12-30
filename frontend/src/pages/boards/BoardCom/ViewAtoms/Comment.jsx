@@ -3,21 +3,20 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 import ReplyCommentForm from "./ReplyCommentForm";
 import ReplyCommentList from "./ReplyCommentList";
-// import { useParams } from "react-router-dom";
 
-// const Token = process.env.REACT_APP_TOKEN;
-//    Authorization: `Bearer ${Token}`,
 const Comment = ({ comment, id, setCommentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [replyCommentList, setReplyCommentList] = useState(comment.comments);
+  const [replyCommentLength, setReplyCommentLength] = useState(
+    comment.comments.length
+  );
 
   // const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
-  // const params = useParams();
 
   const handleUpdateMode = () => {
     setUpdateMode(!updateMode);
@@ -69,6 +68,7 @@ const Comment = ({ comment, id, setCommentList }) => {
       );
       const updatedCommentResult = await commentUpdateResponse.json();
       setCommentList(updatedCommentResult.boardComments[0]);
+
       setUpdateMode(false);
     } catch (error) {
       console.error("댓글 수정중 에러:", error);
@@ -122,6 +122,10 @@ const Comment = ({ comment, id, setCommentList }) => {
             <div className="w-[90%] h-[100%] my-[5px] ">
               <button onClick={handleReplyMode}>닫기</button>
               <div className="my-[5px]">
+                <ReplyCommentList
+                  replyCommentList={replyCommentList}
+                  setReplyCommentList={setReplyCommentList}
+                />
                 <ReplyCommentForm
                   id={id}
                   replyContent={replyContent}
@@ -129,15 +133,14 @@ const Comment = ({ comment, id, setCommentList }) => {
                   onChangeReply={(e) => setReplyContent(e.target.value)}
                   replyCommentList={replyCommentList}
                   setReplyCommentList={setReplyCommentList}
-                />
-                <ReplyCommentList
-                  replyCommentList={replyCommentList}
-                  setReplyCommentList={setReplyCommentList}
+                  setReplyCommentLength={setReplyCommentLength}
                 />
               </div>
             </div>
           ) : (
-            <button onClick={handleReplyMode}>댓글</button>
+            <button onClick={handleReplyMode}>
+              댓글({replyCommentLength})
+            </button>
           )}
         </div>
       }

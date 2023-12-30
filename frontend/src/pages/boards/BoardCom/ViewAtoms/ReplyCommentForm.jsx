@@ -4,7 +4,6 @@ import { userState } from "../../../../recoil/userState";
 
 const ReplyCommentForm = ({
   id,
-
   parentCommentId,
   replyCommentList,
   setReplyCommentList,
@@ -40,7 +39,7 @@ const ReplyCommentForm = ({
         const result = await response.json();
 
         console.log("대댓글이 성공적으로 작성되었습니다.", result);
-        // console.log("댓글수@@@", result.commentLength);
+
         setReplyCommentList([result, ...replyCommentList]);
 
         setNewReplyComment("");
@@ -51,7 +50,6 @@ const ReplyCommentForm = ({
       console.error("Error fetching user information:", error);
     }
   };
-  console.log(replyCommentList);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

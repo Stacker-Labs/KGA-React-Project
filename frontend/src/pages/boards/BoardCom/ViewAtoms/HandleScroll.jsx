@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaRegMessage } from "react-icons/fa6";
+import { TiArrowUpOutline } from "react-icons/ti";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { Box } from "@mui/material";
@@ -25,7 +25,7 @@ const TopBtn = styled(Button)`
   color: #7d89d1 !important;
 `;
 
-const IconCom = styled(FaRegMessage)`
+const IconCom = styled(TiArrowUpOutline)`
   font-size: 50px;
   cursor: pointer;
 `;
