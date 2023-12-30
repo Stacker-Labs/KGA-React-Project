@@ -128,7 +128,7 @@ const Comment = ({ comment, id, setCommentList }) => {
         <p className="font-style: italic text-base">
           {comment?.user?.nickname}
         </p>
-        {!comment.deleted && userId === comment.user.id && (
+        {!comment?.deleted && userId === comment?.user?.id && (
           <div className="gap-2">
             <button
               className="border-4 p-[5px] bg-slate-600 text-white text-xs"
