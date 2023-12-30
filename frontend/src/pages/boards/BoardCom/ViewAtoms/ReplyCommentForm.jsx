@@ -4,9 +4,7 @@ import { userState } from "../../../../recoil/userState";
 
 const ReplyCommentForm = ({
   id,
-  userCommentList,
-  setReplyCommentsLength,
-  replyCommentsLength,
+
   parentCommentId,
   replyCommentList,
   setReplyCommentList,
@@ -45,7 +43,6 @@ const ReplyCommentForm = ({
         // console.log("댓글수@@@", result.commentLength);
         setReplyCommentList([result, ...replyCommentList]);
 
-        setReplyCommentsLength(replyCommentsLength + 1);
         setNewReplyComment("");
       } else {
         console.error("서버 응답 에러:", response.status);
@@ -93,7 +90,7 @@ const ReplyCommentForm = ({
   };
 
   return (
-    <div className="border p-5">
+    <div className="">
       <div className="flex flex-row justify-between">
         <div className="font-style: italic text-base">{userNickname}</div>
         <span></span>
