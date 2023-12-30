@@ -14,7 +14,7 @@ const ReplyCommentList = ({
     const fetchReplyComments = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_SERVER}/boards/${id}/comments/${currentPage}`,
+          `${process.env.REACT_APP_API_SERVER}/boards/${id}/${currentPage}`,
           {
             method: "GET",
             credentials: "include",

@@ -168,16 +168,16 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
             <div className="w-[90%] h-[100%] my-[5px] flex flex-col ">
               <button onClick={handleReplyMode}>댓글 닫기</button>
               <div className="my-[5px]">
-                <ReplyCommentForm
-                  id={id}
-                  replyCommentList={replyCommentList}
-                  setReplyCommentList={setReplyCommentList}
-                />
                 <ReplyCommentList
                   id={id}
                   replyCommentList={replyCommentList}
                   setReplyCommentList={setReplyCommentList}
                   page={page}
+                />
+                <ReplyCommentForm
+                  id={id}
+                  replyCommentList={replyCommentList}
+                  setReplyCommentList={setReplyCommentList}
                 />
               </div>
             </div>
