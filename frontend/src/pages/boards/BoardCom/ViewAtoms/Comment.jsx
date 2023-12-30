@@ -7,11 +7,18 @@ import ReplyCommentList from "./ReplyCommentList";
 
 // const Token = process.env.REACT_APP_TOKEN;
 //    Authorization: `Bearer ${Token}`,
-const Comment = ({ comment, id, setCommentList, commentList }) => {
+const Comment = ({
+  comment,
+  id,
+  setCommentList,
+  replyCommentList,
+  setReplyCommentList,
+}) => {
   const [updateMode, setUpdateMode] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const [replyMode, setReplyMode] = useState(false);
   const [replyContent, setReplyContent] = useState("");
+  const [replyCommentList, setReplyCommentList] = useState(comment.comments);
 
   const [page, setPage] = useState(1);
   const userInfo = useRecoilValue(userState);
@@ -170,12 +177,16 @@ const Comment = ({ comment, id, setCommentList, commentList }) => {
               <div className="my-[5px]">
                 <ReplyCommentForm
                   id={id}
-                  userCommentList={comment.comments}
                   replyContent={replyContent}
                   parentCommentId={comment.id}
                   onChangeReply={(e) => setReplyContent(e.target.value)}
+                  replyCommentList={replyCommentList}
+                  setReplyCommentList={setReplyCommentList}
                 />
-                <ReplyCommentList replyCommentList={comment.comments} />
+                <ReplyCommentList
+                  replyCommentList={replyCommentList}
+                  setReplyCommentList={setReplyCommentList}
+                />
               </div>
             </div>
           ) : (
