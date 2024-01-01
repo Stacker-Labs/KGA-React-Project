@@ -21,11 +21,11 @@ const Following = ({ className, opener, closer, user }) => {
                   <img width="40px" src={target?.image || No_Profile} />
                 </Link>
                 <Link to={`/users/${target.id}`}>
-                  <span className="text-xl">{target.nickname}</span>
+                  <span className="text-xl">{target?.nickname}</span>
                 </Link>
-                <Button size={"md"} variant={"blue"}>
+                {/* <Button size={"md"} variant={"blue"}>
                   {false ? "Unfollow" : "Follow"}
-                </Button>
+                </Button> */}
               </div>
             );
           })
