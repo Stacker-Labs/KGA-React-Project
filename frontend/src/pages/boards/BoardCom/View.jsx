@@ -146,6 +146,7 @@ const View = () => {
 
   const formattedDate = new Date(viewContent.createdAt).toLocaleDateString(
     "ko-KR",
+
     {
       timeZone: "Asia/Seoul",
       year: "numeric",

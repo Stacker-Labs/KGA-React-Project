@@ -116,6 +116,7 @@ const Comment = ({ comment, id, setCommentList }) => {
       ) : (
         <div className="p-[5px]"> {comment.content}</div>
       )}
+
       {
         <div className="p-[10px]">
           {replyMode ? (

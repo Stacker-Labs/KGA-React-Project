@@ -45,7 +45,7 @@ const TinyMCEEditor = ({ value, onChange }) => {
         force_p_newlines: false,
         forced_root_block: "",
 
-        height: "800",
+        height: "900",
         setup: (editor) => {
           editor.on("init", () => {
             editor.setContent(value);
