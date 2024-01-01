@@ -22,15 +22,16 @@ import { useRecoilValue } from "recoil";
 import { darkModeState } from "./recoil/darkmode";
 import { useEffect } from "react";
 import NotFound from "./pages/NotFound";
+import useRenewCookie from "./hooks/useRenewCookie";
 
 function App() {
+  useRenewCookie(10000);
   useResetMenu();
 
   const darkMode = useRecoilValue(darkModeState);
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
-
     return () => {
       document.body.classList.remove("dark");
     };
