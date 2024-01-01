@@ -41,7 +41,7 @@ const User = () => {
         console.log(response);
         if (response.status === 400 || response.status === 404) {
           alert("This user does not exist.");
-          return navigate(`/users/${id}`);
+          return navigate(`/`);
         }
         const { user: data } = await response.json();
         console.log(data);

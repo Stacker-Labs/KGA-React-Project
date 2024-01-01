@@ -17,6 +17,7 @@ export const ButtonVariants = cva(
         grey: " bg-slate-buttongrey ",
         blue: " bg-accent-blue text-white",
         white: "bg-white border border-accent-blue text-accent-blue",
+        red: "bg-red-500 dark:bg-red-500",
       },
       size: {
         default: "",

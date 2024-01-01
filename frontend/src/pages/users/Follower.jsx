@@ -23,9 +23,9 @@ const Follower = ({ className, opener, closer, user }) => {
                 <Link to={`/users/${target?.id}`}>
                   <span className="text-xl">{target?.nickname}</span>
                 </Link>
-                <Button size={"md"} variant={"blue"}>
+                {/* <Button size={"md"} variant={"blue"}>
                   {false ? "Unfollow" : "Follow"}
-                </Button>
+                </Button> */}
               </div>
             );
           })

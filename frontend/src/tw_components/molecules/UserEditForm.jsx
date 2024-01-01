@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { UserEditRequest } from "../../pages/users/dto/UserEditDTO";
 import { useUpdateUserState } from "../../hooks/useUpdateUserState";
 import { No_Profile } from "../../images";
+import { logoutFunc } from "../../pages/auth/Logout";
+import { useResetRecoilState } from "recoil";
+import { userState } from "../../recoil/userState";
 
 const UserEditForm = ({ userid }) => {
   const navigate = useNavigate();
@@ -17,6 +20,7 @@ const UserEditForm = ({ userid }) => {
   const [confirmed, setConfirmed] = useState("");
   const [error, setError] = useState("");
   const updateUser = useUpdateUserState();
+  const resetUserState = useResetRecoilState(userState);
 
   useEffect(() => {
     const initUpdateForm = async () => {
@@ -78,7 +82,8 @@ const UserEditForm = ({ userid }) => {
       // reset form?
       if (result) {
         updateUser();
-        navigate("/");
+        alert("Your info has been updated.");
+        navigate(`/users/${userid}`);
       }
       // toastify
     } catch (e) {
@@ -89,7 +94,7 @@ const UserEditForm = ({ userid }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if ((provider === 'LOCAL') && (password !== confirmed)) {
+    if (provider === "LOCAL" && password !== confirmed) {
       setError("Passwords do not match!");
       return;
     }
@@ -97,6 +102,34 @@ const UserEditForm = ({ userid }) => {
     setError("");
 
     update();
+  };
+
+  const deleteUser = async () => {
+    const willDelete = window.confirm(
+      "Do you really want to delete your account?"
+    );
+    if (!willDelete) return;
+    try {
+      const response = await fetch(`https://api.subin.kr/users/${userid}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const result = await response.json();
+      console.log("is deleted?", result);
+      if (result.statusCode === 200) {
+        // await logoutFunc()
+        resetUserState();
+        alert("Your account has been deleted. Goodbye!");
+        navigate(`/`);
+      } else {
+        alert("Invalid Access.");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -130,12 +163,11 @@ const UserEditForm = ({ userid }) => {
           value={nickname}
         />
         <textarea
-          cols={49}
           rows={10}
           onChange={(e) => setBio(e.target.value)}
           type="text"
           placeholder="Bio"
-          className="rounded-xl p-2 text-accent-blue resize-none"
+          className="w-[94%] rounded-xl p-4 text-accent-blue resize-none"
           value={bio}
         />
         {provider === "LOCAL" && (
@@ -159,6 +191,14 @@ const UserEditForm = ({ userid }) => {
         </Button>
         {error && <div className="text-lg text-red-600">{error}</div>}
       </form>
+      <Button
+        variant={"red"}
+        size={"sign"}
+        className={`bg-red-500 dark:bg-red-500`}
+        onClick={deleteUser}
+      >
+        <span className="text-white">Delete (Warning)</span>
+      </Button>
     </div>
   );
 };

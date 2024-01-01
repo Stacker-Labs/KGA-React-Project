@@ -52,7 +52,10 @@ const RegisterForm = () => {
       const result = await response.json();
       console.log("is registered?", result);
       // reset form?
-      if (result) navigate("/");
+      if (result) {
+        alert("Registration completed.");
+        navigate("/auth");
+      }
       // toastify
     } catch (e) {
       console.log(e);
