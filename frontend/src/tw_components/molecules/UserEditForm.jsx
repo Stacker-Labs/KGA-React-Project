@@ -124,7 +124,7 @@ const UserEditForm = ({ userid }) => {
       } else if (result.statusCode === 404) {
         alert("Cannot delete a nonexistent user.");
       } else {
-        // await logoutFunc()
+        await logoutFunc();
         resetUserState();
         alert("Your account has been deleted. Goodbye!");
         navigate(`/`);
