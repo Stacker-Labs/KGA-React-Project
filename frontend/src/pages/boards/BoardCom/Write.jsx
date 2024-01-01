@@ -31,7 +31,7 @@ const Write = () => {
   }, []);
 
   const handleSave = async () => {
-    const confirmed = window.confirm("Would you like to register?");
+    const confirmed = window.confirm("Would you like to post?");
     if (!userId) {
       alert("로그인이 필요합니다.");
       return;
@@ -63,7 +63,7 @@ const Write = () => {
   return (
     <div
       className={cn(
-        "flex flex-col w-full px-40 gap-3 py-5",
+        "flex flex-col w-full h-screen px-40 gap-3 py-5",
         darkMode ? "dark" : ""
       )}
     >
