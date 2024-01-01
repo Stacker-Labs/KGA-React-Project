@@ -119,13 +119,15 @@ const UserEditForm = ({ userid }) => {
       });
       const result = await response.json();
       console.log("is deleted?", result);
-      if (result.statusCode === 200) {
+      if (result.statusCode === 401 || result.statusCode === 403) {
+        alert("Invalid Access.");
+      } else if (result.statusCode === 404) {
+        alert("Cannot delete a nonexistent user.");
+      } else {
         // await logoutFunc()
         resetUserState();
         alert("Your account has been deleted. Goodbye!");
         navigate(`/`);
-      } else {
-        alert("Invalid Access.");
       }
     } catch (e) {
       console.log(e);
