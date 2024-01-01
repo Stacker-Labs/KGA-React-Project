@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
+import Button from "../../../../tw_components/atoms/Buttons";
 //Authorization: `Bearer ${Token}`,
 // const Token = process.env.REACT_APP_TOKEN;
 const CommentForm = ({
@@ -17,6 +18,7 @@ const CommentForm = ({
     setNewComment(value);
   };
   const userInfo = useRecoilValue(userState);
+
   const userId = userInfo?.user?.id;
   const userNickname = userInfo?.user?.nickname;
 
@@ -92,26 +94,19 @@ const CommentForm = ({
   };
 
   return (
-    <div className="border p-5">
-      <div className="flex flex-row justify-between">
-        <div className="font-style: italic text-base">{userNickname}</div>
-        <span></span>
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex justify-center m-5">
+    <div className="border flex flex-row justify-evenly items-center w-full gap-5 py-3">
+      <div className=" w-[10%] italic text-base">{userNickname}</div>
+      <form onSubmit={handleSubmit} className="w-[80%] flex flex-row gap-8">
         <textarea
           type="text"
           value={newComment}
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요..."
-          className="w-[800px]  p-[10px] resize-none rounded-md bg-neutral-100 text-black"
+          className="border w-[800px] rounded-md resize-none bg-transparent text-black outline-none p-2"
         />
-        <button
-          type="submit"
-          className="bg-sky-600	p-[15px] rounded-md  hover:bg-sky-400"
-        >
-          <p className="text-white  mx-auto">등록</p>
-        </button>
+        <Button variant={"blue"} size={"md"}>
+          Submit
+        </Button>
       </form>
     </div>
   );

@@ -1,48 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { Box } from "@mui/material";
-import MUIButton from "../../../components/atoms/Button";
 import HandleScroll from "./ViewAtoms/HandleScroll";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import CommentList from "./ViewAtoms/CommentsList";
 import CommentForm from "./ViewAtoms/CommentForm";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/userState";
-
-const ViewPageWrap = styled(Box)`
-  margin: 0;
-  padding: 0;
-
-  height: 100%;
-`;
-const ViewPageMain = styled(Box)`
-  width: 1200px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  padding: 10px;
-  margin: 0 auto;
-`;
-
-const ViewTitle = styled(Box)`
-  font-size: 50px;
-  padding: 50px;
-  width: 100%;
-`;
-
-const StyledMUIButton = styled(Box)`
-  display: flex;
-  justify-content: end;
-  margin-top: 20px;
-  padding: 5px;
-`;
-const IconBox = styled(Box)`
-  margin: 0 auto;
-  width: 1400px;
-  height: 100%;
-`;
+import { cn } from "../../../utils/cn";
+import { No_Profile } from "../../../images";
+import Button from "../../../tw_components/atoms/Buttons";
 
 const View = () => {
   const [viewContent, setViewContent] = useState({});
@@ -165,65 +130,88 @@ const View = () => {
 
   //   return () => clearTimeout(timer);
   // }, []);
+  console.log(viewContent);
 
   return (
-    <>
-      <div className="w-[100%] flex flex-col">
-        <ViewPageWrap>
-          <IconBox>
-            <HandleScroll
-              userId={userId}
-              postId={params.id}
-              isLiked={isLiked}
-              setIsLiked={setIsLiked}
-            />
-            <ViewPageMain>
-              <ViewTitle>{viewContent.title}</ViewTitle>
-              <h6>
-                {viewContent.user?.nickname} | {formattedDate}
-              </h6>
-              <div>
-                <ul>
-                  {viewContent.tags?.map((tag, idx) => (
-                    <li className="flex flex-row mx-[10px]" key={`tag-${idx}`}>
-                      #{tag.tag}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div ref={viewContentRef}></div>
-            </ViewPageMain>
-            <div>댓글{commentsLength}</div>
-            <CommentForm
-              id={params.id}
-              setCommentList={setCommentList}
-              commentList={commentList}
-              setCommentsLength={setCommentsLength}
-              commentsLength={commentsLength}
-            />
-            <CommentList
-              id={params.id}
-              commentList={commentList}
-              page={page}
-              setCommentList={setCommentList}
-            />
-          </IconBox>
-        </ViewPageWrap>
-
-        <StyledMUIButton>
-          {hasPermission && (
-            <>
-              <Link to={constructEditURL()}>
-                <MUIButton customType="social">수정</MUIButton>
-              </Link>
-              <div onClick={handleDelete}>
-                <MUIButton customType="local">삭제</MUIButton>
-              </div>
-            </>
-          )}
-        </StyledMUIButton>
+    <div
+      className={cn(
+        "flex flex-col w-full h-screen px-40 gap-5 py-8"
+        // darkMode ? "dark" : ""
+      )}
+    >
+      <div className="w-full flex flex-row justify-between items-center">
+        <div className="text-4xl">{viewContent.title}</div>
+        <HandleScroll
+          userId={userId}
+          postId={params.id}
+          isLiked={isLiked}
+          setIsLiked={setIsLiked}
+        />
       </div>
-    </>
+
+      <div className="flex flex-row gap-5 text-xl">
+        {viewContent.tags?.map((tag, idx) => (
+          <Link
+            key={`tag-${idx}`}
+            className="p-1 hover:border rounded-md border-accent-blue"
+            to={`/tags/${tag.tag}`}
+          >
+            # {tag.tag}
+          </Link>
+        ))}
+      </div>
+
+      <div className="flex flex-row border-b py-3">
+        <Link to={`/users/${viewContent?.user?.id}`}>
+          <img
+            src={viewContent?.user?.image || No_Profile}
+            className="w-[50px] h-[50px] rounded-3xl mobile:w-[45px] mobile:h-[45px]"
+            alt=""
+          />
+        </Link>
+        <div className="pl-4">
+          <p className="text-xl mobile:text-base">
+            <Link to={`/users/${viewContent?.user?.id}`}>
+              {viewContent?.user?.nickname}
+            </Link>
+          </p>
+          <p className="mobile:text-base">{formattedDate}</p>
+        </div>
+      </div>
+
+      <div ref={viewContentRef} className="p-4 text-lg"></div>
+      <div className="mt-5">댓글{commentsLength}</div>
+      <CommentForm
+        id={params.id}
+        setCommentList={setCommentList}
+        commentList={commentList}
+        setCommentsLength={setCommentsLength}
+        commentsLength={commentsLength}
+      />
+      <CommentList
+        id={params.id}
+        commentList={commentList}
+        page={page}
+        setCommentList={setCommentList}
+      />
+
+      {hasPermission && (
+        <div className="flex flex-row gap-3 m-auto py-5">
+          <Link to={constructEditURL()}>
+            <Button variant={"blue"} size={"md"}>
+              Edit
+            </Button>
+            {/* <MUIButton customType="social">수정</MUIButton> */}
+          </Link>
+          <div onClick={handleDelete}>
+            <Button variant={"blue"} size={"md"}>
+              Delete
+            </Button>
+            {/* <MUIButton customType="local">삭제</MUIButton> */}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
