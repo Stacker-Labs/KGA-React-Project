@@ -185,7 +185,9 @@ const View = () => {
               <div>
                 <ul>
                   {viewContent.tags?.map((tag, idx) => (
-                    <li key={`tag-${idx}`}>{tag.tag}</li>
+                    <li className="flex flex-row mx-[10px]" key={`tag-${idx}`}>
+                      #{tag.tag}
+                    </li>
                   ))}
                 </ul>
               </div>
