@@ -25,16 +25,13 @@ import NotFound from "./pages/NotFound";
 import useRenewCookie from "./hooks/useRenewCookie";
 
 function App() {
-  const { isError, isSuccess, error } = useRenewCookie(5000);
+  useRenewCookie(10000);
   useResetMenu();
 
   const darkMode = useRecoilValue(darkModeState);
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
-
-    console.log(`Cookie Status ${error}:${isError} Success:${isSuccess}`);
-
     return () => {
       document.body.classList.remove("dark");
     };

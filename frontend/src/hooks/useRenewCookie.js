@@ -18,13 +18,18 @@ const useRenewCookie = (interval = 3300000) => {
     console.log(result);
   };
 
-  const { mutate, isError, isSuccess, error } = useMutation(renewCookie);
+  const { mutate, isError, isSuccess, error } = useMutation({
+    mutationFn: renewCookie,
+    onSuccess: () => {
+      console.log("succeeded.");
+    },
+  });
 
   useEffect(() => {
     // Periodically renew the cookie
     const intervalId = setInterval(() => {
       mutate();
-      // console.log("Cookie Updated.", isError, isSuccess);
+      // console.log(`${error}:${isError}/${isSuccess}`);
     }, interval);
 
     return () => clearInterval(intervalId);
