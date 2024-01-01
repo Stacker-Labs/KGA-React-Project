@@ -15,10 +15,14 @@ const Following = ({ className, opener, closer, user }) => {
             return (
               <div
                 key={`following_${idx}`}
-                className="flex my-3 justify-between items-center w-[100%] gap-5"
+                className="flex my-3 justify-between w-[200px] items-center gap-5"
               >
                 <Link to={`/users/${target.id}`}>
-                  <img width="40px" src={target?.image || No_Profile} />
+                  <img
+                    className="rounded-full"
+                    width="40px"
+                    src={target?.image || No_Profile}
+                  />
                 </Link>
                 <Link to={`/users/${target.id}`}>
                   <span className="text-xl">{target?.nickname}</span>
