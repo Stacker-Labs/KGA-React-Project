@@ -34,6 +34,7 @@ const Write = () => {
     const confirmed = window.confirm("Would you like to post?");
     if (!userId) {
       alert("로그인이 필요합니다.");
+      navigate("/");
       return;
     }
     console.log(title);
