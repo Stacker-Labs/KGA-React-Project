@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import TinyMCEEditor from "./WriteAtoms/Editor";
 import { useRecoilValue } from "recoil";
@@ -17,6 +17,13 @@ const Write = () => {
   const navigate = useNavigate();
   const userId = userInfo?.user?.id || "";
   const darkMode = useRecoilValue(darkModeState);
+
+  useEffect(() => {
+    if (!userId) {
+      alert("로그인이 필요합니다");
+      navigate("/auth");
+    }
+  }, [navigate, userId]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
