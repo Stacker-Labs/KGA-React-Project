@@ -27,7 +27,7 @@ import useRenewCookie from "./hooks/useRenewCookie";
 function App() {
   const darkMode = useRecoilValue(darkModeState);
 
-  useRenewCookie(5000);
+  useRenewCookie();
   useResetMenu();
 
   useEffect(() => {
