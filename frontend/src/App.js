@@ -25,10 +25,10 @@ import NotFound from "./pages/NotFound";
 import useRenewCookie from "./hooks/useRenewCookie";
 
 function App() {
-  useRenewCookie(10000);
-  useResetMenu();
-
   const darkMode = useRecoilValue(darkModeState);
+
+  useRenewCookie(5000);
+  useResetMenu();
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
