@@ -10,12 +10,14 @@ import { userState } from "../../../../recoil/userState";
 
 const IconStyledWrap = styled(Box)`
   position: sticky;
-  display: grid;
+  /* display: grid; */
   top: 120px;
+  display: flex;
+  justify-content: flex-end;
 
   gap: 5;
   height: 100%;
-  float: right;
+  /* float: right; */
 `;
 const HeartBox = styled(Box)`
   margin-left: 5px;
