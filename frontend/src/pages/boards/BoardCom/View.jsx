@@ -41,11 +41,11 @@ const View = () => {
         }
       );
 
-      if (response.status === 401) {
-        alert("로그인이 필요합니다");
-        navigate("/auth");
-        return;
-      }
+      // if (response.status === 401) {
+      //   alert("로그인이 필요합니다");
+      //   navigate("/auth");
+      //   return;
+      // }
 
       const result = await response.json();
 
