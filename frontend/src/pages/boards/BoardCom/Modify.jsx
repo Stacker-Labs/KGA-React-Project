@@ -58,6 +58,13 @@ const Modify = () => {
         const response = await fetch(
           `${process.env.REACT_APP_API_SERVER}/boards/${params.id}`
         );
+
+        if (response.status === 401) {
+          alert("로그인이 필요합니다.");
+          navigate("/auth");
+          return;
+        }
+
         if (response.ok) {
           const data = await response.json();
           setTitle(data.title);
