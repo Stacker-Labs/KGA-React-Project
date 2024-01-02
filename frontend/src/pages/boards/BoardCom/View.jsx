@@ -41,6 +41,12 @@ const View = () => {
         }
       );
 
+      if (response.status === 401) {
+        alert("로그인이 필요합니다");
+        navigate("/auth");
+        return;
+      }
+
       const result = await response.json();
 
       // console.log("result@@", result);
@@ -58,6 +64,7 @@ const View = () => {
           credentials: "include",
         }
       );
+
       const commentResult = await commentResponse.json();
 
       setPage(commentResult.nextPage);
