@@ -50,7 +50,7 @@ const CommentList = ({ id, commentList, setCommentList }) => {
           setCommentList={setCommentList}
         />
       ))}
-      <div className="p=[10px] mx-auto w-[40%] flex flex-row justify-between  my-[15px]">
+      <div className="p-[10px] mx-auto w-[40%] flex flex-row justify-between  my-[15px]">
         <button
           className="rounded-full p-[15px] bg-sky-200 hover:bg-sky-400"
           onClick={loadPreviousPage}

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
+import { No_Profile } from "../../../../images";
+import Button from "../../../../tw_components/atoms/Buttons";
 
 const ReplyCommentForm = ({
   id,
@@ -17,6 +19,7 @@ const ReplyCommentForm = ({
   const userInfo = useRecoilValue(userState);
   const userId = userInfo?.user?.id;
   const userNickname = userInfo?.user?.nickname;
+  const userImg = userInfo?.user?.image;
 
   const fetchUserInformation = async () => {
     try {
@@ -88,31 +91,30 @@ const ReplyCommentForm = ({
   };
 
   return (
-    <div className="">
-      <div className="flex flex-row justify-between">
-        <div className="font-style: italic text-base mx-[auto]">
-          {userNickname}
-        </div>
-        <span></span>
+    <div className="flex flex-row justify-evenly items-center w-full gap-5 ">
+      <div className="flex flex-row items-center justify-around w-[15%] ml-5">
+        <img
+          src={userImg || No_Profile}
+          alt=""
+          className="w-[50px] h-[50px] rounded-3xl"
+        />
+        <p className="italic text-xl">{userNickname}</p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="flex justify-center m-5 bg-neutral-100 text-black"
+        className="flex justify-around items-center m-5 w-[80%]"
       >
         <textarea
           type="text"
           value={newReplyComment}
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요..."
-          className="w-[500px]  p-[10px] resize-none rounded-md "
+          className="w-[80%] border p-[10px] resize-none rounded-md bg-transparent"
         />
-        <button
-          type="submit"
-          className="bg-sky-600	p-[10px] rounded-md  hover:bg-sky-400"
-        >
-          <p className="text-white  mx-auto">등록</p>
-        </button>
+        <Button variant={"blue"} size={"md"}>
+          Submit
+        </Button>
       </form>
     </div>
   );

@@ -63,7 +63,7 @@ const Write = () => {
   return (
     <div
       className={cn(
-        "flex flex-col w-full h-screen px-40 gap-3 py-5",
+        "flex flex-col w-4/6 mx-auto h-screen gap-4 py-8",
         darkMode ? "dark" : ""
       )}
     >
@@ -85,15 +85,16 @@ const Write = () => {
       <div>
         <TinyMCEEditor value={content} onChange={handleContentChange} />
       </div>
-
-      <Button
-        variant={"blue"}
-        size={"md"}
-        onClick={handleSave}
-        disabled={!title}
-      >
-        Publish
-      </Button>
+      <div className="w-full flex flex-row justify-end py-4">
+        <Button
+          variant={"blue"}
+          size={"md"}
+          onClick={handleSave}
+          disabled={!title}
+        >
+          Publish
+        </Button>
+      </div>
     </div>
   );
 };
