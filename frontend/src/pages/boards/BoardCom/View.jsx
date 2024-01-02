@@ -135,7 +135,7 @@ const View = () => {
   return (
     <div
       className={cn(
-        "flex flex-col w-full h-screen px-40 gap-5 py-8"
+        "flex flex-col w-3/4 mx-auto h-screen px-40 gap-5 py-8"
         // darkMode ? "dark" : ""
       )}
     >
@@ -169,32 +169,20 @@ const View = () => {
             alt=""
           />
         </Link>
-        <div className="pl-4">
+        <div className="pl-4 w-full">
           <p className="text-xl mobile:text-base">
             <Link to={`/users/${viewContent?.user?.id}`}>
               {viewContent?.user?.nickname}
             </Link>
           </p>
-          <p className="mobile:text-base">{formattedDate}</p>
+          <div className="flex flex-row w-full justify-between">
+            <span className="mobile:text-base">{formattedDate}</span>
+            <span>{viewContent?.views?.length} Unique Views</span>
+          </div>
         </div>
       </div>
 
       <div ref={viewContentRef} className="p-4 text-lg"></div>
-      <div className="mt-5">댓글{commentsLength}</div>
-      <CommentForm
-        id={params.id}
-        setCommentList={setCommentList}
-        commentList={commentList}
-        setCommentsLength={setCommentsLength}
-        commentsLength={commentsLength}
-      />
-      <CommentList
-        id={params.id}
-        commentList={commentList}
-        page={page}
-        setCommentList={setCommentList}
-      />
-
       {hasPermission && (
         <div className="flex flex-row gap-3 m-auto py-5">
           <Link to={constructEditURL()}>
@@ -211,6 +199,20 @@ const View = () => {
           </div>
         </div>
       )}
+      <div className="my-5 text-xl">댓글 {commentsLength}</div>
+      <CommentForm
+        id={params.id}
+        setCommentList={setCommentList}
+        commentList={commentList}
+        setCommentsLength={setCommentsLength}
+        commentsLength={commentsLength}
+      />
+      <CommentList
+        id={params.id}
+        commentList={commentList}
+        page={page}
+        setCommentList={setCommentList}
+      />
     </div>
   );
 };

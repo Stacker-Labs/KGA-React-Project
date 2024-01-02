@@ -3,6 +3,8 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 import ReplyCommentForm from "./ReplyCommentForm";
 import ReplyCommentList from "./ReplyCommentList";
+import { No_Profile } from "../../../../images";
+import Button from "../../../../tw_components/atoms/Buttons";
 
 const Comment = ({ comment, id, setCommentList }) => {
   const [updateMode, setUpdateMode] = useState(false);
@@ -76,52 +78,69 @@ const Comment = ({ comment, id, setCommentList }) => {
   };
 
   return (
-    <div className="border-y-2 p-[10px]">
-      <div className="mb-5 flex flex-row justify-between">
-        <p className="font-style: italic text-base">
-          {comment?.user?.nickname}
-        </p>
+    <div className="border rounded-md p-5 my-3">
+      <div className="mb-5 flex flex-row justify-between items-center px-5">
+        <div className="flex flex-row items-center justify-around w-[15%]">
+          <img
+            src={comment?.user?.image || No_Profile}
+            alt=""
+            className="w-[50px] h-[50px] rounded-3xl"
+          />
+          <p className="italic text-xl">{comment?.user?.nickname}</p>
+        </div>
+
         {!comment?.deleted && userId === comment?.user?.id && (
-          <div className="gap-2">
-            <button
-              className="border-4 p-[5px] bg-slate-600 text-white text-xs"
+          <div className="gap-5 flex flex-row">
+            <Button
+              variant={"blue"}
+              size={"md"}
+              className=""
               onClick={() => handleDelete(comment.id)}
             >
-              삭제
-            </button>
+              Delete
+            </Button>
             {updateMode ? (
-              <button
-                className="border-4 p-[5px] text-xs"
+              <Button
+                variant={"blue"}
+                size={"md"}
+                className=""
                 onClick={() => handleUpdate(comment.id)}
               >
-                저장
-              </button>
+                Save
+              </Button>
             ) : (
-              <button
-                className="border-4 p-[5px] text-xs"
+              <Button
+                variant={"blue"}
+                size={"md"}
+                className=""
                 onClick={handleUpdateMode}
               >
-                수정
-              </button>
+                Edit
+              </Button>
             )}
           </div>
         )}
       </div>
+
       {updateMode ? (
-        <textarea
-          className="w-[90%] resize-none"
-          value={editedContent}
-          onChange={(e) => setEditedContent(e.target.value)}
-        />
+        <div className="w-[95%] mx-auto">
+          <textarea
+            className="w-full resize-none bg-transparent border p-2"
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+          />
+        </div>
       ) : (
-        <div className="p-[5px]"> {comment.content}</div>
+        <div className="px-3 py-5 ml-4"> {comment.content}</div>
       )}
 
       {
-        <div className="p-[10px]">
+        <div className="w-[95%] mx-auto">
           {replyMode ? (
-            <div className="w-[90%] h-[100%] my-[5px] ">
-              <button onClick={handleReplyMode}>닫기</button>
+            <div className="">
+              <button onClick={handleReplyMode} className="p-3">
+                ✖️
+              </button>
               <div className="my-[5px]">
                 <ReplyCommentList
                   replyCommentList={replyCommentList}

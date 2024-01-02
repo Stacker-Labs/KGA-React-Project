@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../recoil/userState";
 import Button from "../../../../tw_components/atoms/Buttons";
+import { No_Profile } from "../../../../images";
 //Authorization: `Bearer ${Token}`,
 // const Token = process.env.REACT_APP_TOKEN;
 const CommentForm = ({
@@ -20,7 +21,7 @@ const CommentForm = ({
   const userInfo = useRecoilValue(userState);
 
   const userId = userInfo?.user?.id;
-  const userNickname = userInfo?.user?.nickname;
+  const userImg = userInfo?.user?.image;
 
   const fetchUserInformation = async () => {
     try {
@@ -94,9 +95,18 @@ const CommentForm = ({
   };
 
   return (
-    <div className="border flex flex-row justify-evenly items-center w-full gap-5 py-3">
-      <div className=" w-[10%] italic text-base">{userNickname}</div>
-      <form onSubmit={handleSubmit} className="w-[80%] flex flex-row gap-8">
+    <div className="flex flex-row justify-evenly items-center w-full gap-5 py-5">
+      <div className="w-[5%]">
+        <img
+          src={userImg || No_Profile}
+          alt=""
+          className="w-[50px] h-[50px] rounded-3xl"
+        />
+      </div>
+      <form
+        onSubmit={handleSubmit}
+        className="w-[90%] flex flex-row items-center justify-around"
+      >
         <textarea
           type="text"
           value={newComment}
