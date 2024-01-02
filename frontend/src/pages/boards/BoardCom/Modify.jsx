@@ -49,7 +49,7 @@ const Modify = () => {
   const [tagList, setTagList] = useState([]);
   const userInfo = useRecoilValue(userState);
 
-  const loggedInUserId = userInfo?.id || "";
+  const loggedInUserId = userInfo?.user?.id || "";
   const navigate = useNavigate();
 
   useEffect(() => {
