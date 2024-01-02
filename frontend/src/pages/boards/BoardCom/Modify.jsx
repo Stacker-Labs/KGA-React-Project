@@ -53,6 +53,13 @@ const Modify = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!loggedInUserId) {
+      alert("로그인이 필요합니다");
+      navigate("/auth");
+    }
+  }, [navigate, loggedInUserId]);
+
+  useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await fetch(
@@ -60,6 +67,12 @@ const Modify = () => {
         );
 
         if (response.status === 401) {
+          alert("로그인이 필요합니다.");
+          navigate("/auth");
+          return;
+        }
+
+        if (!response.ok) {
           alert("로그인이 필요합니다.");
           navigate("/auth");
           return;
