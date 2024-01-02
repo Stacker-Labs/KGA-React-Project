@@ -146,16 +146,16 @@ const View = () => {
         // darkMode ? "dark" : ""
       )}
     >
+      <div className="sticky top-0 flex justify-end">
+        <HandleScroll
+          userId={userId}
+          postId={params.id}
+          isLiked={isLiked}
+          setIsLiked={setIsLiked}
+        />
+      </div>
       <div className="w-full flex flex-row justify-between items-center">
         <div className="text-4xl">{viewContent.title}</div>
-        <div className="sticky top-0">
-          <HandleScroll
-            userId={userId}
-            postId={params.id}
-            isLiked={isLiked}
-            setIsLiked={setIsLiked}
-          />
-        </div>
       </div>
 
       <div className="flex flex-row gap-5 text-xl">
