@@ -15,6 +15,7 @@ const View = () => {
   const [commentsLength, setCommentsLength] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [page, setPage] = useState(1);
+  // const [codeBlocks, setCodeBlocks] = useState([]);
 
   // const [loading, setLoading] = useState(true);
   const params = useParams();
@@ -79,6 +80,15 @@ const View = () => {
     }
   }, [viewContent, commentList, commentsLength]);
 
+  // const extractCodeBlocks = (content) => {
+  //   const regex = /<pre.*?>([\s\S]*?)<\/pre>/gi;
+  //   const matches = content.match(regex);
+
+  //   const codeBlocks = matches ? matches.map((match) => match.trim()) : [];
+
+  //   console.log("Extracted Code Blocks:", codeBlocks);
+  // };
+
   const constructEditURL = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("title", viewContent.title);
@@ -137,7 +147,7 @@ const View = () => {
 
   //   return () => clearTimeout(timer);
   // }, []);
-  console.log(viewContent);
+  // console.log(viewContent);
 
   return (
     <div

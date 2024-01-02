@@ -128,7 +128,7 @@ const Modify = () => {
         }
       );
       const result = await response.json();
-      console.log(result);
+
       if (response.ok) {
         navigate(`/boards/${params.id}`);
       }
