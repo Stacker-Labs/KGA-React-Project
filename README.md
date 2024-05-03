@@ -9,7 +9,7 @@
 ---
 
 ## 개요
-- ### 배포 주소 : https://eunjae.store/
+- ### 배포 주소 : https://stacker-labs.vercel.app/
 - dev.to를 모티브로 제작한 개발자 커뮤니티
 - 기간 : 2023.12 ~ 2024.01
 - 팀원 :
